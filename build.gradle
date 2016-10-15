@@ -1,0 +1,41 @@
+group 'io.github.tjheslin1'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.1.10'
+    }
+}
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.21'
+    testCompile 'junit:junit:4.12'
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+apply plugin: "info.solidsoft.pitest"
+
+pitest {
+    targetClasses = ['io.github.tjheslin1.*']
+    pitestVersion = "1.1.0"
+    threads = 4
+    outputFormats = ['XML', 'HTML']
+    reportDir = "build/pit-output"
+}
+
+task run(type: JavaExec) {
+    main = "io.github.tjheslin1.westie.Main"
+    classpath = sourceSets.main.runtimeClasspath
+}
