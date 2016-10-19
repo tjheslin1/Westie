@@ -5,34 +5,15 @@ apply plugin: 'java'
 
 sourceCompatibility = 1.8
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.1.10'
-    }
-}
-
-dependencies {
-    compile 'org.slf4j:slf4j-api:1.7.21'
-    testCompile 'junit:junit:4.12'
-}
-
 repositories {
     mavenCentral()
     jcenter()
 }
 
-apply plugin: "info.solidsoft.pitest"
-
-pitest {
-    targetClasses = ['io.github.tjheslin1.*']
-    pitestVersion = "1.1.0"
-    threads = 4
-    outputFormats = ['XML', 'HTML']
-    reportDir = "build/pit-output"
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile 'org.assertj:assertj-core:3.5.2'
+    testCompile "org.mockito:mockito-core:1.+"
 }
 
 task run(type: JavaExec) {
