@@ -3,15 +3,23 @@ package io.github.tjheslin1.westie;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.RequestBuilder;
+import org.json.JSONObject;
 
-import java.io.IOException;
-import java.time.Duration;
+import static java.lang.String.format;
 
 public class Issues {
 
     private final HttpClient httpClient;
     private final String teamCityUsername;
     private final String teamCityPassword;
+
+    public Issues(HttpClient httpClient, String teamCityUsername, String teamCityPassword) {
+        this.httpClient = httpClient;
+        this.teamCityUsername = teamCityUsername;
+        this.teamCityPassword = teamCityPassword;
+    }
 
     private final LoadingCache<String, String> issueStatusCache = CacheBuilder.<String, String>newBuilder()
             .build(new CacheLoader<String, String>() {
@@ -31,19 +39,15 @@ public class Issues {
         if (!response.isSuccessful()) {
             throw new IllegalStateException(format("Problem fetching issue:%n%s", response));
         }
-        JSONObject jsonObject = jsonObjectParser.parseJson(response.body());
+        JSONObject jsonObject = new JSONObject(response.body);
         return status(jsonObject);
     }
 
     private Response jiraIssue(String issueNumber) {
-        try {
-            return httpClient.execute(new RequestBuilder()
-                    .get()
-                    .url("https://tasktracker.sns.sky.com/rest/api/2/issue/" + issueNumber + "?&os_username=" + teamCityUsername + "&os_password=" + teamCityPassword)
-                    .build(), DEFAULT_TIMEOUT);
-        } catch (IOException e) {
-            throw new IllegalStateException("Problem fetching issue", e);
-        }
+        HttpUriRequest apacheRequest = RequestBuilder.get()
+                .setUri("https://tasktracker.sns.sky.com/rest/api/2/issue/" + issueNumber + "?&os_username=" + teamCityUsername + "&os_password=" + teamCityPassword)
+                .build();
+        return (Response) httpClient.execute(apacheRequest);
     }
 
     private String status(JSONObject jsonObject) {

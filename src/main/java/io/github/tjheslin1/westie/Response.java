@@ -14,8 +14,12 @@ public class Response extends ValueType {
         this.protocol = protocol;
     }
 
+    public boolean isSuccessful() {
+        return statusCode <= 200;
+    }
+
     @Override
     public String toString() {
-        return format("%s%s%s", "");
+        return format("%s %s%n%s", protocol, statusCode, body);
     }
 }
