@@ -49,13 +49,9 @@ public class TODOsMustFollowStructure {
 
     private Stream<Violation> verifyStructureOfTodos(Path file) {
         try {
-            Stream<String> linesContaningTodos = Files.lines(file)
-                    .filter(this::lineContainsTodo);
-
-            Stream<String> linesConformingToStructure = linesContaningTodos
-                    .filter(this::linesNotConformingToStructure);
-
-            return linesConformingToStructure
+            return Files.lines(file)
+                    .filter(this::lineContainsTodo)
+                    .filter(this::linesNotConformingToStructure)
                     .map(todoLine -> new Violation(file, todoLine));
         } catch (IOException e) {
             return Stream.of(new Violation(file, "Unable to read file."));
@@ -71,7 +67,8 @@ public class TODOsMustFollowStructure {
     }
 
     private void reportViolation(Violation violation) {
-        System.out.println(format("Violation! '%s' does not conform to the TODO structure with regex: '%s'",
-                violation, TODOS_MUST_HAVE_DATE_REGEX));
+        System.out.println(format("Violation!%n'%s'%nThe above violation was caused by the TODO not matching structure with regex: '%s'. " +
+                        "%nSpecified in the Westie class: %s%n",
+                violation, TODOS_MUST_HAVE_DATE_REGEX, this.getClass().getSimpleName()));
     }
 }

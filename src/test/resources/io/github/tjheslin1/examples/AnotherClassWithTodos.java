@@ -1,3 +1,5 @@
+package io.github.tjheslin1.examples
+
 public class AnotherClassWithTodos {
 
     public static void main(String args[]) {

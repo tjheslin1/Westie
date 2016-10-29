@@ -1,3 +1,5 @@
+package io.github.tjheslin1.examples
+
 public class ClassWithTodos {
     /*
     Syntax of defining memebers of the java class is,
