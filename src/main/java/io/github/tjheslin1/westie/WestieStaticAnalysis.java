@@ -2,9 +2,6 @@ package io.github.tjheslin1.westie;
 
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 public abstract class WestieStaticAnalysis {
 
@@ -19,9 +16,8 @@ public abstract class WestieStaticAnalysis {
     }
 
     protected boolean notAnExemptFile(Path file) {
-        List<String> postfixed = javaFilesToIgnore.stream()
-                .map(this::postFixedWithJavaExtension).collect(toList());
-        return !postfixed.stream()
+        return !javaFilesToIgnore.stream()
+                .map(this::postFixedWithJavaExtension)
                 .anyMatch(exemptFile -> file.toString().endsWith((exemptFile)));
     }
 
