@@ -9,15 +9,13 @@ import java.util.stream.Stream;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
-public class TODOsMustFollowStructure {
+public class TODOsMustFollowStructure extends WestieStaticAnalysis {
 
     private static final String TODO_REGEX = ".*//[ ]*TODO.*";
     private static final String TODOS_MUST_HAVE_DATE_REGEX = ".*//[ ]*TODO.*[0-9]{1,4}[/-]{1}[A-z0-9]{2,3}[/-]{1}[0-9]{1,4}.*";
 
-    private final List<String> javaFilesToIgnore;
-
     public TODOsMustFollowStructure(List<String> javaFilesToIgnore) {
-        this.javaFilesToIgnore = javaFilesToIgnore;
+        super(javaFilesToIgnore);
     }
 
     public List<Violation> checkAllTodosFollowExpectedStructure(Path pathToCheck) throws Exception {
@@ -27,24 +25,6 @@ public class TODOsMustFollowStructure {
                 .flatMap(this::verifyStructureOfTodos)
                 .peek(this::reportViolation)
                 .collect(toList());
-    }
-
-    private boolean isAJavaFile(Path file) {
-        return file.toString().endsWith(".java");
-    }
-
-    private boolean notAnExemptFile(Path path) {
-        return !javaFilesToIgnore.stream()
-                .map(this::postFixedWithJavaExtension)
-                .anyMatch(exemptFile -> filenameFromPath(path).equals(exemptFile));
-    }
-
-    private String filenameFromPath(Path path) {
-        return path.subpath(path.getNameCount() - 1, path.getNameCount()).toString();
-    }
-
-    private String postFixedWithJavaExtension(String javaFile) {
-        return javaFile.endsWith(".java") ? javaFile : javaFile + ".java";
     }
 
     private Stream<Violation> verifyStructureOfTodos(Path file) {

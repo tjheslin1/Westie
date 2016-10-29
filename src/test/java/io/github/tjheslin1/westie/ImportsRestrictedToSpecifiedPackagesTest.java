@@ -21,15 +21,16 @@ public class ImportsRestrictedToSpecifiedPackagesTest implements WithAssertions 
             = importRestriction("io.github.tjheslin1.examples.thirdparties.apache", "import org.apache.commons.lang3.builder.HashCodeBuilder;");
 
     @Test
-    public void enforcedOnlySpecifiedPackagesCanUseCertainThirdPartyImports() throws Exception {
+    public void enforcesOnlySpecifiedPackagesCanUseCertainThirdPartyImports() throws Exception {
         List<ImportRestriction> importRestrictions = singletonList(MOCKITO_RESTRICTION);
         ImportsRestrictedToSpecifiedPackages importsRestrictedToSpecifiedPackages = new ImportsRestrictedToSpecifiedPackages(importRestrictions, emptyList());
 
         Path testFilePath = Paths.get(TODOsMustFollowStructure.class.getClassLoader().getResource("io/github/tjheslin1/examples/ClassWithTodos.java").toURI());
         List<Violation> violations = importsRestrictedToSpecifiedPackages.checkImportsAreOnlyUsedInAcceptedPackages(testFilePath.getParent());
 
-        assertThat(violations.size()).isEqualTo(1);
-        assertThat(violations.get(0).toString()).startsWith("Line 'import org.mockito.Mockito;");
+        assertThat(violations.size()).isEqualTo(2);
+        assertThat(violations.get(0).toString()).startsWith("Line 'import org.mockito.Mockito;' in file '/Users/Tom/GitHub/Westie/build/resources/test/io/github/tjheslin1/examples/ClassWithUnacceptedThirdPartyImport.java");
+        assertThat(violations.get(1).toString()).startsWith("Line 'import org.mockito.Mockito;' in file '/Users/Tom/GitHub/Westie/build/resources/test/io/github/tjheslin1/examples/ClassWithUnacceptedThirdPartyImportToIgnore.java");
     }
 
     @Test

@@ -26,7 +26,7 @@ public class TODOsMustFollowStructureTest implements WithAssertions {
     }
 
     @Test
-    public void ignoredExemptFile() throws Exception {
+    public void ignoresExemptFile() throws Exception {
         TODOsMustFollowStructure todosMustFollowStructure = new TODOsMustFollowStructure(singletonList("io/github/tjheslin1/examples/AnotherClassWithTodos.java"));
 
         Path testFilePath = Paths.get(TODOsMustFollowStructure.class.getClassLoader().getResource("io/github/tjheslin1/examples/ClassWithTodos.java").toURI());

@@ -9,14 +9,13 @@ import java.util.stream.Stream;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
-public class ImportsRestrictedToSpecifiedPackages {
+public class ImportsRestrictedToSpecifiedPackages extends WestieStaticAnalysis {
 
     private final List<ImportRestriction> importRestrictions;
-    private final List<String> javaFilesToIgnore;
 
     public ImportsRestrictedToSpecifiedPackages(List<ImportRestriction> importRestrictions, List<String> javaFilesToIgnore) {
+        super(javaFilesToIgnore);
         this.importRestrictions = importRestrictions;
-        this.javaFilesToIgnore = javaFilesToIgnore;
     }
 
     public List<Violation> checkImportsAreOnlyUsedInAcceptedPackages(Path pathToCheck) throws IOException {
@@ -53,25 +52,6 @@ public class ImportsRestrictedToSpecifiedPackages {
         }
         return false;
     }
-
-    private boolean isAJavaFile(Path file) {
-        return file.toString().endsWith(".java");
-    }
-
-    private boolean notAnExemptFile(Path path) {
-        return !javaFilesToIgnore.stream()
-                .map(this::postFixedWithJavaExtension)
-                .anyMatch(exemptFile -> filenameFromPath(path).equals(exemptFile));
-    }
-
-    private String filenameFromPath(Path path) {
-        return path.subpath(path.getNameCount() - 1, path.getNameCount()).toString();
-    }
-
-    private String postFixedWithJavaExtension(String javaFile) {
-        return javaFile.endsWith(".java") ? javaFile : javaFile + ".java";
-    }
-
 
     private void reportViolation(Violation violation) {
         System.out.println(format("Violation!%n'%s'%nThe above violation was caused by an import which " +
