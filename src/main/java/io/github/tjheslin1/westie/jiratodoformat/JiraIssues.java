@@ -1,24 +1,35 @@
-package io.github.tjheslin1.westie;
+package io.github.tjheslin1.westie.jiratodoformat;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import io.github.tjheslin1.westie.HttpClient;
+import io.github.tjheslin1.westie.Response;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import static java.lang.String.format;
 
-public class Issues {
+public class JiraIssues {
 
     private final HttpClient httpClient;
     private final String teamCityUsername;
     private final String teamCityPassword;
+    private final List<String> allowedStatuses;
 
-    public Issues(HttpClient httpClient, String teamCityUsername, String teamCityPassword) {
+    public JiraIssues(HttpClient httpClient, String teamCityUsername, String teamCityPassword, List<String> allowedStatuses) {
         this.httpClient = httpClient;
         this.teamCityUsername = teamCityUsername;
         this.teamCityPassword = teamCityPassword;
+        this.allowedStatuses = allowedStatuses;
+    }
+
+    public boolean isJiraIssueInDevelopment(String issueNumber) {
+        String issueStatus = issueStatusCache.getUnchecked(issueNumber);
+        return allowedStatuses.stream().anyMatch(allowedStatus -> allowedStatus.equalsIgnoreCase(issueStatus));
     }
 
     private final LoadingCache<String, String> issueStatusCache = CacheBuilder.<String, String>newBuilder()
@@ -29,12 +40,7 @@ public class Issues {
                 }
             });
 
-    public boolean isJiraIssueInDevelopment(String issueNumber) {
-        String issueStatus = issueStatusCache.getUnchecked(issueNumber);
-        return issueStatus.equals("Development") || issueStatus.equals("Created") || issueStatus.equals("Ready To Play");
-    }
-
-    public String jiraIssueStatus(String issueNumber) {
+    private String jiraIssueStatus(String issueNumber) {
         Response response = jiraIssue(issueNumber);
         if (!response.isSuccessful()) {
             throw new IllegalStateException(format("Problem fetching issue:%n%s", response));

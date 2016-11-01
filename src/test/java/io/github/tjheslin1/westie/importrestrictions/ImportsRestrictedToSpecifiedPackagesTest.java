@@ -1,5 +1,7 @@
-package io.github.tjheslin1.westie;
+package io.github.tjheslin1.westie.importrestrictions;
 
+import io.github.tjheslin1.westie.todostructure.TodosMustFollowStructure;
+import io.github.tjheslin1.westie.Violation;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -7,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static io.github.tjheslin1.westie.ImportRestriction.importRestriction;
+import static io.github.tjheslin1.westie.importrestrictions.ImportRestriction.importRestriction;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -25,7 +27,7 @@ public class ImportsRestrictedToSpecifiedPackagesTest implements WithAssertions 
         List<ImportRestriction> importRestrictions = singletonList(MOCKITO_RESTRICTION);
         ImportsRestrictedToSpecifiedPackages importsRestrictedToSpecifiedPackages = new ImportsRestrictedToSpecifiedPackages(importRestrictions, emptyList());
 
-        Path testFilePath = Paths.get(TODOsMustFollowStructure.class.getClassLoader().getResource("io/github/tjheslin1/examples/ClassWithTodos.java").toURI());
+        Path testFilePath = Paths.get(TodosMustFollowStructure.class.getClassLoader().getResource("io/github/tjheslin1/examples/ClassWithTodos.java").toURI());
         List<Violation> violations = importsRestrictedToSpecifiedPackages.checkImportsAreOnlyUsedInAcceptedPackages(testFilePath.getParent());
 
         assertThat(violations.size()).isEqualTo(2);
@@ -38,7 +40,7 @@ public class ImportsRestrictedToSpecifiedPackagesTest implements WithAssertions 
         List<ImportRestriction> importRestrictions = asList(MOCKITO_RESTRICTION, APACHE_RESTRICITON);
         ImportsRestrictedToSpecifiedPackages importsRestrictedToSpecifiedPackages = new ImportsRestrictedToSpecifiedPackages(importRestrictions, singletonList("ClassWithUnacceptedThirdPartyImportToIgnore"));
 
-        Path testFilePath = Paths.get(TODOsMustFollowStructure.class.getClassLoader().getResource("io/github/tjheslin1/examples/ClassWithTodos.java").toURI());
+        Path testFilePath = Paths.get(TodosMustFollowStructure.class.getClassLoader().getResource("io/github/tjheslin1/examples/ClassWithTodos.java").toURI());
         List<Violation> violations = importsRestrictedToSpecifiedPackages.checkImportsAreOnlyUsedInAcceptedPackages(testFilePath.getParent());
 
         assertThat(violations.size()).isEqualTo(2);

@@ -1,4 +1,7 @@
-package io.github.tjheslin1.westie;
+package io.github.tjheslin1.westie.todostructure;
+
+import io.github.tjheslin1.westie.Violation;
+import io.github.tjheslin1.westie.WestieStaticAnalysis;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,12 +12,12 @@ import java.util.stream.Stream;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
-public class TODOsMustFollowStructure extends WestieStaticAnalysis {
+public class TodosMustFollowStructure extends WestieStaticAnalysis {
 
     private static final String TODO_REGEX = ".*//[ ]*TODO.*";
     private static final String TODOS_MUST_HAVE_DATE_REGEX = ".*//[ ]*TODO.*[0-9]{1,4}[/-]{1}[A-z0-9]{2,3}[/-]{1}[0-9]{1,4}.*";
 
-    public TODOsMustFollowStructure(List<String> javaFilesToIgnore) {
+    public TodosMustFollowStructure(List<String> javaFilesToIgnore) {
         super(javaFilesToIgnore);
     }
 

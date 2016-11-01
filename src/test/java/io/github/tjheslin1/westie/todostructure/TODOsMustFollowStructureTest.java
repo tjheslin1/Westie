@@ -1,5 +1,6 @@
-package io.github.tjheslin1.westie;
+package io.github.tjheslin1.westie.todostructure;
 
+import io.github.tjheslin1.westie.Violation;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -10,13 +11,13 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
-public class TODOsMustFollowStructureTest implements WithAssertions {
+public class TodosMustFollowStructureTest implements WithAssertions {
 
     @Test
     public void findsTodosComments() throws Exception {
-        TODOsMustFollowStructure todosMustFollowStructure = new TODOsMustFollowStructure(emptyList());
+        TodosMustFollowStructure todosMustFollowStructure = new TodosMustFollowStructure(emptyList());
 
-        Path testFilePath = Paths.get(TODOsMustFollowStructure.class.getClassLoader().getResource("io/github/tjheslin1/examples/ClassWithTodos.java").toURI());
+        Path testFilePath = Paths.get(TodosMustFollowStructure.class.getClassLoader().getResource("io/github/tjheslin1/examples/ClassWithTodos.java").toURI());
         List<Violation> todoViolations = todosMustFollowStructure.checkAllTodosFollowExpectedStructure(testFilePath.getParent());
 
         assertThat(todoViolations.size()).isEqualTo(3);
@@ -27,9 +28,9 @@ public class TODOsMustFollowStructureTest implements WithAssertions {
 
     @Test
     public void ignoresExemptFile() throws Exception {
-        TODOsMustFollowStructure todosMustFollowStructure = new TODOsMustFollowStructure(singletonList("io/github/tjheslin1/examples/AnotherClassWithTodos.java"));
+        TodosMustFollowStructure todosMustFollowStructure = new TodosMustFollowStructure(singletonList("io/github/tjheslin1/examples/AnotherClassWithTodos.java"));
 
-        Path testFilePath = Paths.get(TODOsMustFollowStructure.class.getClassLoader().getResource("io/github/tjheslin1/examples/ClassWithTodos.java").toURI());
+        Path testFilePath = Paths.get(TodosMustFollowStructure.class.getClassLoader().getResource("io/github/tjheslin1/examples/ClassWithTodos.java").toURI());
         List<Violation> todoViolations = todosMustFollowStructure.checkAllTodosFollowExpectedStructure(testFilePath.getParent());
 
         assertThat(todoViolations.size()).isEqualTo(2);

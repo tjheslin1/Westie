@@ -1,4 +1,7 @@
-package io.github.tjheslin1.westie;
+package io.github.tjheslin1.westie.importrestrictions;
+
+import io.github.tjheslin1.westie.Violation;
+import io.github.tjheslin1.westie.WestieStaticAnalysis;
 
 import java.io.IOException;
 import java.nio.file.Files;

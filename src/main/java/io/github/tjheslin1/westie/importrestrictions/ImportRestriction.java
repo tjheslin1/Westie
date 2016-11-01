@@ -1,4 +1,6 @@
-package io.github.tjheslin1.westie;
+package io.github.tjheslin1.westie.importrestrictions;
+
+import io.github.tjheslin1.westie.ValueType;
 
 public class ImportRestriction extends ValueType {
 
