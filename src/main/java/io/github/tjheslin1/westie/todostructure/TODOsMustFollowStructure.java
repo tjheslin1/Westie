@@ -15,10 +15,12 @@ import static java.util.stream.Collectors.toList;
 public class TodosMustFollowStructure extends WestieStaticAnalysis {
 
     private static final String TODO_REGEX = ".*//[ ]*TODO.*";
-    private static final String TODOS_MUST_HAVE_DATE_REGEX = ".*//[ ]*TODO.*[0-9]{1,4}[/-]{1}[A-z0-9]{2,3}[/-]{1}[0-9]{1,4}.*";
 
-    public TodosMustFollowStructure(List<String> javaFilesToIgnore) {
+    private final String todosStructureRegex;
+
+    public TodosMustFollowStructure(String todosStructureRegex, List<String> javaFilesToIgnore) {
         super(javaFilesToIgnore);
+        this.todosStructureRegex = todosStructureRegex;
     }
 
     public List<Violation> checkAllTodosFollowExpectedStructure(Path pathToCheck) throws Exception {
@@ -46,12 +48,12 @@ public class TodosMustFollowStructure extends WestieStaticAnalysis {
     }
 
     private boolean linesNotConformingToStructure(String todoLine) {
-        return !todoLine.matches(TODOS_MUST_HAVE_DATE_REGEX);
+        return !todoLine.matches(todosStructureRegex);
     }
 
     private void reportViolation(Violation violation) {
         System.out.println(format("Violation!%n'%s'%nThe above violation was caused by the TODO not matching structure with regex: '%s'. " +
                         "%nSpecified in the Westie class: %s%n",
-                violation, TODOS_MUST_HAVE_DATE_REGEX, this.getClass().getSimpleName()));
+                violation, todosStructureRegex, this.getClass().getSimpleName()));
     }
 }

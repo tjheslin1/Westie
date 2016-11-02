@@ -34,10 +34,10 @@ public class ImportsRestrictedToSpecifiedPackages extends WestieStaticAnalysis {
         try {
             List<String> lines = Files.lines(file).collect(toList());
             String packageLine = lines.stream().findFirst().get();
-            Stream<String> importsInUnacceptedPackage = lines.stream()
+            return lines.stream()
                     .filter(this::importLines)
-                    .filter(importLine -> importUsedOutsideOfAcceptedPackage(packageLine, importLine));
-            return importsInUnacceptedPackage.map(importLine -> new Violation(file, importLine));
+                    .filter(importLine -> importUsedOutsideOfAcceptedPackage(packageLine, importLine))
+                    .map(importLine -> new Violation(file, importLine));
         } catch (IOException e) {
             return Stream.of(new Violation(file, "Unable to read file."));
         }

@@ -13,11 +13,13 @@ import static java.util.Collections.singletonList;
 
 public class TodosMustFollowStructureTest implements WithAssertions {
 
+    private static final String TODOS_MUST_HAVE_DATE_REGEX = ".*//[ ]*TODO.*[0-9]{1,4}[/-]{1}[A-z0-9]{2,3}[/-]{1}[0-9]{1,4}.*";
+
     @Test
     public void findsTodosComments() throws Exception {
-        TodosMustFollowStructure todosMustFollowStructure = new TodosMustFollowStructure(emptyList());
+        TodosMustFollowStructure todosMustFollowStructure = new TodosMustFollowStructure(TODOS_MUST_HAVE_DATE_REGEX, emptyList());
 
-        Path testFilePath = Paths.get(TodosMustFollowStructure.class.getClassLoader().getResource("io/github/tjheslin1/examples/ClassWithTodos.java").toURI());
+        Path testFilePath = Paths.get(TodosMustFollowStructureTest.class.getClassLoader().getResource("io/github/tjheslin1/examples/todos/ClassWithTodos.java").toURI());
         List<Violation> todoViolations = todosMustFollowStructure.checkAllTodosFollowExpectedStructure(testFilePath.getParent());
 
         assertThat(todoViolations.size()).isEqualTo(3);
@@ -28,9 +30,9 @@ public class TodosMustFollowStructureTest implements WithAssertions {
 
     @Test
     public void ignoresExemptFile() throws Exception {
-        TodosMustFollowStructure todosMustFollowStructure = new TodosMustFollowStructure(singletonList("io/github/tjheslin1/examples/AnotherClassWithTodos.java"));
+        TodosMustFollowStructure todosMustFollowStructure = new TodosMustFollowStructure(TODOS_MUST_HAVE_DATE_REGEX, singletonList("io/github/tjheslin1/examples/todos/AnotherClassWithTodos.java"));
 
-        Path testFilePath = Paths.get(TodosMustFollowStructure.class.getClassLoader().getResource("io/github/tjheslin1/examples/ClassWithTodos.java").toURI());
+        Path testFilePath = Paths.get(TodosMustFollowStructureTest.class.getClassLoader().getResource("io/github/tjheslin1/examples/todos/ClassWithTodos.java").toURI());
         List<Violation> todoViolations = todosMustFollowStructure.checkAllTodosFollowExpectedStructure(testFilePath.getParent());
 
         assertThat(todoViolations.size()).isEqualTo(2);

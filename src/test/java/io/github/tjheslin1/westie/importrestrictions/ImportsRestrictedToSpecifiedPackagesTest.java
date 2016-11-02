@@ -1,6 +1,5 @@
 package io.github.tjheslin1.westie.importrestrictions;
 
-import io.github.tjheslin1.westie.todostructure.TodosMustFollowStructure;
 import io.github.tjheslin1.westie.Violation;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
@@ -17,22 +16,22 @@ import static java.util.Collections.singletonList;
 public class ImportsRestrictedToSpecifiedPackagesTest implements WithAssertions {
 
     private static final ImportRestriction MOCKITO_RESTRICTION
-            = importRestriction("io.github.tjheslin1.examples.thirdparties.mockito", "import org.mockito.Mockito;");
+            = importRestriction("io.github.tjheslin1.examples.mockito", "import org.mockito.Mockito;");
 
     private static final ImportRestriction APACHE_RESTRICITON
-            = importRestriction("io.github.tjheslin1.examples.thirdparties.apache", "import org.apache.commons.lang3.builder.HashCodeBuilder;");
+            = importRestriction("io.github.tjheslin1.examples.apache", "import org.apache.commons.lang3.builder.HashCodeBuilder;");
 
     @Test
     public void enforcesOnlySpecifiedPackagesCanUseCertainThirdPartyImports() throws Exception {
         List<ImportRestriction> importRestrictions = singletonList(MOCKITO_RESTRICTION);
         ImportsRestrictedToSpecifiedPackages importsRestrictedToSpecifiedPackages = new ImportsRestrictedToSpecifiedPackages(importRestrictions, emptyList());
 
-        Path testFilePath = Paths.get(TodosMustFollowStructure.class.getClassLoader().getResource("io/github/tjheslin1/examples/ClassWithTodos.java").toURI());
+        Path testFilePath = Paths.get(ImportsRestrictedToSpecifiedPackages.class.getClassLoader().getResource("io/github/tjheslin1/examples/thirdparties/ClassWithUnacceptedThirdPartyImport.java").toURI());
         List<Violation> violations = importsRestrictedToSpecifiedPackages.checkImportsAreOnlyUsedInAcceptedPackages(testFilePath.getParent());
 
         assertThat(violations.size()).isEqualTo(2);
-        assertThat(violations.get(0).toString()).startsWith("Line 'import org.mockito.Mockito;' in file '/Users/Tom/GitHub/Westie/build/resources/test/io/github/tjheslin1/examples/ClassWithUnacceptedThirdPartyImport.java");
-        assertThat(violations.get(1).toString()).startsWith("Line 'import org.mockito.Mockito;' in file '/Users/Tom/GitHub/Westie/build/resources/test/io/github/tjheslin1/examples/ClassWithUnacceptedThirdPartyImportToIgnore.java");
+        assertThat(violations.get(0).toString()).startsWith("Line 'import org.mockito.Mockito;' in file '/Users/Tom/GitHub/Westie/build/resources/test/io/github/tjheslin1/examples/thirdparties/ClassWithUnacceptedThirdPartyImport.java");
+        assertThat(violations.get(1).toString()).startsWith("Line 'import org.mockito.Mockito;' in file '/Users/Tom/GitHub/Westie/build/resources/test/io/github/tjheslin1/examples/thirdparties/ClassWithUnacceptedThirdPartyImportToIgnore.java");
     }
 
     @Test
@@ -40,7 +39,7 @@ public class ImportsRestrictedToSpecifiedPackagesTest implements WithAssertions 
         List<ImportRestriction> importRestrictions = asList(MOCKITO_RESTRICTION, APACHE_RESTRICITON);
         ImportsRestrictedToSpecifiedPackages importsRestrictedToSpecifiedPackages = new ImportsRestrictedToSpecifiedPackages(importRestrictions, singletonList("ClassWithUnacceptedThirdPartyImportToIgnore"));
 
-        Path testFilePath = Paths.get(TodosMustFollowStructure.class.getClassLoader().getResource("io/github/tjheslin1/examples/ClassWithTodos.java").toURI());
+        Path testFilePath = Paths.get(ImportsRestrictedToSpecifiedPackages.class.getClassLoader().getResource("io/github/tjheslin1/examples/thirdparties/ClassWithUnacceptedThirdPartyImport.java").toURI());
         List<Violation> violations = importsRestrictedToSpecifiedPackages.checkImportsAreOnlyUsedInAcceptedPackages(testFilePath.getParent());
 
         assertThat(violations.size()).isEqualTo(2);

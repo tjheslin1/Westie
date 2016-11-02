@@ -1,9 +1,8 @@
-package io.github.tjheslin1.examples.thirdparties.apache;
+package io.github.tjheslin1.examples.mockito;
 
 import io.github.tjheslin1.westie.Response;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class ClassWithApacheImport {
+public class ClassWithMockitoImport {
 
     private final Response response = mock(Response.class);
 

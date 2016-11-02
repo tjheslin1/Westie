@@ -18,7 +18,7 @@ public class JiraIssues {
     private final HttpClient httpClient;
     private final String teamCityUsername;
     private final String teamCityPassword;
-    private final List<String> allowedStatuses;
+    private List<String> allowedStatuses;
 
     public JiraIssues(HttpClient httpClient, String teamCityUsername, String teamCityPassword, List<String> allowedStatuses) {
         this.httpClient = httpClient;
@@ -27,7 +27,7 @@ public class JiraIssues {
         this.allowedStatuses = allowedStatuses;
     }
 
-    public boolean isJiraIssueInDevelopment(String issueNumber) {
+    public boolean isJiraIssueInAllowedStatus(String issueNumber) {
         String issueStatus = issueStatusCache.getUnchecked(issueNumber);
         return allowedStatuses.stream().anyMatch(allowedStatus -> allowedStatus.equalsIgnoreCase(issueStatus));
     }

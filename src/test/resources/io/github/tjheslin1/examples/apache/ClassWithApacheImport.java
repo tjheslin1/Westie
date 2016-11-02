@@ -1,9 +1,8 @@
-package io.github.tjheslin1.examples.thirdparties.mockito;
+package io.github.tjheslin1.examples.apache;
 
 import io.github.tjheslin1.westie.Response;
-import org.mockito.Mockito;
 
-public class ClassWithMockitoImport {
+public class ClassWithApacheImport {
 
     private final Response response = mock(Response.class);
 
