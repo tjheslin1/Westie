@@ -19,6 +19,16 @@ package io.github.tjheslin1.westie.importrestrictions;
 
 import io.github.tjheslin1.westie.ValueType;
 
+/**
+ * Represents the package in which an import can only be used in.
+ *
+ * For example:
+ * Set 'packagePath' to "com.example.database" and
+ * and 'importRegex' to "import.*oracle.jdbc.*".
+ *
+ * Adding this restriction to {@link ImportsRestrictedToSpecifiedPackages}
+ * will enforce that any oracle.jdbc import be only used in the database package, complaining if used elsewhere.
+ */
 public class ImportRestriction extends ValueType {
 
     public final String packagePath;

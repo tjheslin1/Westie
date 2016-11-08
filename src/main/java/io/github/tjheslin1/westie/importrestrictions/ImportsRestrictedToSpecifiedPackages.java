@@ -29,6 +29,9 @@ import java.util.stream.Stream;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Enforces that the provided {@link ImportRestriction}'s are adhered to.
+ */
 public class ImportsRestrictedToSpecifiedPackages extends StaticAnalysis {
 
     private final List<ImportRestriction> importRestrictions;
@@ -38,6 +41,14 @@ public class ImportsRestrictedToSpecifiedPackages extends StaticAnalysis {
         this.importRestrictions = importRestrictions;
     }
 
+    /**
+     * Checks the imports of all source files under the provided path to check.
+     *
+     * @param pathToCheck The path of the package to be checked, all files within
+     *                    this package will be checked with the exception of the 'javaFilesToIgnore'.
+     * @return A list of {@link Violation}'s where imports have been used outside of their intended package.
+     * @throws IOException if an I/O error occurs when opening the directory.
+     */
     public List<Violation> checkImportsAreOnlyUsedInAcceptedPackages(Path pathToCheck) throws IOException {
         return Files.list(pathToCheck)
                 .filter(this::isAJavaFile)

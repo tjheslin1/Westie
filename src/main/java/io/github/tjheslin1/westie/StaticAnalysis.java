@@ -20,6 +20,9 @@ package io.github.tjheslin1.westie;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * Base class of a static analysis test with useful methods to reuse.
+ */
 public abstract class StaticAnalysis {
 
     private final List<String> javaFilesToIgnore;
@@ -28,18 +31,32 @@ public abstract class StaticAnalysis {
         this.javaFilesToIgnore = javaFilesToIgnore;
     }
 
+    /**
+     * @param file Path to a source file.
+     * @return 'true' if the file's extension is '.java'
+     */
     protected boolean isAJavaFile(Path file) {
         return file.toString().endsWith(".java");
     }
 
+    /**
+     * @param file Path to a source file.
+     * @return 'true' if the file provided does not appear in the provided list of 'javaFilesToIgnore'
+     */
     protected boolean notAnExemptFile(Path file) {
         return !javaFilesToIgnore.stream()
                 .map(this::postFixedWithJavaExtension)
                 .anyMatch(exemptFile -> file.toString().endsWith((exemptFile)));
     }
 
-    protected String filenameFromPath(Path path) {
-        return path.subpath(path.getNameCount() - 1, path.getNameCount()).toString();
+    /**
+     * Extracts the filename of a file from its full path.
+     *
+     * @param file Path to a source file.
+     * @return The filename and extension of a file, provided its path.
+     */
+    protected String filenameFromPath(Path file) {
+        return file.subpath(file.getNameCount() - 1, file.getNameCount()).toString();
     }
 
     private String postFixedWithJavaExtension(String javaFile) {

@@ -30,6 +30,14 @@ import java.util.List;
 
 import static java.lang.String.format;
 
+/**
+ * Retrieves the status information of given Jira issue.
+ *
+ * Contribution by @theangrydev:
+ * - Uses caching so that multiple references to the same Jira
+ * issue does result in retrieving the information from your Jira
+ * site more than once.
+ */
 public class JiraIssues {
 
     private final HttpClient httpClient;
@@ -44,6 +52,10 @@ public class JiraIssues {
         this.allowedStatuses = allowedStatuses;
     }
 
+    /**
+     * @param issueNumber The issue number of the Jira issue. (e.g TOM-100)
+     * @return true if the Jira issue is in one of the 'allowedStatuses'.
+     */
     public boolean isJiraIssueInAllowedStatus(String issueNumber) {
         String issueStatus = issueStatusCache.getUnchecked(issueNumber);
         return allowedStatuses.stream().anyMatch(allowedStatus -> allowedStatus.equalsIgnoreCase(issueStatus));
