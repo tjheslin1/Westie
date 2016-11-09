@@ -17,6 +17,13 @@
  */
 package io.github.tjheslin1.westie;
 
+/**
+ * Sends the specified HTTP Request and captures the corresponding Response.
+ * Allows for a different httpClient other than one provided.
+ *
+ * @param <Request> The implementation of a Http Request.
+ * @param <Response> The implementation of a Http Response.
+ */
 public interface HttpClient<Request, Response> {
 
     Response execute(Request request);

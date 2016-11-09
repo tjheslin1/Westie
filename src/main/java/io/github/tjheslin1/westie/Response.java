@@ -19,6 +19,9 @@ package io.github.tjheslin1.westie;
 
 import static java.lang.String.format;
 
+/**
+ *
+ */
 public class Response extends ValueType {
 
     public final int statusCode;
@@ -31,10 +34,16 @@ public class Response extends ValueType {
         this.protocol = protocol;
     }
 
+    /**
+     * @return true if the statusCode is within the 200 range or below. false otherwise.
+     */
     public boolean isSuccessful() {
-        return statusCode <= 200;
+        return statusCode < 300;
     }
 
+    /**
+     * @return The Response in a readable format.
+     */
     @Override
     public String toString() {
         return format("%s %s%n%s", protocol, statusCode, body);

@@ -23,18 +23,33 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
+/**
+ * Helper methods for defining value type objects.
+ */
 public abstract class ValueType {
 
+    /**
+     * @param object The object to be compared to this instance.
+     * @return true if this instance matches the 'object'. Calculated reflectively on the fields.
+     */
     @Override
     public boolean equals(Object object) {
         return EqualsBuilder.reflectionEquals(this, object);
     }
 
+    /**
+     * Reflectively calculates the hashCode of this instance object.
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 
+    /**
+     * @return A human readable representation of this instance object and its fields.
+     */
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, SHORT_PREFIX_STYLE);

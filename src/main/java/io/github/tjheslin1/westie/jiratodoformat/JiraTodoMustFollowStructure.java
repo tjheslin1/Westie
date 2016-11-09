@@ -31,6 +31,10 @@ import java.util.stream.Stream;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Checks that the status of Jira issues are in an accepted state for all
+ * references to Jira tickets in to-do comments.
+ */
 public class JiraTodoMustFollowStructure extends StaticAnalysis {
 
     private static final String JIRA_TODO_REGEX_FORMAT = ".*//[ ]*TODO.*%s.*";
@@ -44,6 +48,13 @@ public class JiraTodoMustFollowStructure extends StaticAnalysis {
         this.jiraRegex = jiraRegex;
     }
 
+    /**
+     * @param pathToCheck The package to check source files for to-do comments
+     *                    which reference Jira tickets.
+     * @return A list of violations in which to-do comments are referencing Jira issues
+     * which are not in the list of accepted states, defined in {@link JiraIssues}.
+     * @throws IOException if an I/O error occurs when opening the directory.
+     */
     public List<Violation> checkAllJiraTodosAreInAllowedStatuses(Path pathToCheck) throws IOException {
         return Files.list(pathToCheck)
                 .filter(this::isAJavaFile)
