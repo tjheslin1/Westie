@@ -30,8 +30,8 @@ public class ImportsRestrictedToSpecifiedPackagesTest implements WithAssertions 
         List<Violation> violations = importsRestrictedToSpecifiedPackages.checkImportsAreOnlyUsedInAcceptedPackages(testFilePath.getParent());
 
         assertThat(violations.size()).isEqualTo(2);
-        assertThat(violations.get(0).toString()).startsWith("Line 'import org.mockito.Mockito;' in file '/Users/Tom/GitHub/Westie/build/resources/test/io/github/tjheslin1/examples/thirdparties/ClassWithUnacceptedThirdPartyImport.java");
-        assertThat(violations.get(1).toString()).startsWith("Line 'import org.mockito.Mockito;' in file '/Users/Tom/GitHub/Westie/build/resources/test/io/github/tjheslin1/examples/thirdparties/ClassWithUnacceptedThirdPartyImportToIgnore.java");
+        assertThat(violations.get(0).toString()).matches("Line 'import org\\.mockito\\.Mockito;' in file '.*ClassWithUnacceptedThirdPartyImportToIgnore\\.java'.*");
+        assertThat(violations.get(1).toString()).matches("Line 'import org\\.mockito\\.Mockito;' in file '.*ClassWithUnacceptedThirdPartyImport\\.java'.*");
     }
 
     @Test

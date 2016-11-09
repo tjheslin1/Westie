@@ -29,7 +29,7 @@ public class JiraTodoMustFollowStructureTest implements WithAssertions, WithMock
         List<Violation> violations = jiraTodoMustFollowStructure.checkAllJiraTodosAreInAllowedStatuses(testFilePath.getParent());
 
         assertThat(violations.size()).isEqualTo(2);
-        assertThat(violations.get(0).toString()).startsWith("Line '//TODO MON-100 make this final' in file '/Users/Tom/GitHub/Westie/build/resources/test/io/github/tjheslin1/examples/jira/ClassWithJiraTodos.java");
-        assertThat(violations.get(1).toString()).startsWith("Line '// TODO MON-101 set passed parameter as name' in file '/Users/Tom/GitHub/Westie/build/resources/test/io/github/tjheslin1/examples/jira/ClassWithJiraTodos.java");
+        assertThat(violations.get(0).toString()).matches("Line '//TODO MON-100 make this final' in file '.*/io/github/tjheslin1/examples/jira/ClassWithJiraTodos.java.*");
+        assertThat(violations.get(1).toString()).matches("Line '// TODO MON-101 set passed parameter as name' in file '.*/io/github/tjheslin1/examples/jira/ClassWithJiraTodos.java.*");
     }
 }

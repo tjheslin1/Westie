@@ -23,8 +23,6 @@ import com.google.common.cache.LoadingCache;
 import io.github.tjheslin1.westie.HttpClient;
 import io.github.tjheslin1.westie.Request;
 import io.github.tjheslin1.westie.Response;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.methods.RequestBuilder;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -81,11 +79,8 @@ public class JiraIssues {
     }
 
     private Response jiraIssue(String issueNumber) throws IOException {
-        HttpUriRequest apacheRequest = RequestBuilder.get()
-                .setUri("https://tasktracker.sns.sky.com/rest/api/2/issue/" + issueNumber + "?&os_username=" + teamCityUsername + "&os_password=" + teamCityPassword)
-                .build();
-
-        Request request = new Request("https://tasktracker.sns.sky.com/rest/api/2/issue/" + issueNumber + "?&os_username=" + teamCityUsername + "&os_password=" + teamCityPassword,
+        Request request = new Request(format("https://tasktracker.sns.sky.com/rest/api/2/issue/%s?&os_username=%s&os_password=%s",
+                issueNumber, teamCityUsername, teamCityPassword),
                 "GET");
 
         return httpClient.execute(request);

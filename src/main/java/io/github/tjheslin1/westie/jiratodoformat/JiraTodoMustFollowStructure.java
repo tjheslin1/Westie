@@ -17,8 +17,8 @@
  */
 package io.github.tjheslin1.westie.jiratodoformat;
 
-import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.StaticAnalysis;
+import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
 
 import java.io.IOException;
@@ -93,8 +93,7 @@ public class JiraTodoMustFollowStructure extends StaticAnalysis {
     }
 
     private void reportViolation(Violation violation) {
-        System.out.println(format("Violation!%n'%s'%nThe above violation was caused by an import which " +
-                        "does not matching any of the import restrictions specified in the Westie class: '%s'",
-                violation, this.getClass().getSimpleName()));
+        System.out.println(format("Violation!%n'%s'%nThe above violation was caused by a reference to a " +
+                "Jira issue which is not in any of the accepted statuses.", violation));
     }
 }

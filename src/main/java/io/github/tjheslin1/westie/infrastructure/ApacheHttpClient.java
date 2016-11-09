@@ -1,6 +1,5 @@
 package io.github.tjheslin1.westie.infrastructure;
 
-import com.google.common.annotations.VisibleForTesting;
 import io.github.tjheslin1.westie.HttpClient;
 import io.github.tjheslin1.westie.Request;
 import io.github.tjheslin1.westie.Response;
@@ -32,11 +31,6 @@ public class ApacheHttpClient implements HttpClient {
                 .build();
     }
 
-    @VisibleForTesting
-    ApacheHttpClient(org.apache.http.client.HttpClient httpClient) {
-        this.httpClient = httpClient;
-    }
-
     @Override
     public Response execute(Request request) throws IOException {
         HttpResponse response = httpClient.execute(adaptRequest(request));
@@ -54,7 +48,7 @@ public class ApacheHttpClient implements HttpClient {
             try {
                 httpUriRequest.setEntity(new StringEntity(request.body));
             } catch (UnsupportedEncodingException e) {
-                throw new IOException(format("Unsupported Encoding for requeust '%s'", request.toString()));
+                throw new IOException(format("Unsupported Encoding for request '%s'", request.toString()));
             }
         }
     }
