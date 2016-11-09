@@ -13,16 +13,36 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
-* limitations under the License.
+ * limitations under the License.
  */
 package io.github.tjheslin1.westie;
 
-import java.io.IOException;
+import static java.lang.String.format;
 
 /**
  *
  */
-public interface HttpClient {
+public class Request extends ValueType {
 
-    Response execute(Request request) throws IOException;
+    public final String url;
+    public final String method;
+    public final String body;
+
+    public Request(String url, String method, String body) {
+        this.url = url;
+        this.method = method;
+        this.body = body;
+    }
+
+    public Request(String url, String method) {
+        this(url, method, "");
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public String toString() {
+        return format("%s %s%n%s", method, url, body);
+    }
 }

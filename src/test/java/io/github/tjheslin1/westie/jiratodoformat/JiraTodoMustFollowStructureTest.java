@@ -2,6 +2,7 @@ package io.github.tjheslin1.westie.jiratodoformat;
 
 import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.WithMockito;
+import io.github.tjheslin1.westie.infrastructure.JiraIssues;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 

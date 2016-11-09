@@ -19,6 +19,7 @@ package io.github.tjheslin1.westie.jiratodoformat;
 
 import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.StaticAnalysis;
+import io.github.tjheslin1.westie.infrastructure.JiraIssues;
 
 import java.io.IOException;
 import java.nio.file.Files;

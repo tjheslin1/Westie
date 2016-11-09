@@ -29,6 +29,11 @@ import java.util.stream.Stream;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Enforces that to-do comments follow a structure.
+ *
+ * For example: to-dos must contain a date in the format specified by a regex.
+ */
 public class TodosMustFollowStructure extends StaticAnalysis {
 
     private static final String TODO_REGEX = ".*//[ ]*TODO.*";
@@ -40,7 +45,12 @@ public class TodosMustFollowStructure extends StaticAnalysis {
         this.todosStructureRegex = todosStructureRegex;
     }
 
-    public List<Violation> checkAllTodosFollowExpectedStructure(Path pathToCheck) throws Exception {
+    /**
+     * @param pathToCheck The package to check source files for to-do comments' structure.
+     * @return A list of violations in which to-do comments do not follow the specified pattern.
+     * @throws IOException if an I/O error occurs when opening the directory.
+     */
+    public List<Violation> checkAllTodosFollowExpectedStructure(Path pathToCheck) throws IOException {
         return Files.list(pathToCheck)
                 .filter(this::isAJavaFile)
                 .filter(this::notAnExemptFile)

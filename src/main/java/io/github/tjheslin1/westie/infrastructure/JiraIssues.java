@@ -13,26 +13,28 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
-* limitations under the License.
+ * limitations under the License.
  */
-package io.github.tjheslin1.westie.jiratodoformat;
+package io.github.tjheslin1.westie.infrastructure;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import io.github.tjheslin1.westie.HttpClient;
+import io.github.tjheslin1.westie.Request;
 import io.github.tjheslin1.westie.Response;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.List;
 
 import static java.lang.String.format;
 
 /**
  * Retrieves the status information of given Jira issue.
- *
+ * <p>
  * Contribution by @theangrydev:
  * - Uses caching so that multiple references to the same Jira
  * issue does result in retrieving the information from your Jira
@@ -69,7 +71,7 @@ public class JiraIssues {
                 }
             });
 
-    private String jiraIssueStatus(String issueNumber) {
+    private String jiraIssueStatus(String issueNumber) throws IOException {
         Response response = jiraIssue(issueNumber);
         if (!response.isSuccessful()) {
             throw new IllegalStateException(format("Problem fetching issue:%n%s", response));
@@ -78,11 +80,15 @@ public class JiraIssues {
         return status(jsonObject);
     }
 
-    private Response jiraIssue(String issueNumber) {
+    private Response jiraIssue(String issueNumber) throws IOException {
         HttpUriRequest apacheRequest = RequestBuilder.get()
                 .setUri("https://tasktracker.sns.sky.com/rest/api/2/issue/" + issueNumber + "?&os_username=" + teamCityUsername + "&os_password=" + teamCityPassword)
                 .build();
-        return (Response) httpClient.execute(apacheRequest);
+
+        Request request = new Request("https://tasktracker.sns.sky.com/rest/api/2/issue/" + issueNumber + "?&os_username=" + teamCityUsername + "&os_password=" + teamCityPassword,
+                "GET");
+
+        return httpClient.execute(request);
     }
 
     private String status(JSONObject jsonObject) {
