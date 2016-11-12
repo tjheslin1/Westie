@@ -21,6 +21,9 @@ import java.util.concurrent.TimeUnit;
 
 import static java.lang.String.format;
 
+/**
+ * Implementation of {@link HttpClient} which can be used, which uses 'org.apache.http.client.HttpClient'.
+ */
 public class ApacheHttpClient implements HttpClient {
 
     private final org.apache.http.client.HttpClient httpClient;
@@ -31,6 +34,13 @@ public class ApacheHttpClient implements HttpClient {
                 .build();
     }
 
+    /**
+     * Adapts the {@link Request} to a an Apache {@link HttpUriRequest}.
+     *
+     * @param request The {@link Request} to be sent.
+     * @return The {@link Response} which has been adapted from a {@link HttpResponse}.
+     * @throws IOException if an I/O exeception occurs during the HTTP request/response.
+     */
     @Override
     public Response execute(Request request) throws IOException {
         HttpResponse response = httpClient.execute(adaptRequest(request));
