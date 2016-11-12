@@ -43,12 +43,21 @@ public class JiraIssues {
     private final HttpClient httpClient;
     private final String teamCityUsername;
     private final String teamCityPassword;
+    private final String jiraUrlFormat;
     private List<String> allowedStatuses;
 
-    public JiraIssues(HttpClient httpClient, String teamCityUsername, String teamCityPassword, List<String> allowedStatuses) {
+    /**
+     * @param httpClient       Your chosen http client. Provided is {@link ApacheHttpClient}.
+     * @param jiraUrlFormat    Your jira url with '%s' where the issue number, username and passwords will be populated.
+     * @param teamCityUsername Your username to access your Jira.
+     * @param teamCityPassword Your password to access your Jira.
+     * @param allowedStatuses  A list of allowed status (e.g [Ready To Play, Development]).
+     */
+    public JiraIssues(HttpClient httpClient, String jiraUrlFormat, String teamCityUsername, String teamCityPassword, List<String> allowedStatuses) {
         this.httpClient = httpClient;
         this.teamCityUsername = teamCityUsername;
         this.teamCityPassword = teamCityPassword;
+        this.jiraUrlFormat = jiraUrlFormat;
         this.allowedStatuses = allowedStatuses;
     }
 
@@ -59,6 +68,13 @@ public class JiraIssues {
     public boolean isJiraIssueInAllowedStatus(String issueNumber) {
         String issueStatus = issueStatusCache.getUnchecked(issueNumber);
         return allowedStatuses.stream().anyMatch(allowedStatus -> allowedStatus.equalsIgnoreCase(issueStatus));
+    }
+
+    /**
+     * @return The list of provided accepted status' for a Jira story to be in and be referenced in a to-do.
+     */
+    public List<String> allowedStatuses() {
+        return allowedStatuses;
     }
 
     private final LoadingCache<String, String> issueStatusCache = CacheBuilder.<String, String>newBuilder()
@@ -79,10 +95,9 @@ public class JiraIssues {
     }
 
     private Response jiraIssue(String issueNumber) throws IOException {
-        Request request = new Request(format("https://tasktracker.sns.sky.com/rest/api/2/issue/%s?&os_username=%s&os_password=%s",
+        Request request = new Request(format(jiraUrlFormat,
                 issueNumber, teamCityUsername, teamCityPassword),
                 "GET");
-
         return httpClient.execute(request);
     }
 

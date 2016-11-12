@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 
 public class JiraTodoMustFollowStructureTest implements WithAssertions, WithMockito {
@@ -22,6 +23,7 @@ public class JiraTodoMustFollowStructureTest implements WithAssertions, WithMock
     @Test
     public void findsTodoForAJiraStoryWhichIsInDevComplete() throws Exception {
         when(jiraIssues.isJiraIssueInAllowedStatus(ISSUE_NUMBER)).thenReturn(false);
+        when(jiraIssues.allowedStatuses()).thenReturn(asList("Ready To Play", "Development"));
 
         JiraTodoMustFollowStructure jiraTodoMustFollowStructure = new JiraTodoMustFollowStructure(jiraIssues, JIRA_ISSUE_REGEX, emptyList());
 
