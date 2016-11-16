@@ -20,7 +20,7 @@ package io.github.tjheslin1.westie;
 import static java.lang.String.format;
 
 /**
- *
+ * Domain representation of a HTTP response.
  */
 public class Response extends ValueType {
 
@@ -42,7 +42,7 @@ public class Response extends ValueType {
     }
 
     /**
-     * @return The Response in a readable format.
+     * @return The response in a readable format.
      */
     @Override
     public String toString() {

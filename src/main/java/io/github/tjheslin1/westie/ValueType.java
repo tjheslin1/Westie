@@ -40,7 +40,7 @@ public abstract class ValueType {
     /**
      * Reflectively calculates the hashCode of this instance object.
      *
-     * @return
+     * @return the hashCode of this instance object.
      */
     @Override
     public int hashCode() {

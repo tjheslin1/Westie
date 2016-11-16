@@ -24,5 +24,11 @@ import java.io.IOException;
  */
 public interface HttpClient {
 
+    /**
+     *
+     * @param request The {@link Request} to be sent via the httpClient implementation.
+     * @return The result of the http request as a {@link Response}.
+     * @throws IOException if an I/O exception occurs whilst communicating over HTTP.
+     */
     Response execute(Request request) throws IOException;
 }

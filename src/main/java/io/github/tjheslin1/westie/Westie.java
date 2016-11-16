@@ -20,10 +20,9 @@ package io.github.tjheslin1.westie;
 public class Westie {
 
     /**
-     *
      * @param args unused
      */
     public static void main(String[] args) {
-
+        System.out.println("Westie");
     }
 }
