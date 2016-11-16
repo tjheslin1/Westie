@@ -23,6 +23,6 @@ dependencies {
 }
 
 task run(type: JavaExec) {
-    main = "io.github.tjheslin1.westie.Main"
+    main = "io.github.tjheslin1.westie.Westie"
     classpath = sourceSets.main.runtimeClasspath
 }

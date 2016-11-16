@@ -17,7 +17,7 @@
  */
 package io.github.tjheslin1.westie.jiratodoformat;
 
-import io.github.tjheslin1.westie.StaticAnalysis;
+import io.github.tjheslin1.westie.WestieStaticAnalysis;
 import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
 
@@ -30,18 +30,25 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 /**
  * Checks that the status of Jira issues are in an accepted state for all
  * references to Jira tickets in to-do comments.
  */
-public class JiraTodoMustFollowStructure extends StaticAnalysis {
+public class JiraTodoMustFollowStructure extends WestieStaticAnalysis {
 
     private static final String JIRA_TODO_REGEX_FORMAT = ".*//[ ]*TODO.*%s.*";
 
     private final JiraIssues jiraIssues;
     private final String jiraRegex;
+
+    public JiraTodoMustFollowStructure(JiraIssues jiraIssues, String jiraRegex) {
+        super(emptyList());
+        this.jiraIssues = jiraIssues;
+        this.jiraRegex = jiraRegex;
+    }
 
     public JiraTodoMustFollowStructure(JiraIssues jiraIssues, String jiraRegex, List<String> javaFilesToIgnore) {
         super(javaFilesToIgnore);

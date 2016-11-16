@@ -18,7 +18,7 @@
 package io.github.tjheslin1.westie.importrestrictions;
 
 import io.github.tjheslin1.westie.Violation;
-import io.github.tjheslin1.westie.StaticAnalysis;
+import io.github.tjheslin1.westie.WestieStaticAnalysis;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,7 +32,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * Enforces that the provided {@link ImportRestriction}'s are adhered to.
  */
-public class ImportsRestrictedToSpecifiedPackages extends StaticAnalysis {
+public class ImportsRestrictedToSpecifiedPackages extends WestieStaticAnalysis {
 
     private final List<ImportRestriction> importRestrictions;
 
