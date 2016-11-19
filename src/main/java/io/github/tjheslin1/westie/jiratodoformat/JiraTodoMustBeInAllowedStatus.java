@@ -37,20 +37,20 @@ import static java.util.stream.Collectors.toList;
  * Checks that the status of Jira issues are in an accepted state for all
  * references to Jira tickets in to-do comments.
  */
-public class JiraTodoMustFollowStructure extends WestieStaticAnalysis {
+public class JiraTodoMustBeInAllowedStatus extends WestieStaticAnalysis {
 
     private static final String JIRA_TODO_REGEX_FORMAT = ".*//[ ]*TODO.*%s.*";
 
     private final JiraIssues jiraIssues;
     private final String jiraRegex;
 
-    public JiraTodoMustFollowStructure(JiraIssues jiraIssues, String jiraRegex) {
+    public JiraTodoMustBeInAllowedStatus(JiraIssues jiraIssues, String jiraRegex) {
         super(emptyList());
         this.jiraIssues = jiraIssues;
         this.jiraRegex = jiraRegex;
     }
 
-    public JiraTodoMustFollowStructure(JiraIssues jiraIssues, String jiraRegex, List<String> javaFilesToIgnore) {
+    public JiraTodoMustBeInAllowedStatus(JiraIssues jiraIssues, String jiraRegex, List<String> javaFilesToIgnore) {
         super(javaFilesToIgnore);
         this.jiraIssues = jiraIssues;
         this.jiraRegex = jiraRegex;

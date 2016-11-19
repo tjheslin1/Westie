@@ -15,9 +15,9 @@ abstract class containing useful functions for creating your own static analysis
 @Test
 public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
     JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_URL_FORMAT, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
-    JiraTodoMustFollowStructure jiraTodoMustFollowStructure = new JiraTodoMustFollowStructure(jiraIssues, "JIRA-[0-9]{3}", emptyList());
+    JiraTodoMustFollowStructure jiraTodoMustBeInAllowedStatus = new JiraTodoMustFollowStructure(jiraIssues, "JIRA-[0-9]{3}", emptyList());
 
-    List<Violation> violations = jiraTodoMustFollowStructure.checkAllJiraTodosAreInAllowedStatuses(BASE_PACKAGE);
+    List<Violation> violations = jiraTodoMustBeInAllowedStatus.checkAllJiraTodosAreInAllowedStatuses(BASE_PACKAGE);
 
     assertThat(violations).isEmpty();
 }
