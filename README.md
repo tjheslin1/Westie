@@ -22,3 +22,23 @@ public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
     assertThat(violations).isEmpty();
 }
 ```
+
+##How do I get it?
+
+###Maven
+```xml
+<dependency>
+    <groupId>io.github.tjheslin1</groupId>
+    <artifactId>Westie</artifactId>
+    <version>1.0</version>
+</dependency>
+```
+###Gradle
+```groovy
+compile 'io.github.tjheslin1:Westie:1.0'
+```
+###SBT
+```scala
+libraryDependencies += "io.github.tjheslin1" % "Westie" % "1.0"
+```
+
