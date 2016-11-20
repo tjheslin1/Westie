@@ -27,7 +27,7 @@ public void oracleImportsConfinedToDatabasePackage() throws Exception {
 @Test
 public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
     JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_URL_FORMAT, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
-    JiraTodoMustBeInAllowedStatus jiraReferenceChecker = new JiraTodoMustBeInAllowedStatus(jiraIssues, "JIRA-[0-9]{3}", emptyList());
+    JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, "JIRA-[0-9]{3}", emptyList());
 
     List<Violation> violations = jiraReferenceChecker.checkAllJiraTodosAreInAllowedStatuses(BASE_PACKAGE);
 
