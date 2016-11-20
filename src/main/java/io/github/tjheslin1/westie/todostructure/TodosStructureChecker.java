@@ -18,7 +18,7 @@
 package io.github.tjheslin1.westie.todostructure;
 
 import io.github.tjheslin1.westie.Violation;
-import io.github.tjheslin1.westie.WestieStaticAnalysis;
+import io.github.tjheslin1.westie.WestieChecker;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,13 +34,13 @@ import static java.util.stream.Collectors.toList;
  *
  * For example: to-dos must contain a date in the format specified by a regex.
  */
-public class TodosMustFollowStructure extends WestieStaticAnalysis {
+public class TodosStructureChecker extends WestieChecker {
 
     private static final String TODO_REGEX = ".*//[ ]*TODO.*";
 
     private final String todosStructureRegex;
 
-    public TodosMustFollowStructure(String todosStructureRegex, List<String> javaFilesToIgnore) {
+    public TodosStructureChecker(String todosStructureRegex, List<String> javaFilesToIgnore) {
         super(javaFilesToIgnore);
         this.todosStructureRegex = todosStructureRegex;
     }

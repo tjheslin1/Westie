@@ -23,11 +23,11 @@ import java.util.List;
 /**
  * Base class of a static analysis test with useful methods to reuse.
  */
-public abstract class WestieStaticAnalysis {
+public abstract class WestieChecker {
 
     private final List<String> javaFilesToIgnore;
 
-    public WestieStaticAnalysis(List<String> javaFilesToIgnore) {
+    public WestieChecker(List<String> javaFilesToIgnore) {
         this.javaFilesToIgnore = javaFilesToIgnore;
     }
 

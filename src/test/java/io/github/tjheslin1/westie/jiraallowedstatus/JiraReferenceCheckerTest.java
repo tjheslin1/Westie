@@ -13,7 +13,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 
-public class JiraTodoMustBeInAllowedStatusTest implements WithAssertions, WithMockito {
+public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
 
     private static final String JIRA_ISSUE_REGEX = "MON-[0-9]{3}";
     private static final String ISSUE_NUMBER = "MON-100";
@@ -25,10 +25,10 @@ public class JiraTodoMustBeInAllowedStatusTest implements WithAssertions, WithMo
         when(jiraIssues.isJiraIssueInAllowedStatus(ISSUE_NUMBER)).thenReturn(false);
         when(jiraIssues.allowedStatuses()).thenReturn(asList("Ready To Play", "Development"));
 
-        JiraTodoMustBeInAllowedStatus jiraTodoMustBeInAllowedStatus = new JiraTodoMustBeInAllowedStatus(jiraIssues, JIRA_ISSUE_REGEX, emptyList());
+        JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, JIRA_ISSUE_REGEX, emptyList());
 
-        Path testFilePath = Paths.get(JiraTodoMustBeInAllowedStatus.class.getClassLoader().getResource("io/github/tjheslin1/examples/jira/ClassWithJiraTodos.java").toURI());
-        List<Violation> violations = jiraTodoMustBeInAllowedStatus.checkAllJiraTodosAreInAllowedStatuses(testFilePath.getParent());
+        Path testFilePath = Paths.get(JiraReferenceChecker.class.getClassLoader().getResource("io/github/tjheslin1/examples/jira/ClassWithJiraTodos.java").toURI());
+        List<Violation> violations = jiraReferenceChecker.checkAllJiraTodosAreInAllowedStatuses(testFilePath.getParent());
 
         assertThat(violations.size()).isEqualTo(2);
         assertThat(violations.get(0).toString()).matches("Line '//TODO MON-100 make this final' in file '.*/io/github/tjheslin1/examples/jira/ClassWithJiraTodos.java.*");

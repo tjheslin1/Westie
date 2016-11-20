@@ -17,7 +17,7 @@
  */
 package io.github.tjheslin1.westie.jiraallowedstatus;
 
-import io.github.tjheslin1.westie.WestieStaticAnalysis;
+import io.github.tjheslin1.westie.WestieChecker;
 import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
 
@@ -37,20 +37,20 @@ import static java.util.stream.Collectors.toList;
  * Checks that the status of Jira issues are in an accepted state for all
  * references to Jira tickets in to-do comments.
  */
-public class JiraTodoMustBeInAllowedStatus extends WestieStaticAnalysis {
+public class JiraReferenceChecker extends WestieChecker {
 
     private static final String JIRA_TODO_REGEX_FORMAT = ".*//[ ]*TODO.*%s.*";
 
     private final JiraIssues jiraIssues;
     private final String jiraRegex;
 
-    public JiraTodoMustBeInAllowedStatus(JiraIssues jiraIssues, String jiraRegex) {
+    public JiraReferenceChecker(JiraIssues jiraIssues, String jiraRegex) {
         super(emptyList());
         this.jiraIssues = jiraIssues;
         this.jiraRegex = jiraRegex;
     }
 
-    public JiraTodoMustBeInAllowedStatus(JiraIssues jiraIssues, String jiraRegex, List<String> javaFilesToIgnore) {
+    public JiraReferenceChecker(JiraIssues jiraIssues, String jiraRegex, List<String> javaFilesToIgnore) {
         super(javaFilesToIgnore);
         this.jiraIssues = jiraIssues;
         this.jiraRegex = jiraRegex;
