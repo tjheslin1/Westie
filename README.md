@@ -42,15 +42,15 @@ public void oracleImportsConfinedToDatabasePackage() throws Exception {
 <dependency>
     <groupId>io.github.tjheslin1</groupId>
     <artifactId>Westie</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 </dependency>
 ```
 ###Gradle
 ```groovy
-compile 'io.github.tjheslin1:Westie:1.0'
+compile 'io.github.tjheslin1:Westie:1.1'
 ```
 ###SBT
 ```scala
-libraryDependencies += "io.github.tjheslin1" % "Westie" % "1.0"
+libraryDependencies += "io.github.tjheslin1" % "Westie" % "1.1"
 ```
 
