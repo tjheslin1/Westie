@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
 * limitations under the License.
  */
-package io.github.tjheslin1.westie.jiratodoformat;
+package io.github.tjheslin1.westie.jiraallowedstatus;
 
 import io.github.tjheslin1.westie.WestieStaticAnalysis;
 import io.github.tjheslin1.westie.Violation;

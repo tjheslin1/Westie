@@ -1,4 +1,4 @@
-package io.github.tjheslin1.westie.jiratodoformat;
+package io.github.tjheslin1.westie.jiraallowedstatus;
 
 import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.WithMockito;

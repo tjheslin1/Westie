@@ -2,7 +2,7 @@ package io.github.tjheslin1.westie;
 
 import io.github.tjheslin1.westie.infrastructure.ApacheHttpClient;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
-import io.github.tjheslin1.westie.jiratodoformat.JiraTodoMustBeInAllowedStatus;
+import io.github.tjheslin1.westie.jiraallowedstatus.JiraTodoMustBeInAllowedStatus;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Ignore;
 import org.junit.Test;
