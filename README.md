@@ -13,11 +13,11 @@ abstract class containing useful functions for creating your own static analysis
 
 ```java
 @Test
-public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
-    JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_URL_FORMAT, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
-    JiraTodoMustBeInAllowedStatus jiraReferenceChecker = new JiraTodoMustBeInAllowedStatus(jiraIssues, "JIRA-[0-9]{3}", emptyList());
+public void oracleImportsConfinedToDatabasePackage() throws Exception {
+    ImportRestriction oracleImportRestriction = importRestriction("io.github.tjheslin1.database", "import oracle.jdbc.*");
+    ImportsRestrictionChecker importCheck = new ImportsRestrictionChecker(singletonList(oracleImportRestriction), FILES_TO_IGNORE);
 
-    List<Violation> violations = jiraReferenceChecker.checkAllJiraTodosAreInAllowedStatuses(BASE_PACKAGE);
+    List<Violation> violations = importCheck.checkImportsAreOnlyUsedInAcceptedPackages(BASE_PACKAGE);
 
     assertThat(violations).isEmpty();
 }
@@ -25,11 +25,11 @@ public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
 
 ```java
 @Test
-public void oracleImportsConfinedToDatabasePackage() throws Exception {
-    ImportRestriction oracleImportRestriction = importRestriction("io.github.tjheslin1.database", "import oracle.jdbc.*");
-    ImportsRestrictionChecker importCheck = new ImportsRestrictionChecker(singletonList(oracleImportRestriction), FILES_TO_IGNORE);
+public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
+    JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_URL_FORMAT, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
+    JiraTodoMustBeInAllowedStatus jiraReferenceChecker = new JiraTodoMustBeInAllowedStatus(jiraIssues, "JIRA-[0-9]{3}", emptyList());
 
-    List<Violation> violations = importCheck.checkImportsAreOnlyUsedInAcceptedPackages(BASE_PACKAGE);
+    List<Violation> violations = jiraReferenceChecker.checkAllJiraTodosAreInAllowedStatuses(BASE_PACKAGE);
 
     assertThat(violations).isEmpty();
 }
