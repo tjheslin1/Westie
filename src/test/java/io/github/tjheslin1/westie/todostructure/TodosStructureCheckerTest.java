@@ -4,7 +4,6 @@ import io.github.tjheslin1.westie.Violation;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -19,8 +18,7 @@ public class TodosStructureCheckerTest implements WithAssertions {
     public void findsTodosComments() throws Exception {
         TodosStructureChecker todosStructureChecker = new TodosStructureChecker(TODOS_MUST_HAVE_DATE_REGEX, emptyList());
 
-        Path testFilePath = Paths.get(TodosStructureCheckerTest.class.getClassLoader().getResource("io/github/tjheslin1/examples/todos/ClassWithTodos.java").toURI());
-        List<Violation> todoViolations = todosStructureChecker.checkAllTodosFollowExpectedStructure(testFilePath.getParent());
+        List<Violation> todoViolations = todosStructureChecker.checkAllTodosFollowExpectedStructure(Paths.get("src/test/resources/io/github/tjheslin1/examples/todos"));
 
         assertThat(todoViolations.size()).isEqualTo(3);
         assertThat(todoViolations.get(0).toString()).startsWith("Line '//      TODO  NO_DATE   another todo");
@@ -30,10 +28,9 @@ public class TodosStructureCheckerTest implements WithAssertions {
 
     @Test
     public void ignoresExemptFile() throws Exception {
-        TodosStructureChecker todosStructureChecker = new TodosStructureChecker(TODOS_MUST_HAVE_DATE_REGEX, singletonList("io/github/tjheslin1/examples/todos/AnotherClassWithTodos.java"));
+        TodosStructureChecker todosStructureChecker = new TodosStructureChecker(TODOS_MUST_HAVE_DATE_REGEX, singletonList("io/github/tjheslin1/examples/todos/another/AnotherClassWithTodos.java"));
 
-        Path testFilePath = Paths.get(TodosStructureCheckerTest.class.getClassLoader().getResource("io/github/tjheslin1/examples/todos/ClassWithTodos.java").toURI());
-        List<Violation> todoViolations = todosStructureChecker.checkAllTodosFollowExpectedStructure(testFilePath.getParent());
+        List<Violation> todoViolations = todosStructureChecker.checkAllTodosFollowExpectedStructure(Paths.get("src/test/resources/io/github/tjheslin1/examples/todos"));
 
         assertThat(todoViolations.size()).isEqualTo(2);
         assertThat(todoViolations.get(0).toString()).startsWith("Line '//TODO make this final");

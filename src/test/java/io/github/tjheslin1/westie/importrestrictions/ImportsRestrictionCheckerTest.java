@@ -26,8 +26,7 @@ public class ImportsRestrictionCheckerTest implements WithAssertions {
         List<ImportRestriction> importRestrictions = singletonList(MOCKITO_RESTRICTION);
         ImportsRestrictionChecker importsRestrictionChecker = new ImportsRestrictionChecker(importRestrictions, emptyList());
 
-        Path testFilePath = Paths.get(ImportsRestrictionChecker.class.getClassLoader().getResource("io/github/tjheslin1/examples/thirdparties/ClassWithUnacceptedThirdPartyImport.java").toURI());
-        List<Violation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(testFilePath.getParent());
+        List<Violation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties"));
 
         assertThat(violations.size()).isEqualTo(2);
         assertThat(violations.get(0).toString()).matches("Line 'import org\\.mockito\\.Mockito;' in file '.*ClassWithUnacceptedThirdPartyImport\\.java'.*");
@@ -39,8 +38,7 @@ public class ImportsRestrictionCheckerTest implements WithAssertions {
         List<ImportRestriction> importRestrictions = asList(MOCKITO_RESTRICTION, APACHE_RESTRICITON);
         ImportsRestrictionChecker importsRestrictionChecker = new ImportsRestrictionChecker(importRestrictions, singletonList("ClassWithUnacceptedThirdPartyImportToIgnore"));
 
-        Path testFilePath = Paths.get(ImportsRestrictionChecker.class.getClassLoader().getResource("io/github/tjheslin1/examples/thirdparties/ClassWithUnacceptedThirdPartyImport.java").toURI());
-        List<Violation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(testFilePath.getParent());
+        List<Violation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties"));
 
         assertThat(violations.size()).isEqualTo(2);
         assertThat(violations.get(0).toString()).startsWith("Line 'import org.mockito.Mockito;");
