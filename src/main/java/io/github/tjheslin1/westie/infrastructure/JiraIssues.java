@@ -40,24 +40,26 @@ import static java.lang.String.format;
  */
 public class JiraIssues {
 
+    private static final String JIRA_TICKET_QUERY_FORMAT = "/rest/api/2/issue/%s?&os_username=%s&os_password=%s";
+
     private final HttpClient httpClient;
     private final String teamCityUsername;
     private final String teamCityPassword;
-    private final String jiraUrlFormat;
+    private final String jiraHostname;
     private List<String> allowedStatuses;
 
     /**
      * @param httpClient       Your chosen http client. Provided is {@link ApacheHttpClient}.
-     * @param jiraUrlFormat    Your jira url with '%s' where the issue number, username and passwords will be populated.
+     * @param jiraHostname     Your jira's hostname (e.g. "tasktracker.mycompany.com").
      * @param teamCityUsername Your username to access your Jira.
      * @param teamCityPassword Your password to access your Jira.
      * @param allowedStatuses  A list of allowed status (e.g [Ready To Play, Development]).
      */
-    public JiraIssues(HttpClient httpClient, String jiraUrlFormat, String teamCityUsername, String teamCityPassword, List<String> allowedStatuses) {
+    public JiraIssues(HttpClient httpClient, String jiraHostname, String teamCityUsername, String teamCityPassword, List<String> allowedStatuses) {
         this.httpClient = httpClient;
         this.teamCityUsername = teamCityUsername;
         this.teamCityPassword = teamCityPassword;
-        this.jiraUrlFormat = jiraUrlFormat;
+        this.jiraHostname = jiraHostname;
         this.allowedStatuses = allowedStatuses;
     }
 
@@ -95,7 +97,7 @@ public class JiraIssues {
     }
 
     private Response jiraIssue(String issueNumber) throws IOException {
-        Request request = new Request(format(jiraUrlFormat,
+        Request request = new Request(format(jiraHostname + JIRA_TICKET_QUERY_FORMAT,
                 issueNumber, teamCityUsername, teamCityPassword),
                 "GET");
         return httpClient.execute(request);

@@ -16,7 +16,7 @@ import static java.util.Arrays.asList;
 public class JiraIssuesTest implements WithAssertions {
     public static final List<String> ALLOWED_STATUSES = asList("Ready To Play", "Development");
     public static final String WIREMOCK_URL_FORMAT = "/rest/api/2/issue/%s?&os_username=%s&os_password=%s";
-    public static final String JIRA_URL_FORMAT = "http://localhost:8089" + WIREMOCK_URL_FORMAT;
+    public static final String JIRA_URL_FORMAT = "http://localhost:8089";
     public static final String TEST_USER = "testUser";
     public static final String TEST_PASS = "testPass";
 

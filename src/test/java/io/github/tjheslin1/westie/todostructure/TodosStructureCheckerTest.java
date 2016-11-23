@@ -7,12 +7,11 @@ import org.junit.Test;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static io.github.tjheslin1.westie.WestieRegexes.TODOS_MUST_HAVE_DATE_REGEX;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 public class TodosStructureCheckerTest implements WithAssertions {
-
-    private static final String TODOS_MUST_HAVE_DATE_REGEX = ".*//[ ]*TODO.*[0-9]{1,4}[/-]{1}[A-z0-9]{2,3}[/-]{1}[0-9]{1,4}.*";
 
     @Test
     public void findsTodosComments() throws Exception {
