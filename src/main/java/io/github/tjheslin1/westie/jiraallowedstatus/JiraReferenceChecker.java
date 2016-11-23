@@ -64,7 +64,7 @@ public class JiraReferenceChecker extends WestieChecker {
      * @throws IOException if an I/O error occurs when opening the directory.
      */
     public List<Violation> checkAllJiraTodosAreInAllowedStatuses(Path pathToCheck) throws IOException {
-        return Files.list(pathToCheck)
+        return Files.walk(pathToCheck)
                 .filter(this::isAJavaFile)
                 .filter(this::notAnExemptFile)
                 .flatMap(this::checkJiraTodos)

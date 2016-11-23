@@ -11,7 +11,6 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 
 public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
 
@@ -25,13 +24,12 @@ public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
         when(jiraIssues.isJiraIssueInAllowedStatus(ISSUE_NUMBER)).thenReturn(false);
         when(jiraIssues.allowedStatuses()).thenReturn(asList("Ready To Play", "Development"));
 
-        JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, JIRA_ISSUE_REGEX, emptyList());
+        JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, JIRA_ISSUE_REGEX);
 
-        Path testFilePath = Paths.get(JiraReferenceChecker.class.getClassLoader().getResource("io/github/tjheslin1/examples/jira/ClassWithJiraTodos.java").toURI());
-        List<Violation> violations = jiraReferenceChecker.checkAllJiraTodosAreInAllowedStatuses(testFilePath.getParent());
+        List<Violation> violations = jiraReferenceChecker.checkAllJiraTodosAreInAllowedStatuses(Paths.get("src/test/resources/io/github/tjheslin1/examples/jira"));
 
         assertThat(violations.size()).isEqualTo(2);
-        assertThat(violations.get(0).toString()).matches("Line '//TODO MON-100 make this final' in file '.*/io/github/tjheslin1/examples/jira/ClassWithJiraTodos.java.*");
-        assertThat(violations.get(1).toString()).matches("Line '// TODO MON-101 set passed parameter as name' in file '.*/io/github/tjheslin1/examples/jira/ClassWithJiraTodos.java.*");
+        assertThat(violations.get(0).toString()).matches("Line '//TODO MON-100 make this final' in file '.*/io/github/tjheslin1/examples/jira/many/packages/ClassWithJiraTodos.java.*");
+        assertThat(violations.get(1).toString()).matches("Line '// TODO MON-101 set passed parameter as name' in file '.*/io/github/tjheslin1/examples/jira/many/packages/ClassWithJiraTodos.java.*");
     }
 }
