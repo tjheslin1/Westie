@@ -1,16 +1,15 @@
-# Westie
-
 ## What is it?
 
 Westie is a tool for creating your own custom static analysis checks.
 
-The project contains already provided checks which can be used straight away, as well as functions which can be used and extended.
+The project contains already provided checks which can be used straight away.
 
-The static analysis checker classes all extend [WestieChecker.java](src/main/java/io/github/tjheslin1/westie/WestieChecker.java), an
-abstract class containing useful functions for creating your own static analysis checks for your project and team.
+All provided Checkers extend [WestieChecker.java](src/main/java/io/github/tjheslin1/westie/WestieChecker.java), which 
+contains useful functions for creating your own static analysis checks for your project and team.
 
 ## Examples of provided static analysis checkers:
 
+### _ImportsRestrictionChecker_: limit library imports to a particular package
 ```java
 @Test
 public void oracleImportsConfinedToDatabasePackage() throws Exception {
@@ -23,6 +22,7 @@ public void oracleImportsConfinedToDatabasePackage() throws Exception {
 }
 ```
 
+### _JiraReferenceChecker_: ensure Jira issues referenced are in an accepted status (e.g only in Development stage)
 ```java
 @Test
 public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
