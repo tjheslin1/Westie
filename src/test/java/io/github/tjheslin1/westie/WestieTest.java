@@ -21,7 +21,7 @@ import static java.util.Collections.singletonList;
 public class WestieTest implements WithAssertions {
 
     public static final Duration MAX_IDLE_TIME = Duration.ofSeconds(5);
-    private static final String JIRA_URL_FORMAT = "";
+    private static final String JIRA_HOSTNAME = "";
     private static final String JIRA_USERNAME = "";
     private static final String JIRA_PASSWORD = "";
     private static final Path BASE_PACKAGE = Paths.get("test/java/io/github/tjheslin1/westie");
@@ -45,7 +45,7 @@ public class WestieTest implements WithAssertions {
     @Ignore
     @Test
     public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
-        JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_URL_FORMAT, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
+        JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_HOSTNAME, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
         JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, "JIRA-[0-9]{3}", emptyList());
 
         List<Violation> violations = jiraReferenceChecker.checkAllJiraTodosAreInAllowedStatuses(BASE_PACKAGE);

@@ -26,7 +26,7 @@ public void oracleImportsConfinedToDatabasePackage() throws Exception {
 ```java
 @Test
 public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
-    JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_URL_FORMAT, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
+    JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_HOSTNAME, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
     JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, "JIRA-[0-9]{3}", emptyList());
 
     List<Violation> violations = jiraReferenceChecker.checkAllJiraTodosAreInAllowedStatuses(BASE_PACKAGE);
@@ -42,15 +42,15 @@ public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
 <dependency>
     <groupId>io.github.tjheslin1</groupId>
     <artifactId>Westie</artifactId>
-    <version>1.1</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 ###Gradle
 ```groovy
-compile 'io.github.tjheslin1:Westie:1.1'
+compile 'io.github.tjheslin1:Westie:1.1.1'
 ```
 ###SBT
 ```scala
-libraryDependencies += "io.github.tjheslin1" % "Westie" % "1.1"
+libraryDependencies += "io.github.tjheslin1" % "Westie" % "1.1.1"
 ```
 
