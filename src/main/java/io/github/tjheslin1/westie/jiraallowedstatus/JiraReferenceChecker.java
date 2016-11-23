@@ -55,26 +55,25 @@ public class JiraReferenceChecker extends WestieChecker {
     }
 
     /**
-     * @param pathToCheck The package to check source files for to-do comments
-     *                    which reference Jira issues.
-     * @return A list of violations in which to-do comments are referencing Jira issues
+     * @param pathToCheck The package to check source files for references to Jira issues.
+     * @return A list of violations in which Jira issues are referenced.
      * which are not in the list of accepted states, defined in {@link JiraIssues}.
      * @throws IOException if an I/O error occurs when opening the directory.
      */
-    public List<Violation> checkAllJiraTodosAreInAllowedStatuses(Path pathToCheck) throws IOException {
+    public List<Violation> checkAllJiraReferencesAreInAllowedStatuses(Path pathToCheck) throws IOException {
         return Files.walk(pathToCheck)
                 .filter(this::isAJavaFile)
                 .filter(this::notAnExemptFile)
-                .flatMap(this::checkJiraTodos)
+                .flatMap(this::checkJiraReferences)
                 .peek(this::reportViolation)
                 .collect(toList());
     }
 
-    private Stream<Violation> checkJiraTodos(Path file) {
+    private Stream<Violation> checkJiraReferences(Path file) {
         try {
             return Files.lines(file).collect(toList()).stream()
                     .filter(this::referencedJiraIssueIsInUnacceptedState)
-                    .map(jiraTodoLine -> new Violation(file, jiraTodoLine));
+                    .map(jiraLine -> new Violation(file, jiraLine));
         } catch (IOException e) {
             return Stream.of(new Violation(file, "Unable to read file."));
         }
