@@ -17,8 +17,8 @@
  */
 package io.github.tjheslin1.westie.jiraallowedstatus;
 
-import io.github.tjheslin1.westie.WestieChecker;
 import io.github.tjheslin1.westie.Violation;
+import io.github.tjheslin1.westie.WestieChecker;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
 
 import java.io.IOException;
@@ -35,11 +35,9 @@ import static java.util.stream.Collectors.toList;
 
 /**
  * Checks that the status of Jira issues are in an accepted state for all
- * references to Jira tickets in to-do comments.
+ * references to Jira issues.
  */
 public class JiraReferenceChecker extends WestieChecker {
-
-    private static final String JIRA_TODO_REGEX_FORMAT = ".*//[ ]*TODO.*%s.*";
 
     private final JiraIssues jiraIssues;
     private final String jiraRegex;
@@ -58,7 +56,7 @@ public class JiraReferenceChecker extends WestieChecker {
 
     /**
      * @param pathToCheck The package to check source files for to-do comments
-     *                    which reference Jira tickets.
+     *                    which reference Jira issues.
      * @return A list of violations in which to-do comments are referencing Jira issues
      * which are not in the list of accepted states, defined in {@link JiraIssues}.
      * @throws IOException if an I/O error occurs when opening the directory.
@@ -75,28 +73,22 @@ public class JiraReferenceChecker extends WestieChecker {
     private Stream<Violation> checkJiraTodos(Path file) {
         try {
             return Files.lines(file).collect(toList()).stream()
-                    .filter(this::jiraTodoLine)
-                    .filter(this::jiraIssueInUnacceptedState)
+                    .filter(this::referencedJiraIssueIsInUnacceptedState)
                     .map(jiraTodoLine -> new Violation(file, jiraTodoLine));
         } catch (IOException e) {
             return Stream.of(new Violation(file, "Unable to read file."));
         }
     }
 
-    private boolean jiraTodoLine(String line) {
-        return line.matches(format(JIRA_TODO_REGEX_FORMAT, jiraRegex));
-    }
-
-    private boolean jiraIssueInUnacceptedState(String line) {
+    private boolean referencedJiraIssueIsInUnacceptedState(String line) {
         Pattern pattern = Pattern.compile(jiraRegex);
         Matcher matcher = pattern.matcher(line);
 
         if (matcher.find()) {
             String jiraIssue = matcher.group(0);
             return !jiraIssues.isJiraIssueInAllowedStatus(jiraIssue);
-        } else {
-            throw new IllegalStateException(format("Unable to find Jira Issue in line '%s' using regex '%s'", line, jiraRegex));
         }
+        return false;
     }
 
     private void reportViolation(Violation violation) {

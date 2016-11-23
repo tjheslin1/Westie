@@ -9,6 +9,7 @@ public class ClassWithJiraTodos {
         name = n;
     }
 
+    @Notes("MON-101")
     public String getName() {
         // TODO 22/10/2016 rename this method
         return name;

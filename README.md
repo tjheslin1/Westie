@@ -42,15 +42,15 @@ public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
 <dependency>
     <groupId>io.github.tjheslin1</groupId>
     <artifactId>Westie</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>
 ```
 ###Gradle
 ```groovy
-compile 'io.github.tjheslin1:Westie:1.1.1'
+compile 'io.github.tjheslin1:Westie:1.1.2'
 ```
 ###SBT
 ```scala
-libraryDependencies += "io.github.tjheslin1" % "Westie" % "1.1.1"
+libraryDependencies += "io.github.tjheslin1" % "Westie" % "1.1.2"
 ```
 
