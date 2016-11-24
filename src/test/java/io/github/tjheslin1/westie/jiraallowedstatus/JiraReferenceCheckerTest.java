@@ -26,12 +26,11 @@ public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
 
         JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, JIRA_ISSUE_REGEX);
 
-        List<Violation> violations = jiraReferenceChecker.checkAllJiraReferencesAreInAllowedStatuses(Paths.get("src/test/resources/io/github/tjheslin1/examples/jira"));
+        List<Violation> violations = jiraReferenceChecker.checkAllJiraTodosAreInAllowedStatuses(Paths.get("src/test/resources/io/github/tjheslin1/examples/jira"));
 
-        assertThat(violations.size()).isEqualTo(3);
+        assertThat(violations.size()).isEqualTo(2);
         assertThat(violations.get(0).toString()).matches("Line '//TODO MON-100 make this final' in file '.*/io/github/tjheslin1/examples/jira/many/packages/ClassWithJiraTodos.java.*");
         assertThat(violations.get(1).toString()).matches("Line '// TODO MON-101 set passed parameter as name' in file '.*/io/github/tjheslin1/examples/jira/many/packages/ClassWithJiraTodos.java.*");
-        assertThat(violations.get(2).toString()).matches("Line '@Notes\\(\"MON-101\"\\)' in file '.*/io/github/tjheslin1/examples/jira/many/packages/ClassWithJiraTodos.java.*");
     }
 
     @Test
@@ -41,7 +40,7 @@ public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
 
         JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, JIRA_ISSUE_REGEX, singletonList("ClassWithJiraTodos.java"));
 
-        List<Violation> violations = jiraReferenceChecker.checkAllJiraReferencesAreInAllowedStatuses(Paths.get("src/test/resources/io/github/tjheslin1/examples/jira"));
+        List<Violation> violations = jiraReferenceChecker.checkAllJiraTodosAreInAllowedStatuses(Paths.get("src/test/resources/io/github/tjheslin1/examples/jira"));
 
         assertThat(violations).isEmpty();
     }
