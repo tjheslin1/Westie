@@ -15,9 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.tjheslin1.westie;
+package io.github.tjheslin1.westie.http;
+
+import io.github.tjheslin1.westie.ValueType;
+
+import java.util.List;
 
 import static java.lang.String.format;
+import static java.util.stream.Collectors.joining;
 
 /**
  * Domain representation of a HTTP request.
@@ -27,15 +32,13 @@ public class Request extends ValueType {
     public final String url;
     public final String method;
     public final String body;
+    private List<QueryParameter> queryParameters;
 
-    public Request(String url, String method, String body) {
+    public Request(String url, String method, String body, List<QueryParameter> queryParameters) {
         this.url = url;
         this.method = method;
         this.body = body;
-    }
-
-    public Request(String url, String method) {
-        this(url, method, "");
+        this.queryParameters = queryParameters;
     }
 
     /**
@@ -43,6 +46,16 @@ public class Request extends ValueType {
      */
     @Override
     public String toString() {
-        return format("%s %s%n%s", method, url, body);
+        return format("%s %s%s%n%s", method, url,
+                queryParameters(),
+                body);
+    }
+
+    private String queryParameters() {
+        if (queryParameters.size() > 0) {
+            return "?" + queryParameters.stream().map(QueryParameter::toString).collect(joining("?"));
+        } else {
+            return "";
+        }
     }
 }

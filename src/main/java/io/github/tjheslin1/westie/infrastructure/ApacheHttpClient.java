@@ -18,8 +18,8 @@
 package io.github.tjheslin1.westie.infrastructure;
 
 import io.github.tjheslin1.westie.HttpClient;
-import io.github.tjheslin1.westie.Request;
-import io.github.tjheslin1.westie.Response;
+import io.github.tjheslin1.westie.http.Request;
+import io.github.tjheslin1.westie.http.Response;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;

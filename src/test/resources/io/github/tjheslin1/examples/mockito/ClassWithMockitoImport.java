@@ -1,6 +1,6 @@
 package io.github.tjheslin1.examples.mockito;
 
-import io.github.tjheslin1.westie.Response;
+import io.github.tjheslin1.westie.http.Response;
 
 public class ClassWithMockitoImport {
 

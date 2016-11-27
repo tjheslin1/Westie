@@ -79,7 +79,7 @@ public class TodosStructureChecker extends WestieChecker {
     }
 
     private void reportViolation(Violation violation) {
-        System.out.println(format("Violation!%n'%s'%nThe above violation was caused by the TODO not matching structure with regex: '%s'. " +
+        System.out.println(format("Violation!%n'%s'%nThe violation was caused by the TODO not matching structure with regex: '%s'. " +
                         "%nSpecified in the Westie class: %s%n",
                 violation, todosStructureRegex, this.getClass().getSimpleName()));
     }

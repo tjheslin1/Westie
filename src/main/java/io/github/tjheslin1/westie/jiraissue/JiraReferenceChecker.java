@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
 * limitations under the License.
  */
-package io.github.tjheslin1.westie.jiraallowedstatus;
+package io.github.tjheslin1.westie.jiraissue;
 
 import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.WestieChecker;
@@ -63,7 +63,7 @@ public class JiraReferenceChecker extends WestieChecker {
      * which are not in the list of accepted states, defined in {@link JiraIssues}.
      * @throws IOException if an I/O error occurs when opening the directory.
      */
-    public List<Violation> checkAllJiraTodosAreInAllowedStatuses(Path pathToCheck) throws IOException {
+    public List<Violation> todosAreInAllowedStatuses(Path pathToCheck) throws IOException {
         return Files.walk(pathToCheck)
                 .filter(this::isAJavaFile)
                 .filter(this::notAnExemptFile)
@@ -92,7 +92,7 @@ public class JiraReferenceChecker extends WestieChecker {
         Matcher matcher = pattern.matcher(line);
 
         if (matcher.find()) {
-            String jiraIssue = matcher.group(0);
+            String jiraIssue = matcher.group();
             return !jiraIssues.isJiraIssueInAllowedStatus(jiraIssue);
         } else {
             throw new IllegalStateException(format("Unable to find Jira Issue in line '%s' using regex '%s'", line, jiraRegex));
@@ -100,7 +100,7 @@ public class JiraReferenceChecker extends WestieChecker {
     }
 
     private void reportViolation(Violation violation) {
-        System.out.println(format("Violation!%n'%s'%nThe above violation was caused by a reference to a " +
+        System.out.println(format("Violation!%n'%s'%nThe violation was caused by a reference to a " +
                 "Jira issue which is not in any of the accepted statuses: '%s'.", violation, jiraIssues.allowedStatuses()));
     }
 }

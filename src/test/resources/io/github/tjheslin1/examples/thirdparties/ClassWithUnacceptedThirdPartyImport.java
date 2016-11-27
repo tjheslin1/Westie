@@ -1,8 +1,6 @@
 package io.github.tjheslin1.examples
 
-import io.github.tjheslin1.westie.Response;
-import org.mockito.Mockito;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import io.github.tjheslin1.westie.http.Response;
 
 public class ClassWithThirdPartyImport {
 

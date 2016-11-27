@@ -85,7 +85,7 @@ public class ImportsRestrictionChecker extends WestieChecker {
     }
 
     private void reportViolation(Violation violation) {
-        System.out.println(format("Violation!%n'%s'%nThe above violation was caused by an import which " +
+        System.out.println(format("Violation!%n'%s'%nThe violation was caused by an import which " +
                         "does not matching any of the import restrictions specified in the Westie class: '%s'",
                 violation, this.getClass().getSimpleName()));
     }

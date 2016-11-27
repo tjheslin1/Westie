@@ -17,6 +17,9 @@
  */
 package io.github.tjheslin1.westie;
 
+import io.github.tjheslin1.westie.http.Request;
+import io.github.tjheslin1.westie.http.Response;
+
 import java.io.IOException;
 
 /**

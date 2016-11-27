@@ -15,7 +15,9 @@
  * See the License for the specific language governing permissions and
 * limitations under the License.
  */
-package io.github.tjheslin1.westie;
+package io.github.tjheslin1.westie.http;
+
+import io.github.tjheslin1.westie.ValueType;
 
 import static java.lang.String.format;
 

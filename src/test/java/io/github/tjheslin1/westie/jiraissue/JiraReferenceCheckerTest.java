@@ -1,4 +1,4 @@
-package io.github.tjheslin1.westie.jiraallowedstatus;
+package io.github.tjheslin1.westie.jiraissue;
 
 import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.WithMockito;
@@ -26,7 +26,7 @@ public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
 
         JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, JIRA_ISSUE_REGEX);
 
-        List<Violation> violations = jiraReferenceChecker.checkAllJiraTodosAreInAllowedStatuses(Paths.get("src/test/resources/io/github/tjheslin1/examples/jira"));
+        List<Violation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(Paths.get("src/test/resources/io/github/tjheslin1/examples/jira"));
 
         assertThat(violations.size()).isEqualTo(2);
         assertThat(violations.get(0).toString()).matches("Line '//TODO MON-100 make this final' in file '.*/io/github/tjheslin1/examples/jira/many/packages/ClassWithJiraTodos.java.*");
@@ -40,7 +40,7 @@ public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
 
         JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, JIRA_ISSUE_REGEX, singletonList("ClassWithJiraTodos.java"));
 
-        List<Violation> violations = jiraReferenceChecker.checkAllJiraTodosAreInAllowedStatuses(Paths.get("src/test/resources/io/github/tjheslin1/examples/jira"));
+        List<Violation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(Paths.get("src/test/resources/io/github/tjheslin1/examples/jira"));
 
         assertThat(violations).isEmpty();
     }

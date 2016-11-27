@@ -21,8 +21,9 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import io.github.tjheslin1.westie.HttpClient;
-import io.github.tjheslin1.westie.Request;
-import io.github.tjheslin1.westie.Response;
+import io.github.tjheslin1.westie.http.Request;
+import io.github.tjheslin1.westie.http.RequestBuilder;
+import io.github.tjheslin1.westie.http.Response;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -97,9 +98,10 @@ public class JiraIssues {
     }
 
     private Response jiraIssue(String issueNumber) throws IOException {
-        Request request = new Request(format(jiraHostname + JIRA_TICKET_QUERY_FORMAT,
-                issueNumber, teamCityUsername, teamCityPassword),
-                "GET");
+        Request request = new RequestBuilder().get()
+                .url(format(jiraHostname + JIRA_TICKET_QUERY_FORMAT,
+                        issueNumber, teamCityUsername, teamCityPassword))
+                .build();
         return httpClient.execute(request);
     }
 
