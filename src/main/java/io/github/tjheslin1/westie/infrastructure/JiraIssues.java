@@ -32,7 +32,7 @@ import java.util.List;
 import static java.lang.String.format;
 
 /**
- * Retrieves the status information of given Jira issue.
+ * Retrieves the status information of a given Jira issue.
  * <p>
  * Contribution by @theangrydev:
  * - Uses caching so that multiple references to the same Jira

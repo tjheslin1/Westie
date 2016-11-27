@@ -23,7 +23,8 @@ import io.github.tjheslin1.westie.http.Response;
 import java.io.IOException;
 
 /**
- *
+ * Domain representation of a HTTP client which executed a {@link Request}
+ * and receives a corresponding {@link Response}.
  */
 public interface HttpClient {
 

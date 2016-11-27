@@ -34,8 +34,8 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 /**
- * Checks that the status of Jira issues are in an accepted state for all
- * references to Jira issues.
+ * Checks that the status of all Jira issues, referenced in to-do comments,
+ * are in an accepted state.
  */
 public class JiraReferenceChecker extends WestieChecker {
 

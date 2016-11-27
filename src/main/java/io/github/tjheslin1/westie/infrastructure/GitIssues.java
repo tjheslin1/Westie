@@ -1,3 +1,20 @@
+/*
+ * Copyright 2016 Thomas Heslin <tjheslin1@gmail.com>.
+ *
+ * This file is part of Westie.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+* limitations under the License.
+ */
 package io.github.tjheslin1.westie.infrastructure;
 
 import com.google.common.cache.CacheBuilder;
@@ -16,6 +33,10 @@ import java.util.regex.Pattern;
 import static io.github.tjheslin1.westie.WestieRegexes.EXTRACT_NUMBER_REGEX;
 import static java.lang.String.format;
 
+/**
+ * Retrieves the state of a given Git issue.
+ * Checking the issue is in the open state.
+ */
 public class GitIssues {
 
     private static final String GITHUB_API_HOSTNAME = "https://api.github.com";
@@ -41,6 +62,10 @@ public class GitIssues {
         this.githubApiHostname = githubApiHostname;
     }
 
+    /**
+     * @param issue The git repo issue to query the github API to determine its state.
+     * @return true if the state of the issue is 'open'. false otherwise.
+     */
     public boolean isGitIssueOpen(String issue) {
         String issueState = issueStatusCache.getUnchecked(extractNumber(issue));
         return issueState.equals(OPEN);
