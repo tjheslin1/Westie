@@ -1,6 +1,8 @@
 package io.github.tjheslin1.examples
 
 import io.github.tjheslin1.westie.http.Response;
+import org.mockito.Mockito;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class ClassWithUnacceptedThirdPartyImportToIgnore {
 

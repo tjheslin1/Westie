@@ -26,17 +26,16 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static io.github.tjheslin1.westie.WestieRegexes.TODO_REGEX;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 /**
  * Enforces that to-do comments follow a structure.
- *
+ * <p>
  * For example: to-dos must contain a date in the format specified by a regex.
  */
 public class TodosStructureChecker extends WestieChecker {
-
-    private static final String TODO_REGEX = ".*//[ ]*TODO.*";
 
     private final String todosStructureRegex;
 
@@ -79,7 +78,7 @@ public class TodosStructureChecker extends WestieChecker {
     }
 
     private void reportViolation(Violation violation) {
-        System.out.println(format("Violation!%n'%s'%nThe violation was caused by the TODO not matching structure with regex: '%s'. " +
+        System.out.println(format("Violation!%n'%s'%nThe above violation was caused by the TODO not matching structure with regex: '%s'. " +
                         "%nSpecified in the Westie class: %s%n",
                 violation, todosStructureRegex, this.getClass().getSimpleName()));
     }

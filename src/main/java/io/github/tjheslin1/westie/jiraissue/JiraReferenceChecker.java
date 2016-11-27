@@ -100,7 +100,7 @@ public class JiraReferenceChecker extends WestieChecker {
     }
 
     private void reportViolation(Violation violation) {
-        System.out.println(format("Violation!%n'%s'%nThe violation was caused by a reference to a " +
+        System.out.println(format("Violation!%n'%s'%nThe above violation was caused by a reference to a " +
                 "Jira issue which is not in any of the accepted statuses: '%s'.", violation, jiraIssues.allowedStatuses()));
     }
 }

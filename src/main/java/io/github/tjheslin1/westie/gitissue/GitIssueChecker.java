@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 public class GitIssueChecker extends WestieChecker {
@@ -21,6 +22,12 @@ public class GitIssueChecker extends WestieChecker {
 
     private final GitIssues gitIssues;
     private final String gitRegex;
+
+    public GitIssueChecker(GitIssues gitIssues, String gitRegex) {
+        super(emptyList());
+        this.gitIssues = gitIssues;
+        this.gitRegex = gitRegex;
+    }
 
     public GitIssueChecker(GitIssues gitIssues, String gitRegex, List<String> javaFilesToIgnore) {
         super(javaFilesToIgnore);
@@ -65,7 +72,7 @@ public class GitIssueChecker extends WestieChecker {
     }
 
     private void reportViolation(Violation violation) {
-        System.out.println(format("Violation!%n'%s'%nThe violation was caused by a reference to a " +
-                "Git issue: '%s'.", violation, ""));
+        System.out.println(format("Violation!%n'%s'%nThe above violation was caused by a reference to a " +
+                "Git issue which is not in the open state.", violation));
     }
 }
