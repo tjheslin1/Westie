@@ -32,7 +32,7 @@ import static java.util.stream.Collectors.toList;
 /**
  * Enforces that the provided {@link ImportRestriction}'s are adhered to.
  *
- * @Deprecated As of 1.1.3 in favour of <a href="https://github.com/theangrydev/domain-enforcer">domain-enforcer by @theangrydev</a>
+ * Deprecated as of 1.1.3 in favour of <a href="https://github.com/theangrydev/domain-enforcer">domain-enforcer by @theangrydev</a>.
  */
 @Deprecated
 public class ImportsRestrictionChecker extends WestieChecker {
