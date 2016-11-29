@@ -33,7 +33,7 @@ public abstract class WestieChecker {
 
     /**
      * @param file Path to a source file.
-     * @return 'true' if the file's extension is '.java'
+     * @return 'true' if the file's extension is '.java'.
      */
     protected boolean isAJavaFile(Path file) {
         return file.toString().endsWith(".java");
@@ -41,7 +41,15 @@ public abstract class WestieChecker {
 
     /**
      * @param file Path to a source file.
-     * @return 'true' if the file provided does not appear in the provided list of 'javaFilesToIgnore'
+     * @return 'true' if the file's extension is '.properties'.
+     */
+    protected boolean isAPropertiesFile(Path file) {
+        return file.toString().endsWith(".properties");
+    }
+
+    /**
+     * @param file Path to a source file.
+     * @return 'true' if the file provided does not appear in the provided list of 'javaFilesToIgnore'.
      */
     protected boolean notAnExemptFile(Path file) {
         return !javaFilesToIgnore.stream()
