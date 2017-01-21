@@ -20,12 +20,12 @@ import static java.util.Collections.singletonList;
 
 public class WestieTest implements WithAssertions {
 
-    public static final Duration MAX_IDLE_TIME = Duration.ofSeconds(5);
+    private static final Duration MAX_IDLE_TIME = Duration.ofSeconds(5);
     private static final String JIRA_HOSTNAME = "";
     private static final String JIRA_USERNAME = "";
     private static final String JIRA_PASSWORD = "";
     private static final Path BASE_PACKAGE = Paths.get("test/java/io/github/tjheslin1/westie");
-    public static final ApacheHttpClient HTTP_CLIENT = new ApacheHttpClient(MAX_IDLE_TIME);
+    private static final ApacheHttpClient HTTP_CLIENT = new ApacheHttpClient(MAX_IDLE_TIME);
 
     private static final List<String> FILES_TO_IGNORE = emptyList();
 

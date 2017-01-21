@@ -29,8 +29,8 @@ public class ImportsRestrictionCheckerTest implements WithAssertions {
         List<Violation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties"));
 
         assertThat(violations.size()).isEqualTo(2);
-        assertThat(violations.get(0).toString()).matches("Line 'import org\\.mockito\\.Mockito;' in file '.*ClassWithUnacceptedThirdPartyImport\\.java'.*");
-        assertThat(violations.get(1).toString()).matches("Line 'import org\\.mockito\\.Mockito;' in file '.*ClassWithUnacceptedThirdPartyImportToIgnore.java'.*");
+        assertThat(violations.get(0).toString()).matches("'import org\\.mockito\\.Mockito;' in file '.*ClassWithUnacceptedThirdPartyImport\\.java'.*");
+        assertThat(violations.get(1).toString()).matches("'import org\\.mockito\\.Mockito;' in file '.*ClassWithUnacceptedThirdPartyImportToIgnore.java'.*");
     }
 
     @Test
@@ -41,7 +41,7 @@ public class ImportsRestrictionCheckerTest implements WithAssertions {
         List<Violation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties"));
 
         assertThat(violations.size()).isEqualTo(2);
-        assertThat(violations.get(0).toString()).startsWith("Line 'import org.mockito.Mockito;");
-        assertThat(violations.get(1).toString()).startsWith("Line 'import org.apache.commons.lang3.builder.HashCodeBuilder;");
+        assertThat(violations.get(0).toString()).startsWith("'import org.mockito.Mockito;");
+        assertThat(violations.get(1).toString()).startsWith("'import org.apache.commons.lang3.builder.HashCodeBuilder;");
     }
 }

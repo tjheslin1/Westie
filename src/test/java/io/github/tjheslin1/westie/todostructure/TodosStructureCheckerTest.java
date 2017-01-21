@@ -20,9 +20,9 @@ public class TodosStructureCheckerTest implements WithAssertions {
         List<Violation> todoViolations = todosStructureChecker.checkAllTodosFollowExpectedStructure(Paths.get("src/test/resources/io/github/tjheslin1/examples/todos"));
 
         assertThat(todoViolations.size()).isEqualTo(3);
-        assertThat(todoViolations.get(0).toString()).startsWith("Line '//      TODO  NO_DATE   another todo");
-        assertThat(todoViolations.get(1).toString()).startsWith("Line '//TODO make this final");
-        assertThat(todoViolations.get(2).toString()).startsWith("Line '//      TODO  NO_DATE   move this to another class");
+        assertThat(todoViolations.get(0).toString()).startsWith("'//      TODO  NO_DATE   another todo");
+        assertThat(todoViolations.get(1).toString()).startsWith("'//TODO make this final");
+        assertThat(todoViolations.get(2).toString()).startsWith("'//      TODO  NO_DATE   move this to another class");
     }
 
     @Test
@@ -32,7 +32,7 @@ public class TodosStructureCheckerTest implements WithAssertions {
         List<Violation> todoViolations = todosStructureChecker.checkAllTodosFollowExpectedStructure(Paths.get("src/test/resources/io/github/tjheslin1/examples/todos"));
 
         assertThat(todoViolations.size()).isEqualTo(2);
-        assertThat(todoViolations.get(0).toString()).startsWith("Line '//TODO make this final");
-        assertThat(todoViolations.get(1).toString()).startsWith("Line '//      TODO  NO_DATE   move this to another class");
+        assertThat(todoViolations.get(0).toString()).startsWith("'//TODO make this final");
+        assertThat(todoViolations.get(1).toString()).startsWith("'//      TODO  NO_DATE   move this to another class");
     }
 }

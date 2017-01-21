@@ -7,10 +7,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.Stream;
 
+import static io.github.tjheslin1.westie.environmentproperties.FileKeySet.fileKeySet;
+import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 public class EnvironmentPropertiesChecker extends WestieChecker {
@@ -20,26 +23,38 @@ public class EnvironmentPropertiesChecker extends WestieChecker {
     }
 
     public List<Violation> propertiesProvidedForAllEnvironments(Path pathToCheck) throws IOException {
-        return Files.walk(pathToCheck)
+        List<FileKeySet> fileKeySets = Files.walk(pathToCheck)
                 .filter(this::isAPropertiesFile)
                 .filter(this::notAnExemptFile)
-                .flatMap(this::allEnvsPresent)
-                .peek(this::reportViolation)
+                .map(this::loadPropertiesKeys)
                 .collect(toList());
+
+        List<Violation> violations = new ArrayList<>();
+        FileKeySet firstKeySet = fileKeySets.get(0);
+        for (FileKeySet fileKeySet : fileKeySets) {
+            if (!fileKeySet.keySet.equals(firstKeySet.keySet)) {
+                Violation violation = new Violation(fileKeySet.file,
+                        format("Properties file '%s' does not have matching property keys as '%s'",
+                                fileKeySet.file.getFileName(), firstKeySet.file.getFileName()));
+                System.out.println(violation);
+                violations.add(violation);
+            }
+        }
+
+        return violations;
     }
 
-    private Stream<Violation> allEnvsPresent(Path file) {
+    private FileKeySet loadPropertiesKeys(Path file) {
         Properties properties = new Properties();
         try (FileInputStream fileInputStream = new FileInputStream(file.toFile())) {
             properties.load(fileInputStream);
         } catch (IOException e) {
-            return Stream.of(new Violation(file, ""));
+            e.printStackTrace();
+            Violation violation = new Violation(file, format("Unable to read properties file '%s' to due to error '%s'",
+                    file.getFileName(), e.getMessage()));
+            return fileKeySet(file, Collections.singleton(violation));
         }
 
-        return Stream.empty();
-    }
-
-    private void reportViolation(Violation violation) {
-        // TODO
+        return fileKeySet(file, properties.keySet());
     }
 }

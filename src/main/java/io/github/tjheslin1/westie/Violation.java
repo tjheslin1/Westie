@@ -38,6 +38,6 @@ public class Violation {
      */
     @Override
     public String toString() {
-        return String.format("Line '%s' in file '%s'", line.trim(), file.toAbsolutePath());
+        return String.format("'%s' in file '%s'", line.trim(), file.toAbsolutePath());
     }
 }

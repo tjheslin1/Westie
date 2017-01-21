@@ -54,7 +54,7 @@ public abstract class WestieChecker {
     protected boolean notAnExemptFile(Path file) {
         return !javaFilesToIgnore.stream()
                 .map(this::postFixedWithJavaExtension)
-                .anyMatch(exemptFile -> file.toString().endsWith((exemptFile)));
+                .anyMatch(exemptFile -> file.toString().endsWith(exemptFile));
     }
 
     /**
