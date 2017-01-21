@@ -9,25 +9,24 @@ contains useful functions for creating your own static analysis checks for your 
 
 ## Examples of provided static analysis checkers:
 
-### _ImportsRestrictionChecker_: limit library imports to a particular package
+### _EnvironmentPropertiesChecker_ ensures that all of your environment `.properties` files share the same keys. 
 ```java
 @Test
-public void oracleImportsConfinedToDatabasePackage() throws Exception {
-    ImportRestriction oracleImportRestriction = importRestriction("io.github.tjheslin1.database", "import oracle.jdbc.*");
-    ImportsRestrictionChecker importCheck = new ImportsRestrictionChecker(singletonList(oracleImportRestriction), FILES_TO_IGNORE);
+public void allEnvironmentPropertiesFilesHaveTheSameKeys() throws Exception {
+    EnvironmentPropertiesChecker checker = new EnvironmentPropertiesChecker(FILES_TO_IGNORE);
 
-    List<Violation> violations = importCheck.checkImportsAreOnlyUsedInAcceptedPackages(BASE_PACKAGE);
-
+    List<Violation> violations = checker.propertiesProvidedForAllEnvironments(PROPERTIES_DIR);
+    
     assertThat(violations).isEmpty();
 }
 ```
 
-### _JiraReferenceChecker_: ensure Jira issues referenced are in an accepted status (e.g only in Development stage)
+### _JiraReferenceChecker_ ensures that Jira issues referenced are in an accepted status (e.g only in Development stage).
 ```java
 @Test
 public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
     JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_HOSTNAME, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
-    JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, "JIRA-[0-9]{3}", emptyList());
+    JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, "JIRA-[0-9]{3}", FILES_TO_IGNORE);
 
     List<Violation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(BASE_PACKAGE);
 

@@ -1,7 +1,6 @@
 package io.github.tjheslin1.westie;
 
-import io.github.tjheslin1.westie.importrestrictions.ImportRestriction;
-import io.github.tjheslin1.westie.importrestrictions.ImportsRestrictionChecker;
+import io.github.tjheslin1.westie.environmentproperties.EnvironmentPropertiesChecker;
 import io.github.tjheslin1.westie.infrastructure.ApacheHttpClient;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
 import io.github.tjheslin1.westie.jiraissue.JiraReferenceChecker;
@@ -14,7 +13,6 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 
-import static io.github.tjheslin1.westie.importrestrictions.ImportRestriction.importRestriction;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
@@ -28,15 +26,15 @@ public class WestieTest implements WithAssertions {
     private static final ApacheHttpClient HTTP_CLIENT = new ApacheHttpClient(MAX_IDLE_TIME);
 
     private static final List<String> FILES_TO_IGNORE = emptyList();
+    private static final Path PROPERTIES_DIR = null;
 
     // Example displayed in README.md
     @Ignore
     @Test
-    public void oracleImportsConfinedToDatabasePackage() throws Exception {
-        ImportRestriction oracleImportRestriction = importRestriction("io.github.tjheslin1.database", "import oracle.jdbc.*");
-        ImportsRestrictionChecker importCheck = new ImportsRestrictionChecker(singletonList(oracleImportRestriction), FILES_TO_IGNORE);
+    public void allEnvironmentPropertiesFilesHaveTheSameKeys() throws Exception {
+        EnvironmentPropertiesChecker checker = new EnvironmentPropertiesChecker(FILES_TO_IGNORE);
 
-        List<Violation> violations = importCheck.checkImportsAreOnlyUsedInAcceptedPackages(BASE_PACKAGE);
+        List<Violation> violations = checker.propertiesProvidedForAllEnvironments(PROPERTIES_DIR);
 
         assertThat(violations).isEmpty();
     }
@@ -46,7 +44,7 @@ public class WestieTest implements WithAssertions {
     @Test
     public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
         JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_HOSTNAME, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
-        JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, "JIRA-[0-9]{3}", emptyList());
+        JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, "JIRA-[0-9]{3}", FILES_TO_IGNORE);
 
         List<Violation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(BASE_PACKAGE);
 

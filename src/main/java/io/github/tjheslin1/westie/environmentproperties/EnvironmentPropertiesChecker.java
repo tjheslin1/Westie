@@ -29,19 +29,7 @@ public class EnvironmentPropertiesChecker extends WestieChecker {
                 .map(this::loadPropertiesKeys)
                 .collect(toList());
 
-        List<Violation> violations = new ArrayList<>();
-        FileKeySet firstKeySet = fileKeySets.get(0);
-        for (FileKeySet fileKeySet : fileKeySets) {
-            if (!fileKeySet.keySet.equals(firstKeySet.keySet)) {
-                Violation violation = new Violation(fileKeySet.file,
-                        format("Properties file '%s' does not have matching property keys as '%s'",
-                                fileKeySet.file.getFileName(), firstKeySet.file.getFileName()));
-                System.out.println(violation);
-                violations.add(violation);
-            }
-        }
-
-        return violations;
+        return compareAllKeySetsToFirst(fileKeySets);
     }
 
     private FileKeySet loadPropertiesKeys(Path file) {
@@ -56,5 +44,25 @@ public class EnvironmentPropertiesChecker extends WestieChecker {
         }
 
         return fileKeySet(file, properties.keySet());
+    }
+
+    private Violation reportViolation(FileKeySet firstKeySet, FileKeySet fileKeySet) {
+        Violation violation = new Violation(fileKeySet.file,
+                format("Properties file '%s' does not have matching property keys as '%s'",
+                        fileKeySet.file.getFileName(), firstKeySet.file.getFileName()));
+        System.out.println(violation);
+        return violation;
+    }
+
+    private List<Violation> compareAllKeySetsToFirst(List<FileKeySet> fileKeySets) {
+        List<Violation> violations = new ArrayList<>();
+        FileKeySet firstKeySet = fileKeySets.get(0);
+        for (FileKeySet fileKeySet : fileKeySets) {
+            if (!fileKeySet.keySet.equals(firstKeySet.keySet)) {
+                Violation violation = reportViolation(firstKeySet, fileKeySet);
+                violations.add(violation);
+            }
+        }
+        return violations;
     }
 }
