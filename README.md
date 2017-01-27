@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/tjheslin1/Westie.svg?branch=master)](https://travis-ci.org/tjheslin1/Westie)
+
 ## What is it?
 
 Westie is a tool for creating your own custom static analysis checks.
