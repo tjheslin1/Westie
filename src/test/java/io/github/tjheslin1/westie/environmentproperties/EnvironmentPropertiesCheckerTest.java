@@ -1,5 +1,6 @@
 package io.github.tjheslin1.westie.environmentproperties;
 
+import io.github.tjheslin1.westie.LineAssertions;
 import io.github.tjheslin1.westie.Violation;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Ignore;
@@ -25,8 +26,10 @@ public class EnvironmentPropertiesCheckerTest implements WithAssertions {
         List<Violation> violations = environmentPropertiesChecker.propertiesProvidedForAllEnvironments(environmentExamples);
 
         assertThat(violations).hasSize(3);
-        assertThat(violations.get(0).toString()).matches("'Properties file 'localhost.properties' does not have matching property keys as 'ci.properties'' in file '.*/localhost.properties'");
-        assertThat(violations.get(1).toString()).matches("'Properties file 'production.properties' does not have matching property keys as 'ci.properties'' in file '.*/production.properties'");
-        assertThat(violations.get(2).toString()).matches("'Properties file 'docker.properties' does not have matching property keys as 'ci.properties'' in file '.*/docker.properties'");
+
+        LineAssertions lineMatchAssertions = new LineAssertions(violations);
+        lineMatchAssertions.violationsContainLineMatching("'Properties file 'localhost.properties' does not have matching property keys as 'ci.properties'' in file '.*/localhost.properties'");
+        lineMatchAssertions.violationsContainLineMatching("'Properties file 'production.properties' does not have matching property keys as 'ci.properties'' in file '.*/production.properties'");
+        lineMatchAssertions.violationsContainLineMatching("'Properties file 'docker.properties' does not have matching property keys as 'ci.properties'' in file '.*/docker.properties'");
     }
 }

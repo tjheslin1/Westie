@@ -1,5 +1,6 @@
 package io.github.tjheslin1.westie.jiraissue;
 
+import io.github.tjheslin1.westie.LineAssertions;
 import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.WithMockito;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
@@ -29,8 +30,9 @@ public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
         List<Violation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(Paths.get("src/test/resources/io/github/tjheslin1/examples/jira"));
 
         assertThat(violations.size()).isEqualTo(2);
-        assertThat(violations.get(0).toString()).matches("'//TODO MON-100 make this final' in file '.*/io/github/tjheslin1/examples/jira/many/packages/ClassWithJiraTodos.java.*");
-        assertThat(violations.get(1).toString()).matches("'// TODO MON-101 set passed parameter as name' in file '.*/io/github/tjheslin1/examples/jira/many/packages/ClassWithJiraTodos.java.*");
+        LineAssertions lineAssertions = new LineAssertions(violations);
+        lineAssertions.violationsContainLineMatching("'//TODO MON-100 make this final' in file '.*/io/github/tjheslin1/examples/jira/many/packages/ClassWithJiraTodos.java.*");
+        lineAssertions.violationsContainLineMatching("'// TODO MON-101 set passed parameter as name' in file '.*/io/github/tjheslin1/examples/jira/many/packages/ClassWithJiraTodos.java.*");
     }
 
     @Test

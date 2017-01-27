@@ -1,10 +1,10 @@
 package io.github.tjheslin1.westie.importrestrictions;
 
+import io.github.tjheslin1.westie.LineAssertions;
 import io.github.tjheslin1.westie.Violation;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -29,8 +29,9 @@ public class ImportsRestrictionCheckerTest implements WithAssertions {
         List<Violation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties"));
 
         assertThat(violations.size()).isEqualTo(2);
-        assertThat(violations.get(0).toString()).matches("'import org\\.mockito\\.Mockito;' in file '.*ClassWithUnacceptedThirdPartyImport\\.java'.*");
-        assertThat(violations.get(1).toString()).matches("'import org\\.mockito\\.Mockito;' in file '.*ClassWithUnacceptedThirdPartyImportToIgnore.java'.*");
+        LineAssertions lineAssertions = new LineAssertions(violations);
+        lineAssertions.violationsContainLineMatching("'import org\\.mockito\\.Mockito;' in file '.*ClassWithUnacceptedThirdPartyImport\\.java'.*");
+        lineAssertions.violationsContainLineMatching("'import org\\.mockito\\.Mockito;' in file '.*ClassWithUnacceptedThirdPartyImportToIgnore.java'.*");
     }
 
     @Test
@@ -41,7 +42,8 @@ public class ImportsRestrictionCheckerTest implements WithAssertions {
         List<Violation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties"));
 
         assertThat(violations.size()).isEqualTo(2);
-        assertThat(violations.get(0).toString()).startsWith("'import org.mockito.Mockito;");
-        assertThat(violations.get(1).toString()).startsWith("'import org.apache.commons.lang3.builder.HashCodeBuilder;");
+        LineAssertions lineAssertions = new LineAssertions(violations);
+        lineAssertions.violationsContainLineStartingWith("'import org.mockito.Mockito;");
+        lineAssertions.violationsContainLineStartingWith("'import org.apache.commons.lang3.builder.HashCodeBuilder;");
     }
 }
