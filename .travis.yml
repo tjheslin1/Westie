@@ -1,7 +1,6 @@
 language: java
 
-script:
-  - gradle clean test -x signArchives
+install: true
 
 jdk:
   - oraclejdk8
