@@ -1,4 +1,8 @@
 language: java
+
+script:
+  - gradle
+
 jdk:
   - oraclejdk8
 
