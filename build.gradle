@@ -50,6 +50,9 @@ signing {
     sign configurations.archives
 }
 
+def sonatypeUsername = hasProperty('sonatypeUsername') ? sonatypeUsername : System.getenv('sonatypeUsername')
+def sonatypePassword = hasProperty('sonatypePassword') ? sonatypePassword : System.getenv('sonatypePassword')
+
 uploadArchives {
     repositories {
         mavenDeployer {
