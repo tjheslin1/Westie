@@ -34,7 +34,7 @@ public class WestieTest implements WithAssertions {
     public void allEnvironmentPropertiesFilesHaveTheSameKeys() throws Exception {
         EnvironmentPropertiesChecker checker = new EnvironmentPropertiesChecker(FILES_TO_IGNORE);
 
-        List<Violation> violations = checker.propertiesProvidedForAllEnvironments(PROPERTIES_DIR);
+        List<FileViolation> violations = checker.propertiesProvidedForAllEnvironments(PROPERTIES_DIR);
 
         assertThat(violations).isEmpty();
     }
@@ -46,7 +46,7 @@ public class WestieTest implements WithAssertions {
         JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_HOSTNAME, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
         JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, "JIRA-[0-9]{3}", FILES_TO_IGNORE);
 
-        List<Violation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(BASE_PACKAGE);
+        List<FileLineViolation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(BASE_PACKAGE);
 
         assertThat(violations).isEmpty();
     }

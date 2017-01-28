@@ -10,21 +10,16 @@ import java.util.List;
  */
 public class LineAssertions implements WithAssertions {
 
-    private final List<Violation> violations;
+    private final List<? extends Violation> violations;
 
-    public LineAssertions(List<Violation> violations) {
+    public LineAssertions(List<? extends Violation> violations) {
         this.violations = violations;
     }
 
-    public void violationsContainLineStartingWith(String line) {
+    public void containsViolationMessage(String message) {
         assertThat(violations.stream().anyMatch(violation -> violation.toString()
-                .startsWith(line)))
+                .equals(message)))
                 .isTrue();
-    }
 
-    public void violationsContainLineMatching(String regex) {
-        assertThat(violations.stream().anyMatch(violation -> violation.toString()
-                .matches(regex)))
-                .isTrue();
     }
 }

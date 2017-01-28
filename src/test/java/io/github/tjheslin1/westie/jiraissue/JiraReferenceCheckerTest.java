@@ -1,12 +1,14 @@
 package io.github.tjheslin1.westie.jiraissue;
 
+import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.LineAssertions;
-import io.github.tjheslin1.westie.Violation;
+import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.WithMockito;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -27,12 +29,21 @@ public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
 
         JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, JIRA_ISSUE_REGEX);
 
-        List<Violation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(Paths.get("src/test/resources/io/github/tjheslin1/examples/jira"));
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/jira");
+        List<FileLineViolation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(pathToCheck);
 
         assertThat(violations.size()).isEqualTo(2);
         LineAssertions lineAssertions = new LineAssertions(violations);
-        lineAssertions.violationsContainLineMatching("'//TODO MON-100 make this final' in file '.*/io/github/tjheslin1/examples/jira/many/packages/ClassWithJiraTodos.java.*");
-        lineAssertions.violationsContainLineMatching("'// TODO MON-101 set passed parameter as name' in file '.*/io/github/tjheslin1/examples/jira/many/packages/ClassWithJiraTodos.java.*");
+        lineAssertions.containsViolationMessage("Violation in file 'ClassWithJiraTodos.java'\n" +
+                "\n" +
+                "    //TODO MON-100 make this final\n" +
+                "\n" +
+                "Violation was caused by a reference to a Jira issue which is not in any of the accepted statuses: '[Ready To Play, Development]'.\n");
+        lineAssertions.containsViolationMessage("Violation in file 'ClassWithJiraTodos.java'\n" +
+                "\n" +
+                "        // TODO MON-101 set passed parameter as name\n" +
+                "\n" +
+                "Violation was caused by a reference to a Jira issue which is not in any of the accepted statuses: '[Ready To Play, Development]'.\n");
     }
 
     @Test
@@ -42,7 +53,8 @@ public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
 
         JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, JIRA_ISSUE_REGEX, singletonList("ClassWithJiraTodos.java"));
 
-        List<Violation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(Paths.get("src/test/resources/io/github/tjheslin1/examples/jira"));
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/jira");
+        List<FileLineViolation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(pathToCheck);
 
         assertThat(violations).isEmpty();
     }

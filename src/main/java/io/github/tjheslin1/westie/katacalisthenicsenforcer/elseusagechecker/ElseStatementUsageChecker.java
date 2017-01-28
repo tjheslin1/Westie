@@ -1,6 +1,6 @@
 package io.github.tjheslin1.westie.katacalisthenicsenforcer.elseusagechecker;
 
-import io.github.tjheslin1.westie.Violation;
+import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.WestieChecker;
 
 import java.io.IOException;
@@ -9,7 +9,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 public class ElseStatementUsageChecker extends WestieChecker {
@@ -18,23 +17,23 @@ public class ElseStatementUsageChecker extends WestieChecker {
         super(javaFilesToIgnore);
     }
 
-    public List<Violation> noUsageOfElseStatement(Path pathToCheck) throws IOException {
+    public List<FileLineViolation> noUsageOfElseStatement(Path pathToCheck) throws IOException {
         return Files.walk(pathToCheck)
                 .filter(this::isAJavaFile)
                 .filter(this::notAnExemptFile)
                 .flatMap(this::checkElseStatementUsage)
-                .peek(this::reportViolation)
+                .peek(FileLineViolation::reportViolation)
                 .collect(toList());
     }
 
-    private Stream<Violation> checkElseStatementUsage(Path file) {
+    private Stream<FileLineViolation> checkElseStatementUsage(Path file) {
         try {
             List<String> lines = Files.lines(file).collect(toList());
             return lines.stream()
                     .filter(this::elseStatementUsage)
-                    .map(elseLine -> new Violation(file, elseLine));
+                    .map(elseLine -> new FileLineViolation(file, elseLine, "'else' statement used."));
         } catch (IOException e) {
-            return Stream.of(new Violation(file, "Unable to read file."));
+            return Stream.of(new FileLineViolation(file, "Unable to read file.", e.getMessage()));
         }
     }
 
@@ -60,9 +59,5 @@ public class ElseStatementUsageChecker extends WestieChecker {
             return true;
         }
         return false;
-    }
-
-    private void reportViolation(Violation violation) {
-        System.out.println(format("Violation!%n'%s'%nThe above line contains an else statement.", violation));
     }
 }

@@ -17,7 +17,7 @@
  */
 package io.github.tjheslin1.westie.todostructure;
 
-import io.github.tjheslin1.westie.Violation;
+import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.WestieChecker;
 
 import java.io.IOException;
@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static io.github.tjheslin1.westie.WestieRegexes.TODO_REGEX;
-import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -49,23 +48,24 @@ public class TodosStructureChecker extends WestieChecker {
      * @return A list of violations in which to-do comments do not follow the specified pattern.
      * @throws IOException if an I/O error occurs when opening the directory.
      */
-    public List<Violation> checkAllTodosFollowExpectedStructure(Path pathToCheck) throws IOException {
+    public List<FileLineViolation> checkAllTodosFollowExpectedStructure(Path pathToCheck) throws IOException {
         return Files.walk(pathToCheck)
                 .filter(this::isAJavaFile)
                 .filter(this::notAnExemptFile)
                 .flatMap(this::verifyStructureOfTodos)
-                .peek(this::reportViolation)
+                .peek(FileLineViolation::reportViolation)
                 .collect(toList());
     }
 
-    private Stream<Violation> verifyStructureOfTodos(Path file) {
+    private Stream<FileLineViolation> verifyStructureOfTodos(Path file) {
         try {
             return Files.lines(file)
                     .filter(this::lineContainsTodo)
                     .filter(this::linesNotConformingToStructure)
-                    .map(todoLine -> new Violation(file, todoLine));
+                    .map(todoLine -> new FileLineViolation(file, "Unable to read file.",
+                            "Violation was caused by the TODO not matching structure with regex: " + todosStructureRegex));
         } catch (IOException e) {
-            return Stream.of(new Violation(file, "Unable to read file."));
+            return Stream.of(new FileLineViolation(file, "Unable to read file.", e.getMessage()));
         }
     }
 
@@ -75,11 +75,5 @@ public class TodosStructureChecker extends WestieChecker {
 
     private boolean linesNotConformingToStructure(String todoLine) {
         return !todoLine.matches(todosStructureRegex);
-    }
-
-    private void reportViolation(Violation violation) {
-        System.out.println(format("Violation!%n'%s'%nThe above violation was caused by the TODO not matching structure with regex: '%s'. " +
-                        "%nSpecified in the Westie class: %s%n",
-                violation, todosStructureRegex, this.getClass().getSimpleName()));
     }
 }

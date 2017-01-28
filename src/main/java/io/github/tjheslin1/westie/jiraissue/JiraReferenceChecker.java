@@ -17,7 +17,8 @@
  */
 package io.github.tjheslin1.westie.jiraissue;
 
-import io.github.tjheslin1.westie.Violation;
+import io.github.tjheslin1.westie.FileLineViolation;
+import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.WestieChecker;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
 
@@ -63,23 +64,24 @@ public class JiraReferenceChecker extends WestieChecker {
      * which are not in the list of accepted states, defined in {@link JiraIssues}.
      * @throws IOException if an I/O error occurs when opening the directory.
      */
-    public List<Violation> todosAreInAllowedStatuses(Path pathToCheck) throws IOException {
+    public List<FileLineViolation> todosAreInAllowedStatuses(Path pathToCheck) throws IOException {
         return Files.walk(pathToCheck)
                 .filter(this::isAJavaFile)
                 .filter(this::notAnExemptFile)
                 .flatMap(this::checkJiraTodos)
-                .peek(this::reportViolation)
+                .peek(FileLineViolation::reportViolation)
                 .collect(toList());
     }
 
-    private Stream<Violation> checkJiraTodos(Path file) {
+    private Stream<FileLineViolation> checkJiraTodos(Path file) {
         try {
             return Files.lines(file).collect(toList()).stream()
                     .filter(this::jiraTodoLine)
                     .filter(this::jiraIssueInUnacceptedState)
-                    .map(jiraTodoLine -> new Violation(file, jiraTodoLine));
+                    .map(jiraTodoLine -> new FileLineViolation(file, jiraTodoLine, format("Violation was caused by a reference to a " +
+                            "Jira issue which is not in any of the accepted statuses: '%s'.", jiraIssues.allowedStatuses())));
         } catch (IOException e) {
-            return Stream.of(new Violation(file, "Unable to read file."));
+            return Stream.of(new FileLineViolation(file, "Unable to read file.", e.getMessage()));
         }
     }
 
@@ -97,10 +99,5 @@ public class JiraReferenceChecker extends WestieChecker {
         } else {
             throw new IllegalStateException(format("Unable to find Jira Issue in line '%s' using regex '%s'", line, jiraRegex));
         }
-    }
-
-    private void reportViolation(Violation violation) {
-        System.out.println(format("Violation!%n'%s'%nThe above violation was caused by a reference to a " +
-                "Jira issue which is not in any of the accepted statuses: '%s'.", violation, jiraIssues.allowedStatuses()));
     }
 }

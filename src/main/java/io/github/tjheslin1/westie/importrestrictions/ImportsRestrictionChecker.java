@@ -17,7 +17,8 @@
  */
 package io.github.tjheslin1.westie.importrestrictions;
 
-import io.github.tjheslin1.westie.Violation;
+import io.github.tjheslin1.westie.FileLineViolation;
+import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.WestieChecker;
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ import static java.util.stream.Collectors.toList;
 
 /**
  * Enforces that the provided {@link ImportRestriction}'s are adhered to.
- *
+ * <p>
  * Deprecated as of 1.1.3 in favour of <a href="https://github.com/theangrydev/domain-enforcer">domain-enforcer by @theangrydev</a>.
  */
 @Deprecated
@@ -49,29 +50,30 @@ public class ImportsRestrictionChecker extends WestieChecker {
      *
      * @param pathToCheck The path of the package to be checked, all files within
      *                    this package will be checked with the exception of the 'javaFilesToIgnore'.
-     * @return A list of {@link Violation}'s where imports have been used outside of their intended package.
+     * @return A list of {@link FileViolation}'s where imports have been used outside of their intended package.
      * @throws IOException if an I/O error occurs when opening the directory.
      */
     @Deprecated
-    public List<Violation> checkImportsAreOnlyUsedInAcceptedPackages(Path pathToCheck) throws IOException {
+    public List<FileLineViolation> checkImportsAreOnlyUsedInAcceptedPackages(Path pathToCheck) throws IOException {
         return Files.walk(pathToCheck)
                 .filter(this::isAJavaFile)
                 .filter(this::notAnExemptFile)
                 .flatMap(this::verifyImports)
-                .peek(this::reportViolation)
+                .peek(FileLineViolation::reportViolation)
                 .collect(toList());
     }
 
-    private Stream<Violation> verifyImports(Path file) {
+    private Stream<FileLineViolation> verifyImports(Path file) {
         try {
             List<String> lines = Files.lines(file).collect(toList());
             String packageLine = lines.stream().findFirst().get();
             return lines.stream()
                     .filter(this::importLines)
                     .filter(importLine -> importUsedOutsideOfAcceptedPackage(packageLine, importLine))
-                    .map(importLine -> new Violation(file, importLine));
+                    .map(importLine -> new FileLineViolation(file, importLine, "Violation was caused by an import which " +
+                            "does not matching any of the import restrictions."));
         } catch (IOException e) {
-            return Stream.of(new Violation(file, "Unable to read file."));
+            return Stream.of(new FileLineViolation(file, "Unable to read file.", e.getMessage()));
         }
     }
 
@@ -86,11 +88,5 @@ public class ImportsRestrictionChecker extends WestieChecker {
             }
         }
         return false;
-    }
-
-    private void reportViolation(Violation violation) {
-        System.out.println(format("Violation!%n'%s'%nThe above violation was caused by an import which " +
-                        "does not matching any of the import restrictions specified in the Westie class: '%s'",
-                violation, this.getClass().getSimpleName()));
     }
 }

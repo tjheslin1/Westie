@@ -13,12 +13,13 @@ contains useful functions for creating your own static analysis checks for your 
 
 ### _EnvironmentPropertiesChecker_ ensures that all of your environment `.properties` files share the same keys. 
 ```java
+@Ignore
 @Test
 public void allEnvironmentPropertiesFilesHaveTheSameKeys() throws Exception {
     EnvironmentPropertiesChecker checker = new EnvironmentPropertiesChecker(FILES_TO_IGNORE);
 
-    List<Violation> violations = checker.propertiesProvidedForAllEnvironments(PROPERTIES_DIR);
-    
+    List<FileViolation> violations = checker.propertiesProvidedForAllEnvironments(PROPERTIES_DIR);
+
     assertThat(violations).isEmpty();
 }
 ```
@@ -30,7 +31,7 @@ public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
     JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_HOSTNAME, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
     JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, "JIRA-[0-9]{3}", FILES_TO_IGNORE);
 
-    List<Violation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(BASE_PACKAGE);
+    List<FileLineViolation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(BASE_PACKAGE);
 
     assertThat(violations).isEmpty();
 }

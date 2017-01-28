@@ -52,9 +52,9 @@ public abstract class WestieChecker {
      * @return 'true' if the file provided does not appear in the provided list of 'javaFilesToIgnore'.
      */
     protected boolean notAnExemptFile(Path file) {
-        return !javaFilesToIgnore.stream()
+        return javaFilesToIgnore.stream()
                 .map(this::postFixedWithJavaExtension)
-                .anyMatch(exemptFile -> file.toString().endsWith(exemptFile));
+                .noneMatch(exemptFile -> file.toString().endsWith(exemptFile));
     }
 
     /**

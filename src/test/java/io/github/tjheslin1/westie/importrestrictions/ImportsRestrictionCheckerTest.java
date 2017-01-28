@@ -1,10 +1,11 @@
 package io.github.tjheslin1.westie.importrestrictions;
 
+import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.LineAssertions;
-import io.github.tjheslin1.westie.Violation;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
@@ -26,12 +27,21 @@ public class ImportsRestrictionCheckerTest implements WithAssertions {
         List<ImportRestriction> importRestrictions = singletonList(MOCKITO_RESTRICTION);
         ImportsRestrictionChecker importsRestrictionChecker = new ImportsRestrictionChecker(importRestrictions, emptyList());
 
-        List<Violation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties"));
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties");
+        List<FileLineViolation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
 
         assertThat(violations.size()).isEqualTo(2);
         LineAssertions lineAssertions = new LineAssertions(violations);
-        lineAssertions.violationsContainLineMatching("'import org\\.mockito\\.Mockito;' in file '.*ClassWithUnacceptedThirdPartyImport\\.java'.*");
-        lineAssertions.violationsContainLineMatching("'import org\\.mockito\\.Mockito;' in file '.*ClassWithUnacceptedThirdPartyImportToIgnore.java'.*");
+        lineAssertions.containsViolationMessage("Violation in file 'ClassWithUnacceptedThirdPartyImport.java'\n" +
+                "\n" +
+                "import org.mockito.Mockito;\n" +
+                "\n" +
+                "Violation was caused by an import which does not matching any of the import restrictions.\n");
+        lineAssertions.containsViolationMessage("Violation in file 'ClassWithUnacceptedThirdPartyImportToIgnore.java'\n" +
+                "\n" +
+                "import org.mockito.Mockito;\n" +
+                "\n" +
+                "Violation was caused by an import which does not matching any of the import restrictions.\n");
     }
 
     @Test
@@ -39,11 +49,20 @@ public class ImportsRestrictionCheckerTest implements WithAssertions {
         List<ImportRestriction> importRestrictions = asList(MOCKITO_RESTRICTION, APACHE_RESTRICITON);
         ImportsRestrictionChecker importsRestrictionChecker = new ImportsRestrictionChecker(importRestrictions, singletonList("ClassWithUnacceptedThirdPartyImportToIgnore"));
 
-        List<Violation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties"));
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties");
+        List<FileLineViolation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
 
         assertThat(violations.size()).isEqualTo(2);
         LineAssertions lineAssertions = new LineAssertions(violations);
-        lineAssertions.violationsContainLineStartingWith("'import org.mockito.Mockito;");
-        lineAssertions.violationsContainLineStartingWith("'import org.apache.commons.lang3.builder.HashCodeBuilder;");
+        lineAssertions.containsViolationMessage("Violation in file 'ClassWithUnacceptedThirdPartyImport.java'\n" +
+                "\n" +
+                "import org.mockito.Mockito;\n" +
+                "\n" +
+                "Violation was caused by an import which does not matching any of the import restrictions.\n");
+        lineAssertions.containsViolationMessage("Violation in file 'ClassWithUnacceptedThirdPartyImport.java'\n" +
+                "\n" +
+                "import org.apache.commons.lang3.builder.HashCodeBuilder;\n" +
+                "\n" +
+                "Violation was caused by an import which does not matching any of the import restrictions.\n");
     }
 }

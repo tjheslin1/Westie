@@ -1,6 +1,7 @@
 package io.github.tjheslin1.westie.environmentproperties;
 
-import io.github.tjheslin1.westie.Violation;
+import io.github.tjheslin1.westie.FileLineViolation;
+import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.WestieChecker;
 
 import java.io.FileInputStream;
@@ -22,7 +23,7 @@ public class EnvironmentPropertiesChecker extends WestieChecker {
         super(javaFilesToIgnore);
     }
 
-    public List<Violation> propertiesProvidedForAllEnvironments(Path pathToCheck) throws IOException {
+    public List<FileViolation> propertiesProvidedForAllEnvironments(Path pathToCheck) throws IOException {
         List<FileKeySet> fileKeySets = Files.walk(pathToCheck)
                 .filter(this::isAPropertiesFile)
                 .filter(this::notAnExemptFile)
@@ -38,28 +39,23 @@ public class EnvironmentPropertiesChecker extends WestieChecker {
             properties.load(fileInputStream);
         } catch (IOException e) {
             e.printStackTrace();
-            Violation violation = new Violation(file, format("Unable to read properties file '%s' to due to error '%s'",
-                    file.getFileName(), e.getMessage()));
+            FileLineViolation violation = new FileLineViolation(file, format("Unable to read properties file '%s'.",
+                    file.getFileName()), e.getMessage());
             return fileKeySet(file, Collections.singleton(violation));
         }
 
         return fileKeySet(file, properties.keySet());
     }
 
-    private Violation reportViolation(FileKeySet firstKeySet, FileKeySet fileKeySet) {
-        Violation violation = new Violation(fileKeySet.file,
-                format("Properties file '%s' does not have matching property keys as '%s'",
-                        fileKeySet.file.getFileName(), firstKeySet.file.getFileName()));
-        System.out.println(violation);
-        return violation;
-    }
-
-    private List<Violation> compareAllKeySetsToFirst(List<FileKeySet> fileKeySets) {
-        List<Violation> violations = new ArrayList<>();
+    private List<FileViolation> compareAllKeySetsToFirst(List<FileKeySet> fileKeySets) {
+        List<FileViolation> violations = new ArrayList<>();
         FileKeySet firstKeySet = fileKeySets.get(0);
         for (FileKeySet fileKeySet : fileKeySets) {
             if (!fileKeySet.keySet.equals(firstKeySet.keySet)) {
-                Violation violation = reportViolation(firstKeySet, fileKeySet);
+                FileViolation violation = new FileViolation(fileKeySet.file,
+                        format("'%s' does not have matching property keys as '%s'",
+                                fileKeySet.file.getFileName(), firstKeySet.file.getFileName()));
+                violation.reportViolation();
                 violations.add(violation);
             }
         }

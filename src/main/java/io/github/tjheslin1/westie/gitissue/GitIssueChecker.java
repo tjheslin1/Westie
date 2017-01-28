@@ -17,10 +17,10 @@
  */
 package io.github.tjheslin1.westie.gitissue;
 
-import io.github.tjheslin1.westie.Violation;
+import io.github.tjheslin1.westie.FileLineViolation;
+import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.WestieChecker;
 import io.github.tjheslin1.westie.infrastructure.GitIssues;
-import io.github.tjheslin1.westie.infrastructure.JiraIssues;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -65,23 +65,24 @@ public class GitIssueChecker extends WestieChecker {
      * which are not in the open state.
      * @throws IOException if an I/O error occurs when opening the directory.
      */
-    public List<Violation> todosAreInOpenState(Path pathToCheck) throws IOException {
+    public List<FileLineViolation> todosAreInOpenState(Path pathToCheck) throws IOException {
         return Files.walk(pathToCheck)
                 .filter(this::isAJavaFile)
                 .filter(this::notAnExemptFile)
                 .flatMap(this::checkGitIssues)
-                .peek(this::reportViolation)
+                .peek(FileLineViolation::reportViolation)
                 .collect(toList());
     }
 
-    private Stream<Violation> checkGitIssues(Path file) {
+    private Stream<FileLineViolation> checkGitIssues(Path file) {
         try {
             return Files.lines(file).collect(toList()).stream()
                     .filter(this::gitTodoLine)
                     .filter(this::gitIssueIsInNotInTheOpenState)
-                    .map(gitTodoLine -> new Violation(file, gitTodoLine));
+                    .map(gitTodoLine -> new FileLineViolation(file, gitTodoLine, "Violation was caused by a reference to a " +
+                            "Git issue which is not in the open state."));
         } catch (IOException e) {
-            return Stream.of(new Violation(file, "Unable to read file."));
+            return Stream.of(new FileLineViolation(file, "Unable to read file.", e.getMessage()));
         }
     }
 
@@ -101,8 +102,4 @@ public class GitIssueChecker extends WestieChecker {
         }
     }
 
-    private void reportViolation(Violation violation) {
-        System.out.println(format("Violation!%n'%s'%nThe above violation was caused by a reference to a " +
-                "Git issue which is not in the open state.", violation));
-    }
 }
