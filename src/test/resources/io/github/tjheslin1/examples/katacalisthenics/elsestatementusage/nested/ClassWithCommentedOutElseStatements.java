@@ -21,10 +21,22 @@ public class ClassWithMultipleLevelsOfIndentation {
         // }
         System.out.println("Hello " + javaClassExample.getName());
 
-//        if (true) {
-//            // do nothing
-//        } else {
-//            // still nothing
-//        }
+        if (true) {
+            // do nothing
+/*        } else { */
+            // still nothing
+        }
+
+        if (true) {
+            // do nothing
+/*        } } // forgot not to use else { */
+            // still nothing
+        }
+
+        if (true) {
+            // do nothing
+//        /* } else { */
+            // still nothing
+        }
     }
 }

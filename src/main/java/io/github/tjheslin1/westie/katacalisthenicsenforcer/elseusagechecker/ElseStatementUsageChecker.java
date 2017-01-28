@@ -53,6 +53,8 @@ public class ElseStatementUsageChecker extends WestieChecker {
                     }
                 }
                 return elseIndex < firstSlashSlash;
+            } else if (firstSlashStart > -1) {
+                return elseIndex < firstSlashSlash;
             }
 
             return true;
