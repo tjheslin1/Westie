@@ -4,4 +4,5 @@ import org.assertj.core.api.WithAssertions;
 
 public class KataCalisthenicsCheckerTest implements WithAssertions {
 
+    
 }

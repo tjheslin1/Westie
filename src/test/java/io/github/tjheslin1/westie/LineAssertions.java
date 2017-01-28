@@ -22,9 +22,9 @@ public class LineAssertions implements WithAssertions {
                 .isTrue();
     }
 
-    public void violationsContainLineMatching(String line) {
+    public void violationsContainLineMatching(String regex) {
         assertThat(violations.stream().anyMatch(violation -> violation.toString()
-                .matches(line)))
+                .matches(regex)))
                 .isTrue();
     }
 }
