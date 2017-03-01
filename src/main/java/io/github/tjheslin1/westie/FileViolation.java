@@ -34,6 +34,9 @@ public class FileViolation implements Violation {
         this.message = message;
     }
 
+    /**
+     * Outputs the violation.
+     */
     @Override
     public void reportViolation() {
         System.out.println(this.toString());

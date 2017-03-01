@@ -5,6 +5,9 @@ import io.github.tjheslin1.westie.ValueType;
 import java.nio.file.Path;
 import java.util.Set;
 
+/**
+ * Represents a properties file and its set of property names (keys).
+ */
 public class FileKeySet extends ValueType {
 
     public final Path file;
@@ -19,6 +22,9 @@ public class FileKeySet extends ValueType {
         return new FileKeySet(file, keySet);
     }
 
+    /**
+     * @return the size of the list of property names (keys).
+     */
     public int numKeys() {
         return keySet.size();
     }

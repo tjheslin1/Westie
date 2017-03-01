@@ -17,12 +17,26 @@ import static io.github.tjheslin1.westie.environmentproperties.FileKeySet.fileKe
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Checks that all `.properties` files under a provided directory share
+ * the same property names (keys).
+ *
+ * Useful for enforcing that properties aren't missed between environment properties.
+ */
 public class EnvironmentPropertiesChecker extends WestieChecker {
 
     public EnvironmentPropertiesChecker(List<String> javaFilesToIgnore) {
         super(javaFilesToIgnore);
     }
 
+    /**
+     * Compares that `.properties` file share the same set of properties (keys) by
+     * comparing them to the first file found.
+     *
+     * @param pathToCheck The directory to recursively search under for `.properties` files to check.
+     * @return A list of {@link FileViolation}'s for files which don't share the same properties.
+     * @throws IOException if a problem reading the properties files occurs.
+     */
     public List<FileViolation> propertiesProvidedForAllEnvironments(Path pathToCheck) throws IOException {
         List<FileKeySet> fileKeySets = Files.walk(pathToCheck)
                 .filter(this::isAPropertiesFile)
