@@ -11,7 +11,7 @@ contains useful functions for creating your own static analysis checks for your 
 
 ## Examples of provided static analysis checkers:
 
-### _EnvironmentPropertiesChecker_ ensures that all of your environment `.properties` files share the same keys. 
+### _EnvironmentPropertiesChecker_ ensures that all of your environment '.properties' files share the same keys. 
 ```java
 @Ignore
 @Test
@@ -44,15 +44,15 @@ public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
 <dependency>
     <groupId>io.github.tjheslin1</groupId>
     <artifactId>Westie</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
 </dependency>
 ```
 ###Gradle
 ```groovy
-compile 'io.github.tjheslin1:Westie:1.1.3'
+compile 'io.github.tjheslin1:Westie:1.1.4'
 ```
 ###SBT
 ```scala
-libraryDependencies += "io.github.tjheslin1" % "Westie" % "1.1.3"
+libraryDependencies += "io.github.tjheslin1" % "Westie" % "1.1.4"
 ```
 
