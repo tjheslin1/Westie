@@ -5,8 +5,8 @@ import org.assertj.core.api.WithAssertions;
 import java.util.List;
 
 /**
- * This class is used to solve the issue of different environments asserting on files
- * in different orders.
+ * This class is used to solve the issue of asserting against {@link Violation}'s where the order differs
+ * across environments different environments asserting on files in different orders.
  */
 public class LineAssertions implements WithAssertions {
 

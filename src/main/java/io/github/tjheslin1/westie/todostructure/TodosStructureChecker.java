@@ -62,7 +62,7 @@ public class TodosStructureChecker extends WestieChecker {
             return Files.lines(file)
                     .filter(this::lineContainsTodo)
                     .filter(this::linesNotConformingToStructure)
-                    .map(todoLine -> new FileLineViolation(file, "Unable to read file.",
+                    .map(todoLine -> new FileLineViolation(file, todoLine,
                             "Violation was caused by the TODO not matching structure with regex: " + todosStructureRegex));
         } catch (IOException e) {
             return Stream.of(new FileLineViolation(file, "Unable to read file.", e.getMessage()));
