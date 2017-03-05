@@ -40,7 +40,7 @@ import static java.util.stream.Collectors.toList;
  */
 public class JiraReferenceChecker extends WestieChecker {
 
-    private static final String JIRA_TODO_REGEX_FORMAT = ".*//[ ]*TODO.*%s.*";
+    private static final String JIRA_TODO_REGEX_FORMAT = ".*//.*(T|t)(O|o)(D|d)(O|o).*%s.*";
 
     private final JiraIssues jiraIssues;
     private final String jiraRegex;

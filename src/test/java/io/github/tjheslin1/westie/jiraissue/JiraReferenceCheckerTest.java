@@ -32,7 +32,7 @@ public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/jira");
         List<FileLineViolation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(pathToCheck);
 
-        assertThat(violations.size()).isEqualTo(2);
+        assertThat(violations.size()).isEqualTo(3);
         LineAssertions lineAssertions = new LineAssertions(violations);
         lineAssertions.containsViolationMessage("Violation in file 'ClassWithJiraTodos.java'\n" +
                 "\n" +
@@ -42,6 +42,11 @@ public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
         lineAssertions.containsViolationMessage("Violation in file 'ClassWithJiraTodos.java'\n" +
                 "\n" +
                 "        // TODO MON-101 set passed parameter as name\n" +
+                "\n" +
+                "Violation was caused by a reference to a Jira issue which is not in any of the accepted statuses: '[Ready To Play, Development]'.\n");
+        lineAssertions.containsViolationMessage("Violation in file 'ClassWithJiraTodos.java'\n" +
+                "\n" +
+                "    // todo MON-101 blah\n" +
                 "\n" +
                 "Violation was caused by a reference to a Jira issue which is not in any of the accepted statuses: '[Ready To Play, Development]'.\n");
     }

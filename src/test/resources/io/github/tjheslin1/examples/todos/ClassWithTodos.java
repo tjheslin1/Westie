@@ -16,6 +16,7 @@ public class ClassWithTodos {
 
     public String getName() {
         // TODO 22/10/2016 rename this method
+        // todo 22/10/2016 rename this method
         return name;
     }
 
