@@ -2,6 +2,7 @@ package io.github.tjheslin1.westie.environmentproperties;
 
 import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.LineAssertions;
+import io.github.tjheslin1.westie.TestWestieFileReader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ import static java.util.Collections.emptyList;
 
 public class EnvironmentPropertiesCheckerTest implements WithAssertions {
 
-    private final EnvironmentPropertiesChecker environmentPropertiesChecker = new EnvironmentPropertiesChecker(emptyList());
+    private final EnvironmentPropertiesChecker environmentPropertiesChecker = new EnvironmentPropertiesChecker(new TestWestieFileReader(), emptyList());
 
     @Test
     public void checkAllEnvironmentSpecificPropertiesFilesHaveSameKeys() throws Exception {

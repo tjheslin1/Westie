@@ -2,6 +2,8 @@ package io.github.tjheslin1.westie.katacalisthenicsenforcer.elseusagechecker;
 
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.WestieChecker;
+import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
+import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,12 +11,17 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 public class ElseStatementUsageChecker extends WestieChecker {
 
-    public ElseStatementUsageChecker(List<String> javaFilesToIgnore) {
-        super(javaFilesToIgnore);
+    public ElseStatementUsageChecker() {
+        super(new WestieCachedFileReader(), emptyList());
+    }
+
+    public ElseStatementUsageChecker(WestieFileReader fileReader, List<String> javaFilesToIgnore) {
+        super(fileReader, javaFilesToIgnore);
     }
 
     public List<FileLineViolation> noUsageOfElseStatement(Path pathToCheck) throws IOException {

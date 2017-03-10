@@ -20,6 +20,8 @@ package io.github.tjheslin1.westie.jiraissue;
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.WestieChecker;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
+import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
+import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -44,13 +46,13 @@ public class JiraReferenceChecker extends WestieChecker {
     private final String jiraRegex;
 
     public JiraReferenceChecker(JiraIssues jiraIssues, String jiraRegex) {
-        super();
+        super(new WestieCachedFileReader());
         this.jiraIssues = jiraIssues;
         this.jiraRegex = jiraRegex;
     }
 
-    public JiraReferenceChecker(JiraIssues jiraIssues, String jiraRegex, List<String> javaFilesToIgnore) {
-        super(javaFilesToIgnore);
+    public JiraReferenceChecker(JiraIssues jiraIssues, String jiraRegex, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
+        super(fileReader, javaFilesToIgnore);
         this.jiraIssues = jiraIssues;
         this.jiraRegex = jiraRegex;
     }

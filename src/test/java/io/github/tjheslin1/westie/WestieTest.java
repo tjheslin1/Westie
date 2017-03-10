@@ -13,7 +13,6 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 public class WestieTest implements WithAssertions {
@@ -25,14 +24,13 @@ public class WestieTest implements WithAssertions {
     private static final Path BASE_PACKAGE = Paths.get("test/java/io/github/tjheslin1/westie");
     private static final ApacheHttpClient HTTP_CLIENT = new ApacheHttpClient(MAX_IDLE_TIME);
 
-    private static final List<String> FILES_TO_IGNORE = emptyList();
     private static final Path PROPERTIES_DIR = null;
 
     // Example displayed in README.md
     @Ignore
     @Test
     public void allEnvironmentPropertiesFilesHaveTheSameKeys() throws Exception {
-        EnvironmentPropertiesChecker checker = new EnvironmentPropertiesChecker(FILES_TO_IGNORE);
+        EnvironmentPropertiesChecker checker = new EnvironmentPropertiesChecker();
 
         List<FileViolation> violations = checker.propertiesProvidedForAllEnvironments(PROPERTIES_DIR);
 
@@ -44,7 +42,7 @@ public class WestieTest implements WithAssertions {
     @Test
     public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
         JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_HOSTNAME, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
-        JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, "JIRA-[0-9]{3}", FILES_TO_IGNORE);
+        JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, "JIRA-[0-9]{3}");
 
         List<FileLineViolation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(BASE_PACKAGE);
 

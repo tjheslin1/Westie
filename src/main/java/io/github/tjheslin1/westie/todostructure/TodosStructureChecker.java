@@ -19,6 +19,8 @@ package io.github.tjheslin1.westie.todostructure;
 
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.WestieChecker;
+import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
+import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -39,7 +41,12 @@ public class TodosStructureChecker extends WestieChecker {
     private final String todosStructureRegex;
 
     public TodosStructureChecker(String todosStructureRegex, List<String> javaFilesToIgnore) {
-        super(javaFilesToIgnore);
+        super(new WestieCachedFileReader(), javaFilesToIgnore);
+        this.todosStructureRegex = todosStructureRegex;
+    }
+
+    public TodosStructureChecker(WestieFileReader fileReader, String todosStructureRegex, List<String> javaFilesToIgnore) {
+        super(fileReader, javaFilesToIgnore);
         this.todosStructureRegex = todosStructureRegex;
     }
 

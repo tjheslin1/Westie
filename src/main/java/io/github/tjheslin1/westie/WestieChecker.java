@@ -17,12 +17,12 @@
  */
 package io.github.tjheslin1.westie;
 
+import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
+
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static java.lang.String.format;
 import static java.util.Collections.emptyList;
 
 /**
@@ -31,12 +31,15 @@ import static java.util.Collections.emptyList;
 public abstract class WestieChecker {
 
     private final List<String> javaFilesToIgnore;
+    private final WestieFileReader fileReader;
 
-    public WestieChecker() {
+    public WestieChecker(WestieFileReader fileReader) {
+        this.fileReader = fileReader;
         this.javaFilesToIgnore = emptyList();
     }
 
-    public WestieChecker(List<String> javaFilesToIgnore) {
+    public WestieChecker(WestieFileReader fileReader, List<String> javaFilesToIgnore) {
+        this.fileReader = fileReader;
         this.javaFilesToIgnore = javaFilesToIgnore;
     }
 
@@ -47,12 +50,8 @@ public abstract class WestieChecker {
      * @return
      * @throws IOException
      */
-    protected List<String> readAllLines(Path filePath) throws IOException {
-        if (!Files.isRegularFile(filePath)) {
-            throw new IllegalStateException(format("Expected a file to read. Instead provided: '%s'", filePath));
-        }
-
-        return Files.readAllLines(filePath);
+    protected List<String> allFileLines(Path filePath) throws IOException {
+        return fileReader.readAllLines(filePath);
     }
 
     /**

@@ -3,6 +3,8 @@ package io.github.tjheslin1.westie.environmentproperties;
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.WestieChecker;
+import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
+import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,18 +17,23 @@ import java.util.Properties;
 
 import static io.github.tjheslin1.westie.environmentproperties.FileKeySet.fileKeySet;
 import static java.lang.String.format;
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 /**
  * Checks that all `.properties` files under a provided directory share
  * the same property names (keys).
- *
+ * <p>
  * Useful for enforcing that properties aren't missed between environment properties.
  */
 public class EnvironmentPropertiesChecker extends WestieChecker {
 
-    public EnvironmentPropertiesChecker(List<String> javaFilesToIgnore) {
-        super(javaFilesToIgnore);
+    public EnvironmentPropertiesChecker() {
+        super(new WestieCachedFileReader(), emptyList());
+    }
+
+    public EnvironmentPropertiesChecker(WestieFileReader fileReader, List<String> javaFilesToIgnore) {
+        super(fileReader, javaFilesToIgnore);
     }
 
     /**

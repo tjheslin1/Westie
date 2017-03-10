@@ -18,9 +18,10 @@
 package io.github.tjheslin1.westie.gitissue;
 
 import io.github.tjheslin1.westie.FileLineViolation;
-import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.WestieChecker;
 import io.github.tjheslin1.westie.infrastructure.GitIssues;
+import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
+import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -40,25 +41,24 @@ import static java.util.stream.Collectors.toList;
  */
 public class GitIssueChecker extends WestieChecker {
 
-    private static final String GIT_TODO_REGEX_FORMAT = ".*//[ ]*TODO.*%s.*";
+    private static final String GIT_TODO_REGEX_FORMAT = ".*//.*(T|t)(O|o)(D|d)(O|o).*%s.*";
 
     private final GitIssues gitIssues;
     private final String gitRegex;
 
     public GitIssueChecker(GitIssues gitIssues, String gitRegex) {
-        super(emptyList());
+        super(new WestieCachedFileReader(), emptyList());
         this.gitIssues = gitIssues;
         this.gitRegex = gitRegex;
     }
 
-    public GitIssueChecker(GitIssues gitIssues, String gitRegex, List<String> javaFilesToIgnore) {
-        super(javaFilesToIgnore);
+    public GitIssueChecker(GitIssues gitIssues, String gitRegex, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
+        super(fileReader, javaFilesToIgnore);
         this.gitIssues = gitIssues;
         this.gitRegex = gitRegex;
     }
 
     /**
-     *
      * @param pathToCheck The package to check source files for to-do comments
      *                    which reference Git issues.
      * @return A list of violations in which to-do comments are referencing Git issues

@@ -16,7 +16,7 @@ contains useful functions for creating your own static analysis checks for your 
 @Ignore
 @Test
 public void allEnvironmentPropertiesFilesHaveTheSameKeys() throws Exception {
-    EnvironmentPropertiesChecker checker = new EnvironmentPropertiesChecker(FILES_TO_IGNORE);
+    EnvironmentPropertiesChecker checker = new EnvironmentPropertiesChecker();
 
     List<FileViolation> violations = checker.propertiesProvidedForAllEnvironments(PROPERTIES_DIR);
 
@@ -29,7 +29,7 @@ public void allEnvironmentPropertiesFilesHaveTheSameKeys() throws Exception {
 @Test
 public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
     JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_HOSTNAME, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
-    JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, "JIRA-[0-9]{3}", FILES_TO_IGNORE);
+    JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, "JIRA-[0-9]{3}");
 
     List<FileLineViolation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(BASE_PACKAGE);
 

@@ -20,6 +20,8 @@ package io.github.tjheslin1.westie.importrestrictions;
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.WestieChecker;
+import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
+import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,6 +30,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -40,8 +43,13 @@ public class ImportsRestrictionChecker extends WestieChecker {
 
     private final List<ImportRestriction> importRestrictions;
 
-    public ImportsRestrictionChecker(List<ImportRestriction> importRestrictions, List<String> javaFilesToIgnore) {
-        super(javaFilesToIgnore);
+    public ImportsRestrictionChecker(List<ImportRestriction> importRestrictions) {
+        super(new WestieCachedFileReader(), emptyList());
+        this.importRestrictions = importRestrictions;
+    }
+
+    public ImportsRestrictionChecker(List<ImportRestriction> importRestrictions, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
+        super(fileReader, javaFilesToIgnore);
         this.importRestrictions = importRestrictions;
     }
 

@@ -2,7 +2,7 @@ package io.github.tjheslin1.westie.gitissue;
 
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.LineAssertions;
-import io.github.tjheslin1.westie.FileViolation;
+import io.github.tjheslin1.westie.TestWestieFileReader;
 import io.github.tjheslin1.westie.WithMockito;
 import io.github.tjheslin1.westie.infrastructure.GitIssues;
 import org.assertj.core.api.WithAssertions;
@@ -21,7 +21,7 @@ public class GitIssueCheckerTest implements WithAssertions, WithMockito {
 
     @Test
     public void checksGitIssueIsInOpenState() throws Exception {
-        GitIssueChecker gitIssueChecker = new GitIssueChecker(gitIssues, "Git-[0-9]{1,4}", emptyList());
+        GitIssueChecker gitIssueChecker = new GitIssueChecker(gitIssues, "Git-[0-9]{1,4}", new TestWestieFileReader(), emptyList());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/git");
         List<FileLineViolation> violations = gitIssueChecker.todosAreInOpenState(pathToCheck);
@@ -52,7 +52,7 @@ public class GitIssueCheckerTest implements WithAssertions, WithMockito {
 
     @Test
     public void ignoresExcludedFiles() throws Exception {
-        GitIssueChecker gitIssueChecker = new GitIssueChecker(gitIssues, "Git-[0-9]{1,4}", singletonList("AnotherClassWithGitIssueTodo.java"));
+        GitIssueChecker gitIssueChecker = new GitIssueChecker(gitIssues, "Git-[0-9]{1,4}", new TestWestieFileReader(), singletonList("AnotherClassWithGitIssueTodo.java"));
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/git");
         List<FileLineViolation> violations = gitIssueChecker.todosAreInOpenState(pathToCheck);

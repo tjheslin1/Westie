@@ -2,6 +2,7 @@ package io.github.tjheslin1.westie.importrestrictions;
 
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.LineAssertions;
+import io.github.tjheslin1.westie.TestWestieFileReader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -25,7 +26,7 @@ public class ImportsRestrictionCheckerTest implements WithAssertions {
     @Test
     public void enforcesOnlySpecifiedPackagesCanUseCertainThirdPartyImports() throws Exception {
         List<ImportRestriction> importRestrictions = singletonList(MOCKITO_RESTRICTION);
-        ImportsRestrictionChecker importsRestrictionChecker = new ImportsRestrictionChecker(importRestrictions, emptyList());
+        ImportsRestrictionChecker importsRestrictionChecker = new ImportsRestrictionChecker(importRestrictions, new TestWestieFileReader(), emptyList());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties");
         List<FileLineViolation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
@@ -47,7 +48,7 @@ public class ImportsRestrictionCheckerTest implements WithAssertions {
     @Test
     public void enforcesMultiplePackageImportRestrictionsWithAnExemption() throws Exception {
         List<ImportRestriction> importRestrictions = asList(MOCKITO_RESTRICTION, APACHE_RESTRICITON);
-        ImportsRestrictionChecker importsRestrictionChecker = new ImportsRestrictionChecker(importRestrictions, singletonList("ClassWithUnacceptedThirdPartyImportToIgnore"));
+        ImportsRestrictionChecker importsRestrictionChecker = new ImportsRestrictionChecker(importRestrictions, new TestWestieFileReader(), singletonList("ClassWithUnacceptedThirdPartyImportToIgnore"));
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties");
         List<FileLineViolation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);

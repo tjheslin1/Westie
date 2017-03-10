@@ -2,7 +2,7 @@ package io.github.tjheslin1.westie.jiraissue;
 
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.LineAssertions;
-import io.github.tjheslin1.westie.FileViolation;
+import io.github.tjheslin1.westie.TestWestieFileReader;
 import io.github.tjheslin1.westie.WithMockito;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
 import org.assertj.core.api.WithAssertions;
@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
@@ -27,7 +28,7 @@ public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
         when(jiraIssues.isJiraIssueInAllowedStatus(ISSUE_NUMBER)).thenReturn(false);
         when(jiraIssues.allowedStatuses()).thenReturn(asList("Ready To Play", "Development"));
 
-        JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, JIRA_ISSUE_REGEX);
+        JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, JIRA_ISSUE_REGEX, new TestWestieFileReader(), emptyList());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/jira");
         List<FileLineViolation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(pathToCheck);
@@ -56,7 +57,7 @@ public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
         when(jiraIssues.isJiraIssueInAllowedStatus(ISSUE_NUMBER)).thenReturn(false);
         when(jiraIssues.allowedStatuses()).thenReturn(asList("Ready To Play", "Development"));
 
-        JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, JIRA_ISSUE_REGEX, singletonList("ClassWithJiraTodos.java"));
+        JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, JIRA_ISSUE_REGEX, new TestWestieFileReader(), singletonList("ClassWithJiraTodos.java"));
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/jira");
         List<FileLineViolation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(pathToCheck);
