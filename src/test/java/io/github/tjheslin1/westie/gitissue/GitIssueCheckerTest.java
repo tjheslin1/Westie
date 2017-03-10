@@ -2,7 +2,7 @@ package io.github.tjheslin1.westie.gitissue;
 
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.LineAssertions;
-import io.github.tjheslin1.westie.TestWestieFileReader;
+import io.github.tjheslin1.westie.testinfrastructure.TestWestieFileReader;
 import io.github.tjheslin1.westie.WithMockito;
 import io.github.tjheslin1.westie.infrastructure.GitIssues;
 import org.assertj.core.api.WithAssertions;

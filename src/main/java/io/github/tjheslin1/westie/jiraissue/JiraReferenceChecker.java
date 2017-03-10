@@ -46,7 +46,7 @@ public class JiraReferenceChecker extends WestieChecker {
     private final String jiraRegex;
 
     public JiraReferenceChecker(JiraIssues jiraIssues, String jiraRegex) {
-        super(new WestieCachedFileReader());
+        super();
         this.jiraIssues = jiraIssues;
         this.jiraRegex = jiraRegex;
     }

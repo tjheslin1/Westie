@@ -47,7 +47,7 @@ public class GitIssueChecker extends WestieChecker {
     private final String gitRegex;
 
     public GitIssueChecker(GitIssues gitIssues, String gitRegex) {
-        super(new WestieCachedFileReader(), emptyList());
+        super();
         this.gitIssues = gitIssues;
         this.gitRegex = gitRegex;
     }

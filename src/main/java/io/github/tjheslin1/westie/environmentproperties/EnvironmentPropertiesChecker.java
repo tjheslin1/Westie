@@ -29,7 +29,7 @@ import static java.util.stream.Collectors.toList;
 public class EnvironmentPropertiesChecker extends WestieChecker {
 
     public EnvironmentPropertiesChecker() {
-        super(new WestieCachedFileReader(), emptyList());
+        super();
     }
 
     public EnvironmentPropertiesChecker(WestieFileReader fileReader, List<String> javaFilesToIgnore) {

@@ -12,4 +12,16 @@ public interface WithMockito {
     default <T> OngoingStubbing<T> when(T methodCall) {
         return Mockito.when(methodCall);
     }
+
+    default <T> T any() {
+        return Mockito.any();
+    }
+
+    default <T> T verify(T mock) {
+        return Mockito.verify(mock);
+    }
+
+    default void verifyNoMoreInteractions(Object... mocks) {
+        Mockito.verifyNoMoreInteractions(mocks);
+    }
 }

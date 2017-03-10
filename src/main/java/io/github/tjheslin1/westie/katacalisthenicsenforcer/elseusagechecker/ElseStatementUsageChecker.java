@@ -17,7 +17,7 @@ import static java.util.stream.Collectors.toList;
 public class ElseStatementUsageChecker extends WestieChecker {
 
     public ElseStatementUsageChecker() {
-        super(new WestieCachedFileReader(), emptyList());
+        super();
     }
 
     public ElseStatementUsageChecker(WestieFileReader fileReader, List<String> javaFilesToIgnore) {

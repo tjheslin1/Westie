@@ -44,7 +44,7 @@ public class ImportsRestrictionChecker extends WestieChecker {
     private final List<ImportRestriction> importRestrictions;
 
     public ImportsRestrictionChecker(List<ImportRestriction> importRestrictions) {
-        super(new WestieCachedFileReader(), emptyList());
+        super();
         this.importRestrictions = importRestrictions;
     }
 

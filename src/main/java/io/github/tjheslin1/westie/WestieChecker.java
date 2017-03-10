@@ -17,6 +17,7 @@
  */
 package io.github.tjheslin1.westie;
 
+import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
@@ -30,11 +31,13 @@ import static java.util.Collections.emptyList;
  */
 public abstract class WestieChecker {
 
+    private static final WestieCachedFileReader CACHED_FILE_READER = new WestieCachedFileReader();
+
     private final List<String> javaFilesToIgnore;
     private final WestieFileReader fileReader;
 
-    public WestieChecker(WestieFileReader fileReader) {
-        this.fileReader = fileReader;
+    public WestieChecker() {
+        this.fileReader = CACHED_FILE_READER;
         this.javaFilesToIgnore = emptyList();
     }
 
@@ -51,7 +54,7 @@ public abstract class WestieChecker {
      * @throws IOException
      */
     protected List<String> allFileLines(Path filePath) throws IOException {
-        return fileReader.readAllLines(filePath);
+        return CACHED_FILE_READER.readAllLines(filePath);
     }
 
     /**

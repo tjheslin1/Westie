@@ -40,12 +40,12 @@ public class TodosStructureChecker extends WestieChecker {
 
     private final String todosStructureRegex;
 
-    public TodosStructureChecker(String todosStructureRegex, List<String> javaFilesToIgnore) {
-        super(new WestieCachedFileReader(), javaFilesToIgnore);
+    public TodosStructureChecker(String todosStructureRegex) {
+        super();
         this.todosStructureRegex = todosStructureRegex;
     }
 
-    public TodosStructureChecker(WestieFileReader fileReader, String todosStructureRegex, List<String> javaFilesToIgnore) {
+    public TodosStructureChecker(String todosStructureRegex, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
         super(fileReader, javaFilesToIgnore);
         this.todosStructureRegex = todosStructureRegex;
     }
