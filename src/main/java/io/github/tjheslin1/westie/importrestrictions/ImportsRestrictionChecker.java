@@ -20,7 +20,6 @@ package io.github.tjheslin1.westie.importrestrictions;
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.WestieChecker;
-import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
@@ -30,7 +29,6 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
-import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -73,8 +71,13 @@ public class ImportsRestrictionChecker extends WestieChecker {
 
     private Stream<FileLineViolation> verifyImports(Path file) {
         try {
-            List<String> lines = Files.lines(file).collect(toList());
-            String packageLine = lines.stream().findFirst().get();
+            List<String> lines = allFileLines(file);
+            if (lines.isEmpty()) {
+                return Stream.of(new FileLineViolation(file,
+                        "N/A - Should this file be in the list of ignored files? Or in a different directory?",
+                        "File is empty!"));
+            }
+            String packageLine = lines.get(0);
             return lines.stream()
                     .filter(this::importLines)
                     .filter(importLine -> importUsedOutsideOfAcceptedPackage(packageLine, importLine))

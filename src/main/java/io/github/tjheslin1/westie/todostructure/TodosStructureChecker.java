@@ -19,7 +19,6 @@ package io.github.tjheslin1.westie.todostructure;
 
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.WestieChecker;
-import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
@@ -66,7 +65,7 @@ public class TodosStructureChecker extends WestieChecker {
 
     private Stream<FileLineViolation> verifyStructureOfTodos(Path file) {
         try {
-            return Files.lines(file)
+            return allFileLines(file).stream()
                     .filter(this::lineContainsTodo)
                     .filter(this::linesNotConformingToStructure)
                     .map(todoLine -> new FileLineViolation(file, todoLine,

@@ -20,7 +20,6 @@ package io.github.tjheslin1.westie.gitissue;
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.WestieChecker;
 import io.github.tjheslin1.westie.infrastructure.GitIssues;
-import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
@@ -32,7 +31,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
-import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -76,7 +74,7 @@ public class GitIssueChecker extends WestieChecker {
 
     private Stream<FileLineViolation> checkGitIssues(Path file) {
         try {
-            return Files.lines(file).collect(toList()).stream()
+            return allFileLines(file).stream()
                     .filter(this::gitTodoLine)
                     .filter(this::gitIssueIsInNotInTheOpenState)
                     .map(gitTodoLine -> new FileLineViolation(file, gitTodoLine, "Violation was caused by a reference to a " +

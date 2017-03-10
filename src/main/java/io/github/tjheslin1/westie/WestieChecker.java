@@ -54,7 +54,7 @@ public abstract class WestieChecker {
      * @throws IOException
      */
     protected List<String> allFileLines(Path filePath) throws IOException {
-        return CACHED_FILE_READER.readAllLines(filePath);
+        return fileReader.readAllLines(filePath);
     }
 
     /**

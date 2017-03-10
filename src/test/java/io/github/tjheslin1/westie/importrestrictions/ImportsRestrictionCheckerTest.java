@@ -66,4 +66,9 @@ public class ImportsRestrictionCheckerTest implements WithAssertions {
                 "\n" +
                 "Violation was caused by an import which does not matching any of the import restrictions.\n");
     }
+
+    @Test
+    public void reportsViolationForEmptyFile() throws Exception {
+        // TODO
+    }
 }

@@ -20,7 +20,6 @@ package io.github.tjheslin1.westie.jiraissue;
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.WestieChecker;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
-import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
@@ -75,7 +74,7 @@ public class JiraReferenceChecker extends WestieChecker {
 
     private Stream<FileLineViolation> checkJiraTodos(Path file) {
         try {
-            return Files.lines(file).collect(toList()).stream()
+            return allFileLines(file).stream()
                     .filter(this::jiraTodoLine)
                     .filter(this::jiraIssueInUnacceptedState)
                     .map(jiraTodoLine -> new FileLineViolation(file, jiraTodoLine, format("Violation was caused by a reference to a " +

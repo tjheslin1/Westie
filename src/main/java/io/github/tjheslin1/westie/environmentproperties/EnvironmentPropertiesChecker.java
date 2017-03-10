@@ -3,7 +3,6 @@ package io.github.tjheslin1.westie.environmentproperties;
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.WestieChecker;
-import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.FileInputStream;
@@ -17,7 +16,6 @@ import java.util.Properties;
 
 import static io.github.tjheslin1.westie.environmentproperties.FileKeySet.fileKeySet;
 import static java.lang.String.format;
-import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 /**
