@@ -18,7 +18,6 @@
 package io.github.tjheslin1.westie.jiraissue;
 
 import io.github.tjheslin1.westie.FileLineViolation;
-import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.WestieChecker;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
 
@@ -31,7 +30,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
-import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -46,7 +44,7 @@ public class JiraReferenceChecker extends WestieChecker {
     private final String jiraRegex;
 
     public JiraReferenceChecker(JiraIssues jiraIssues, String jiraRegex) {
-        super(emptyList());
+        super();
         this.jiraIssues = jiraIssues;
         this.jiraRegex = jiraRegex;
     }

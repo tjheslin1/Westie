@@ -17,8 +17,13 @@
  */
 package io.github.tjheslin1.westie;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+
+import static java.lang.String.format;
+import static java.util.Collections.emptyList;
 
 /**
  * Base class of a static analysis test with useful methods to reuse.
@@ -27,8 +32,27 @@ public abstract class WestieChecker {
 
     private final List<String> javaFilesToIgnore;
 
+    public WestieChecker() {
+        this.javaFilesToIgnore = emptyList();
+    }
+
     public WestieChecker(List<String> javaFilesToIgnore) {
         this.javaFilesToIgnore = javaFilesToIgnore;
+    }
+
+    /**
+     * TODO
+     *
+     * @param filePath
+     * @return
+     * @throws IOException
+     */
+    protected List<String> readAllLines(Path filePath) throws IOException {
+        if (!Files.isRegularFile(filePath)) {
+            throw new IllegalStateException(format("Expected a file to read. Instead provided: '%s'", filePath));
+        }
+
+        return Files.readAllLines(filePath);
     }
 
     /**
