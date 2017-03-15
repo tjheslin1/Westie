@@ -12,6 +12,9 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Not yet in use.
+ */
 public class ElseStatementUsageChecker extends WestieChecker {
 
     public ElseStatementUsageChecker() {
@@ -22,6 +25,9 @@ public class ElseStatementUsageChecker extends WestieChecker {
         super(fileReader, javaFilesToIgnore);
     }
 
+    /**
+     * Not yet in use.
+     */
     public List<FileLineViolation> noUsageOfElseStatement(Path pathToCheck) throws IOException {
         return Files.walk(pathToCheck)
                 .filter(this::isAJavaFile)
