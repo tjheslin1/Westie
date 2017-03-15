@@ -33,10 +33,7 @@ import static java.util.stream.Collectors.toList;
 
 /**
  * Enforces that the provided {@link ImportRestriction}'s are adhered to.
- * <p>
- * Deprecated as of 1.1.3 in favour of <a href="https://github.com/theangrydev/domain-enforcer">domain-enforcer by @theangrydev</a>.
  */
-@Deprecated
 public class ImportsRestrictionChecker extends WestieChecker {
 
     private final List<ImportRestriction> importRestrictions;
@@ -59,7 +56,6 @@ public class ImportsRestrictionChecker extends WestieChecker {
      * @return A list of {@link FileViolation}'s where imports have been used outside of their intended package.
      * @throws IOException if an I/O error occurs when opening the directory.
      */
-    @Deprecated
     public List<FileLineViolation> checkImportsAreOnlyUsedInAcceptedPackages(Path pathToCheck) throws IOException {
         return Files.walk(pathToCheck)
                 .filter(this::isAJavaFile)
