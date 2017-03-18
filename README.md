@@ -37,9 +37,9 @@ public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
 }
 ```
 
-##How do I get it?
+## How do I get it?
 
-###Maven
+### Maven
 ```xml
 <dependency>
     <groupId>io.github.tjheslin1</groupId>
@@ -47,11 +47,11 @@ public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
     <version>1.2</version>
 </dependency>
 ```
-###Gradle
+### Gradle
 ```groovy
 compile 'io.github.tjheslin1:Westie:1.2'
 ```
-###SBT
+### SBT
 ```scala
 libraryDependencies += "io.github.tjheslin1" % "Westie" % "1.2"
 ```
