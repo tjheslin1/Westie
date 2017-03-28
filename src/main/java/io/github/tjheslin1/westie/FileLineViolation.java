@@ -25,7 +25,7 @@ import static java.lang.String.format;
  * Represents a violation of a static analysis test.
  * Explaining the line in the file which failed a test.
  */
-public class FileLineViolation implements Violation {
+public class FileLineViolation extends ValueType implements Violation {
 
     private final Path file;
     private final String line;

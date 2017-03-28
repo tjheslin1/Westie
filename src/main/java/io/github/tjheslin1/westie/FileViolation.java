@@ -24,7 +24,7 @@ import static java.lang.String.format;
 /**
  * Represents a violation of a static analysis test.
  */
-public class FileViolation implements Violation {
+public class FileViolation extends ValueType implements Violation {
 
     private final Path file;
     private final String message;

@@ -1,7 +1,8 @@
 package io.github.tjheslin1.westie.importrestrictions;
 
-import io.github.tjheslin1.westie.FileLineViolation;
+import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.LineAssertions;
+import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.testinfrastructure.TestWestieFileReader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class ImportsRestrictionCheckerTest implements WithAssertions {
         ImportsRestrictionChecker importsRestrictionChecker = new ImportsRestrictionChecker(importRestrictions, new TestWestieFileReader(), emptyList());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties");
-        List<FileLineViolation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
+        List<Violation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
 
         assertThat(violations.size()).isEqualTo(2);
         LineAssertions lineAssertions = new LineAssertions(violations);
@@ -51,7 +52,7 @@ public class ImportsRestrictionCheckerTest implements WithAssertions {
         ImportsRestrictionChecker importsRestrictionChecker = new ImportsRestrictionChecker(importRestrictions, new TestWestieFileReader(), singletonList("ClassWithUnacceptedThirdPartyImportToIgnore"));
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties");
-        List<FileLineViolation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
+        List<Violation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
 
         assertThat(violations.size()).isEqualTo(2);
         LineAssertions lineAssertions = new LineAssertions(violations);
@@ -69,6 +70,14 @@ public class ImportsRestrictionCheckerTest implements WithAssertions {
 
     @Test
     public void reportsViolationForEmptyFile() throws Exception {
-        // TODO
+        List<ImportRestriction> importRestrictions = asList(MOCKITO_RESTRICTION, APACHE_RESTRICITON);
+        ImportsRestrictionChecker importsRestrictionChecker = new ImportsRestrictionChecker(importRestrictions, new TestWestieFileReader(), singletonList("ClassWithUnacceptedThirdPartyImportToIgnore"));
+
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/empty");
+        List<Violation> violations = importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
+
+        assertThat(violations).hasSize(1);
+        assertThat(violations.get(0)).isEqualTo(new FileViolation(pathToCheck.resolve("Empty.java"),
+                "Empty file! - Should this file be in the list of ignored files? Or in a different directory?"));
     }
 }

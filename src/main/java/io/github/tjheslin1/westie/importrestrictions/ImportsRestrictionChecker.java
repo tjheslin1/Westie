@@ -19,6 +19,7 @@ package io.github.tjheslin1.westie.importrestrictions;
 
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.FileViolation;
+import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.WestieChecker;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
@@ -56,22 +57,21 @@ public class ImportsRestrictionChecker extends WestieChecker {
      * @return A list of {@link FileViolation}'s where imports have been used outside of their intended package.
      * @throws IOException if an I/O error occurs when opening the directory.
      */
-    public List<FileLineViolation> checkImportsAreOnlyUsedInAcceptedPackages(Path pathToCheck) throws IOException {
+    public List<Violation> checkImportsAreOnlyUsedInAcceptedPackages(Path pathToCheck) throws IOException {
         return Files.walk(pathToCheck)
                 .filter(this::isAJavaFile)
                 .filter(this::notAnExemptFile)
                 .flatMap(this::verifyImports)
-                .peek(FileLineViolation::reportViolation)
+                .peek(Violation::reportViolation)
                 .collect(toList());
     }
 
-    private Stream<FileLineViolation> verifyImports(Path file) {
+    private Stream<Violation> verifyImports(Path file) {
         try {
             List<String> lines = allFileLines(file);
             if (lines.isEmpty()) {
-                return Stream.of(new FileLineViolation(file,
-                        "N/A - Should this file be in the list of ignored files? Or in a different directory?",
-                        "File is empty!"));
+                return Stream.of(new FileViolation(file,
+                        "Empty file! - Should this file be in the list of ignored files? Or in a different directory?"));
             }
             String packageLine = lines.get(0);
             return lines.stream()

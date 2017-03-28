@@ -47,11 +47,11 @@ public abstract class WestieChecker {
     }
 
     /**
-     * TODO
+     * Reads the lines of a file and caches the result.
      *
-     * @param filePath
-     * @return
-     * @throws IOException
+     * @param filePath The {@link Path} to the file to read.
+     * @return The lines of the file as a list of Strings.
+     * @throws IOException If an exception occurs reading the file.
      */
     protected List<String> allFileLines(Path filePath) throws IOException {
         return fileReader.readAllLines(filePath);
