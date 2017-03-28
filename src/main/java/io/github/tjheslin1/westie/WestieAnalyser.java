@@ -20,41 +20,41 @@ package io.github.tjheslin1.westie;
 import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
-import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import static java.lang.String.format;
 import static java.util.Collections.emptyList;
 
 /**
  * Base class of a static analysis test with useful methods to reuse.
  */
-public abstract class WestieAnalyser {
+public class WestieAnalyser {
 
     private static final WestieCachedFileReader CACHED_FILE_READER = new WestieCachedFileReader();
 
-    private final List<String> javaFilesToIgnore;
     private final WestieFileReader fileReader;
+    private final List<String> filesToIgnore;
+
+    private Path pathToCheck;
 
     public WestieAnalyser() {
         this.fileReader = CACHED_FILE_READER;
-        this.javaFilesToIgnore = emptyList();
+        this.filesToIgnore = emptyList();
     }
 
-    public WestieAnalyser(WestieFileReader fileReader, List<String> javaFilesToIgnore) {
+    public WestieAnalyser(WestieFileReader fileReader, List<String> filesToIgnore) {
         this.fileReader = fileReader;
-        this.javaFilesToIgnore = javaFilesToIgnore;
+        this.filesToIgnore = filesToIgnore;
     }
 
-    /**
-     * Reads the lines of a file and caches the result.
-     *
-     * @param filePath The {@link Path} to the file to read.
-     * @return The lines of the file as a list of Strings.
-     * @throws IOException If an exception occurs reading the file.
-     */
-    protected List<String> allFileLines(Path filePath) throws IOException {
-        return fileReader.readAllLines(filePath);
+    public WestieFileLineAnalyser analyseDirectory(Path pathToCheck) {
+        if(!Files.isDirectory(pathToCheck)) {
+            throw new IllegalArgumentException(format("Expected a directory. '%s' was provided.", pathToCheck));
+        }
+        this.pathToCheck = pathToCheck;
+        return new WestieFileLineAnalyser(fileReader, filesToIgnore, pathToCheck);
     }
 
     /**
@@ -75,13 +75,8 @@ public abstract class WestieAnalyser {
 
     /**
      * @param file Path to a source file.
-     * @return 'true' if the file provided does not appear in the provided list of 'javaFilesToIgnore'.
+     * @return 'true' if the file provided does not appear in the provided list of 'filesToIgnore'.
      */
-    protected boolean notAnExemptFile(Path file) {
-        return javaFilesToIgnore.stream()
-                .map(this::postFixedWithJavaExtension)
-                .noneMatch(exemptFile -> file.toString().endsWith(exemptFile));
-    }
 
     /**
      * Extracts the filename of a file from its full path.
@@ -91,9 +86,5 @@ public abstract class WestieAnalyser {
      */
     protected String filenameFromPath(Path file) {
         return file.subpath(file.getNameCount() - 1, file.getNameCount()).toString();
-    }
-
-    private String postFixedWithJavaExtension(String javaFile) {
-        return javaFile.endsWith(".java") ? javaFile : javaFile + ".java";
     }
 }

@@ -50,10 +50,10 @@ public class WestieCachedFileReaderTest implements WithAssertions, WithMockito {
         WestieCachedFileReader fileReader = new WestieCachedFileReader(fileLinesReader);
 
         TodosStructureAnalyser todosStructureAnalyser = new TodosStructureAnalyser("", fileReader, emptyList());
-        ImportsRestrictionAnalyser importsRestrictionAnalyser = new ImportsRestrictionAnalyser(emptyList(), fileReader, emptyList());
+        ImportsRestrictionAnalyser importsRestrictionChecker = new ImportsRestrictionAnalyser(emptyList(), fileReader, emptyList());
 
         todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck);
-        importsRestrictionAnalyser.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
+        importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
 
         Mockito.verify(fileLinesReader).readAllLines(pathToCheck);
         verifyNoMoreInteractions(fileLinesReader);

@@ -80,7 +80,7 @@ public class ImportsRestrictionAnalyser extends WestieAnalyser {
                     .map(importLine -> new FileLineViolation(file, importLine, "Violation was caused by an import which " +
                             "does not matching any of the import restrictions."));
         } catch (IOException e) {
-            return Stream.of(new FileLineViolation(file, "Unable to read file.", e.getMessage()));
+            return Stream.of(new FileViolation(file, "Unable to read file.\n" + e.getMessage()));
         }
     }
 
