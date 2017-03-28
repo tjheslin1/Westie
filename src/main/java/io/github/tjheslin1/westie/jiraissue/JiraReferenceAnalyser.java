@@ -18,7 +18,7 @@
 package io.github.tjheslin1.westie.jiraissue;
 
 import io.github.tjheslin1.westie.FileLineViolation;
-import io.github.tjheslin1.westie.WestieChecker;
+import io.github.tjheslin1.westie.WestieAnalyser;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
@@ -37,20 +37,20 @@ import static java.util.stream.Collectors.toList;
  * Checks that the status of all Jira issues, referenced in to-do comments,
  * are in an accepted state.
  */
-public class JiraReferenceChecker extends WestieChecker {
+public class JiraReferenceAnalyser extends WestieAnalyser {
 
     private static final String JIRA_TODO_REGEX_FORMAT = ".*//.*(T|t)(O|o)(D|d)(O|o).*%s.*";
 
     private final JiraIssues jiraIssues;
     private final String jiraRegex;
 
-    public JiraReferenceChecker(JiraIssues jiraIssues, String jiraRegex) {
+    public JiraReferenceAnalyser(JiraIssues jiraIssues, String jiraRegex) {
         super();
         this.jiraIssues = jiraIssues;
         this.jiraRegex = jiraRegex;
     }
 
-    public JiraReferenceChecker(JiraIssues jiraIssues, String jiraRegex, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
+    public JiraReferenceAnalyser(JiraIssues jiraIssues, String jiraRegex, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
         super(fileReader, javaFilesToIgnore);
         this.jiraIssues = jiraIssues;
         this.jiraRegex = jiraRegex;

@@ -20,7 +20,7 @@ package io.github.tjheslin1.westie.importrestrictions;
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.Violation;
-import io.github.tjheslin1.westie.WestieChecker;
+import io.github.tjheslin1.westie.WestieAnalyser;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
@@ -35,16 +35,16 @@ import static java.util.stream.Collectors.toList;
 /**
  * Enforces that the provided {@link ImportRestriction}'s are adhered to.
  */
-public class ImportsRestrictionChecker extends WestieChecker {
+public class ImportsRestrictionAnalyser extends WestieAnalyser {
 
     private final List<ImportRestriction> importRestrictions;
 
-    public ImportsRestrictionChecker(List<ImportRestriction> importRestrictions) {
+    public ImportsRestrictionAnalyser(List<ImportRestriction> importRestrictions) {
         super();
         this.importRestrictions = importRestrictions;
     }
 
-    public ImportsRestrictionChecker(List<ImportRestriction> importRestrictions, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
+    public ImportsRestrictionAnalyser(List<ImportRestriction> importRestrictions, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
         super(fileReader, javaFilesToIgnore);
         this.importRestrictions = importRestrictions;
     }

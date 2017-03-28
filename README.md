@@ -6,32 +6,32 @@ Westie is a tool for creating your own custom static analysis checks.
 
 The project contains already provided checks which can be used straight away.
 
-All provided Checkers extend [WestieChecker.java](src/main/java/io/github/tjheslin1/westie/WestieChecker.java), which 
+All provided Analysers extend [WestieAnalyser.java](src/main/java/io/github/tjheslin1/westie/WestieAnalyser.java), which
 contains useful functions for creating your own static analysis checks for your project and team.
 
-## Examples of provided static analysis checkers:
+## Examples of provided static analysis analysers:
 
-### _EnvironmentPropertiesChecker_ ensures that all of your environment '.properties' files share the same keys. 
+### _EnvironmentPropertiesAnalysers_ ensures that all of your environment '.properties' files share the same keys.
 ```java
 @Ignore
 @Test
 public void allEnvironmentPropertiesFilesHaveTheSameKeys() throws Exception {
-    EnvironmentPropertiesChecker checker = new EnvironmentPropertiesChecker();
+    EnvironmentPropertiesAnalyser analyser = new EnvironmentPropertiesAnalyser();
 
-    List<FileViolation> violations = checker.propertiesProvidedForAllEnvironments(PROPERTIES_DIR);
+    List<FileViolation> violations = analyser.propertiesProvidedForAllEnvironments(PROPERTIES_DIR);
 
     assertThat(violations).isEmpty();
 }
 ```
 
-### _JiraReferenceChecker_ ensures that Jira issues referenced are in an accepted status (e.g only in Development stage).
+### _JiraReferenceAnalyser_ ensures that Jira issues referenced are in an accepted status (e.g only in Development stage).
 ```java
 @Test
 public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
     JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_HOSTNAME, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
-    JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, "JIRA-[0-9]{3}");
+    JiraReferenceAnalyser jiraReferenceAnalyser = new JiraReferenceAnalyser(jiraIssues, "JIRA-[0-9]{3}");
 
-    List<FileLineViolation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(BASE_PACKAGE);
+    List<FileLineViolation> violations = jiraReferenceAnalyser.todosAreInAllowedStatuses(BASE_PACKAGE);
 
     assertThat(violations).isEmpty();
 }

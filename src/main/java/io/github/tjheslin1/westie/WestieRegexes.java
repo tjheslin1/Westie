@@ -18,7 +18,7 @@
 package io.github.tjheslin1.westie;
 
 /**
- * Reusable regexes for writing project-specific static analysis checkers.
+ * Reusable regexes for writing project-specific static analysis analysers.
  */
 public class WestieRegexes {
 

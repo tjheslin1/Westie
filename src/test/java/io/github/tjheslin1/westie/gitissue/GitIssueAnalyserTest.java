@@ -15,16 +15,16 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
-public class GitIssueCheckerTest implements WithAssertions, WithMockito {
+public class GitIssueAnalyserTest implements WithAssertions, WithMockito {
 
     private final GitIssues gitIssues = mock(GitIssues.class);
 
     @Test
     public void checksGitIssueIsInOpenState() throws Exception {
-        GitIssueChecker gitIssueChecker = new GitIssueChecker(gitIssues, "Git-[0-9]{1,4}", new TestWestieFileReader(), emptyList());
+        GitIssueAnalyser gitIssueAnalyser = new GitIssueAnalyser(gitIssues, "Git-[0-9]{1,4}", new TestWestieFileReader(), emptyList());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/git");
-        List<FileLineViolation> violations = gitIssueChecker.todosAreInOpenState(pathToCheck);
+        List<FileLineViolation> violations = gitIssueAnalyser.todosAreInOpenState(pathToCheck);
 
         assertThat(violations).hasSize(4);
         LineAssertions lineMatchAssertions = new LineAssertions(violations);
@@ -52,10 +52,10 @@ public class GitIssueCheckerTest implements WithAssertions, WithMockito {
 
     @Test
     public void ignoresExcludedFiles() throws Exception {
-        GitIssueChecker gitIssueChecker = new GitIssueChecker(gitIssues, "Git-[0-9]{1,4}", new TestWestieFileReader(), singletonList("AnotherClassWithGitIssueTodo.java"));
+        GitIssueAnalyser gitIssueAnalyser = new GitIssueAnalyser(gitIssues, "Git-[0-9]{1,4}", new TestWestieFileReader(), singletonList("AnotherClassWithGitIssueTodo.java"));
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/git");
-        List<FileLineViolation> violations = gitIssueChecker.todosAreInOpenState(pathToCheck);
+        List<FileLineViolation> violations = gitIssueAnalyser.todosAreInOpenState(pathToCheck);
 
         assertThat(violations).hasSize(2);
         LineAssertions lineMatchAssertions = new LineAssertions(violations);

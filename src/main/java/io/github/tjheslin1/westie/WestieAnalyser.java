@@ -29,19 +29,19 @@ import static java.util.Collections.emptyList;
 /**
  * Base class of a static analysis test with useful methods to reuse.
  */
-public abstract class WestieChecker {
+public abstract class WestieAnalyser {
 
     private static final WestieCachedFileReader CACHED_FILE_READER = new WestieCachedFileReader();
 
     private final List<String> javaFilesToIgnore;
     private final WestieFileReader fileReader;
 
-    public WestieChecker() {
+    public WestieAnalyser() {
         this.fileReader = CACHED_FILE_READER;
         this.javaFilesToIgnore = emptyList();
     }
 
-    public WestieChecker(WestieFileReader fileReader, List<String> javaFilesToIgnore) {
+    public WestieAnalyser(WestieFileReader fileReader, List<String> javaFilesToIgnore) {
         this.fileReader = fileReader;
         this.javaFilesToIgnore = javaFilesToIgnore;
     }

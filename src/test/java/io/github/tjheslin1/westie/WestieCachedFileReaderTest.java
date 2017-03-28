@@ -1,9 +1,9 @@
 package io.github.tjheslin1.westie;
 
-import io.github.tjheslin1.westie.importrestrictions.ImportsRestrictionChecker;
+import io.github.tjheslin1.westie.importrestrictions.ImportsRestrictionAnalyser;
 import io.github.tjheslin1.westie.infrastructure.FileLinesReader;
 import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
-import io.github.tjheslin1.westie.todostructure.TodosStructureChecker;
+import io.github.tjheslin1.westie.todostructure.TodosStructureAnalyser;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -42,18 +42,18 @@ public class WestieCachedFileReaderTest implements WithAssertions, WithMockito {
     }
 
     @Test
-    public void reusesCacheBetweenCheckers() throws Exception {
+    public void reusesCacheBetweenAnalysers() throws Exception {
         when(fileLinesReader.readAllLines(any())).thenReturn(emptyList());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/lineReading/ReadMyLines.java");
 
         WestieCachedFileReader fileReader = new WestieCachedFileReader(fileLinesReader);
 
-        TodosStructureChecker todosStructureChecker = new TodosStructureChecker("", fileReader, emptyList());
-        ImportsRestrictionChecker importsRestrictionChecker = new ImportsRestrictionChecker(emptyList(), fileReader, emptyList());
+        TodosStructureAnalyser todosStructureAnalyser = new TodosStructureAnalyser("", fileReader, emptyList());
+        ImportsRestrictionAnalyser importsRestrictionAnalyser = new ImportsRestrictionAnalyser(emptyList(), fileReader, emptyList());
 
-//        todosStructureChecker.checkAllTodosFollowExpectedStructure(pathToCheck);
-        importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
+        todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck);
+        importsRestrictionAnalyser.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
 
         Mockito.verify(fileLinesReader).readAllLines(pathToCheck);
         verifyNoMoreInteractions(fileLinesReader);

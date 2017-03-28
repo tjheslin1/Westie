@@ -12,14 +12,14 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 
-public class EnvironmentPropertiesCheckerTest implements WithAssertions {
+public class EnvironmentPropertiesAnalyserTest implements WithAssertions {
 
-    private final EnvironmentPropertiesChecker environmentPropertiesChecker = new EnvironmentPropertiesChecker(new TestWestieFileReader(), emptyList());
+    private final EnvironmentPropertiesAnalyser environmentPropertiesAnalyser = new EnvironmentPropertiesAnalyser(new TestWestieFileReader(), emptyList());
 
     @Test
     public void checkAllEnvironmentSpecificPropertiesFilesHaveSameKeys() throws Exception {
         Path environmentExamples = Paths.get("src/test/resources/io/github/tjheslin1/examples/environments");
-        List<FileViolation> violations = environmentPropertiesChecker.propertiesProvidedForAllEnvironments(environmentExamples);
+        List<FileViolation> violations = environmentPropertiesAnalyser.propertiesProvidedForAllEnvironments(environmentExamples);
 
         assertThat(violations).hasSize(3);
 

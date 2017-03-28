@@ -17,14 +17,14 @@
  */
 package io.github.tjheslin1.westie.infrastructure;
 
-import io.github.tjheslin1.westie.WestieChecker;
+import io.github.tjheslin1.westie.WestieAnalyser;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
 /**
- * File reading used by {@link WestieChecker} extensions to
+ * File reading used by {@link WestieAnalyser} extensions to
  * perform static analysis on project files.
  */
 @FunctionalInterface

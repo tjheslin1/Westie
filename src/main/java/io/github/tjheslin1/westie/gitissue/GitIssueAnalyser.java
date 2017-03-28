@@ -18,7 +18,7 @@
 package io.github.tjheslin1.westie.gitissue;
 
 import io.github.tjheslin1.westie.FileLineViolation;
-import io.github.tjheslin1.westie.WestieChecker;
+import io.github.tjheslin1.westie.WestieAnalyser;
 import io.github.tjheslin1.westie.infrastructure.GitIssues;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
@@ -37,20 +37,20 @@ import static java.util.stream.Collectors.toList;
  * Checks that all Git issues referenced in to-do comments are in the
  * open state.
  */
-public class GitIssueChecker extends WestieChecker {
+public class GitIssueAnalyser extends WestieAnalyser {
 
     private static final String GIT_TODO_REGEX_FORMAT = ".*//.*(T|t)(O|o)(D|d)(O|o).*%s.*";
 
     private final GitIssues gitIssues;
     private final String gitRegex;
 
-    public GitIssueChecker(GitIssues gitIssues, String gitRegex) {
+    public GitIssueAnalyser(GitIssues gitIssues, String gitRegex) {
         super();
         this.gitIssues = gitIssues;
         this.gitRegex = gitRegex;
     }
 
-    public GitIssueChecker(GitIssues gitIssues, String gitRegex, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
+    public GitIssueAnalyser(GitIssues gitIssues, String gitRegex, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
         super(fileReader, javaFilesToIgnore);
         this.gitIssues = gitIssues;
         this.gitRegex = gitRegex;

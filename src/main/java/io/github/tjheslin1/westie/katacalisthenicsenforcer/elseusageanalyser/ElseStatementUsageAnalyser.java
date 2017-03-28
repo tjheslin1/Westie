@@ -1,7 +1,7 @@
-package io.github.tjheslin1.westie.katacalisthenicsenforcer.elseusagechecker;
+package io.github.tjheslin1.westie.katacalisthenicsenforcer.elseusageanalyser;
 
 import io.github.tjheslin1.westie.FileLineViolation;
-import io.github.tjheslin1.westie.WestieChecker;
+import io.github.tjheslin1.westie.WestieAnalyser;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
@@ -15,13 +15,13 @@ import static java.util.stream.Collectors.toList;
 /**
  * Not yet in use.
  */
-public class ElseStatementUsageChecker extends WestieChecker {
+public class ElseStatementUsageAnalyser extends WestieAnalyser {
 
-    public ElseStatementUsageChecker() {
+    public ElseStatementUsageAnalyser() {
         super();
     }
 
-    public ElseStatementUsageChecker(WestieFileReader fileReader, List<String> javaFilesToIgnore) {
+    public ElseStatementUsageAnalyser(WestieFileReader fileReader, List<String> javaFilesToIgnore) {
         super(fileReader, javaFilesToIgnore);
     }
 

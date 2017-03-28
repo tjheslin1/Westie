@@ -14,14 +14,14 @@ import static io.github.tjheslin1.westie.WestieRegexes.TODOS_MUST_HAVE_DATE_REGE
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
-public class TodosStructureCheckerTest implements WithAssertions {
+public class TodosStructureAnalyserTest implements WithAssertions {
 
     @Test
     public void findsTodosComments() throws Exception {
-        TodosStructureChecker todosStructureChecker = new TodosStructureChecker(TODOS_MUST_HAVE_DATE_REGEX, new TestWestieFileReader(), emptyList());
+        TodosStructureAnalyser todosStructureAnalyser = new TodosStructureAnalyser(TODOS_MUST_HAVE_DATE_REGEX, new TestWestieFileReader(), emptyList());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/todos");
-        List<FileLineViolation> todoViolations = todosStructureChecker.checkAllTodosFollowExpectedStructure(pathToCheck);
+        List<FileLineViolation> todoViolations = todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck);
 
         assertThat(todoViolations.size()).isEqualTo(3);
         LineAssertions lineAssertions = new LineAssertions(todoViolations);
@@ -44,10 +44,10 @@ public class TodosStructureCheckerTest implements WithAssertions {
 
     @Test
     public void ignoresExemptFile() throws Exception {
-        TodosStructureChecker todosStructureChecker = new TodosStructureChecker(TODOS_MUST_HAVE_DATE_REGEX, new TestWestieFileReader(), singletonList("io/github/tjheslin1/examples/todos/another/AnotherClassWithTodos.java"));
+        TodosStructureAnalyser todosStructureAnalyser = new TodosStructureAnalyser(TODOS_MUST_HAVE_DATE_REGEX, new TestWestieFileReader(), singletonList("io/github/tjheslin1/examples/todos/another/AnotherClassWithTodos.java"));
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/todos");
-        List<FileLineViolation> todoViolations = todosStructureChecker.checkAllTodosFollowExpectedStructure(pathToCheck);
+        List<FileLineViolation> todoViolations = todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck);
 
         assertThat(todoViolations.size()).isEqualTo(2);
         LineAssertions lineAssertions = new LineAssertions(todoViolations);

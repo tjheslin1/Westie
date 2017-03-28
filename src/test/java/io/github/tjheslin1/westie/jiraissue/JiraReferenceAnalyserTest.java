@@ -16,7 +16,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
-public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
+public class JiraReferenceAnalyserTest implements WithAssertions, WithMockito {
 
     private static final String JIRA_ISSUE_REGEX = "MON-[0-9]{3}";
     private static final String ISSUE_NUMBER = "MON-100";
@@ -28,10 +28,10 @@ public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
         when(jiraIssues.isJiraIssueInAllowedStatus(ISSUE_NUMBER)).thenReturn(false);
         when(jiraIssues.allowedStatuses()).thenReturn(asList("Ready To Play", "Development"));
 
-        JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, JIRA_ISSUE_REGEX, new TestWestieFileReader(), emptyList());
+        JiraReferenceAnalyser jiraReferenceAnalyser = new JiraReferenceAnalyser(jiraIssues, JIRA_ISSUE_REGEX, new TestWestieFileReader(), emptyList());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/jira");
-        List<FileLineViolation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(pathToCheck);
+        List<FileLineViolation> violations = jiraReferenceAnalyser.todosAreInAllowedStatuses(pathToCheck);
 
         assertThat(violations.size()).isEqualTo(3);
         LineAssertions lineAssertions = new LineAssertions(violations);
@@ -57,10 +57,10 @@ public class JiraReferenceCheckerTest implements WithAssertions, WithMockito {
         when(jiraIssues.isJiraIssueInAllowedStatus(ISSUE_NUMBER)).thenReturn(false);
         when(jiraIssues.allowedStatuses()).thenReturn(asList("Ready To Play", "Development"));
 
-        JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, JIRA_ISSUE_REGEX, new TestWestieFileReader(), singletonList("ClassWithJiraTodos.java"));
+        JiraReferenceAnalyser jiraReferenceAnalyser = new JiraReferenceAnalyser(jiraIssues, JIRA_ISSUE_REGEX, new TestWestieFileReader(), singletonList("ClassWithJiraTodos.java"));
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/jira");
-        List<FileLineViolation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(pathToCheck);
+        List<FileLineViolation> violations = jiraReferenceAnalyser.todosAreInAllowedStatuses(pathToCheck);
 
         assertThat(violations).isEmpty();
     }

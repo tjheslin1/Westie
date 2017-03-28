@@ -19,7 +19,7 @@ package io.github.tjheslin1.westie.environmentproperties;
 
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.FileViolation;
-import io.github.tjheslin1.westie.WestieChecker;
+import io.github.tjheslin1.westie.WestieAnalyser;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.FileInputStream;
@@ -41,13 +41,13 @@ import static java.util.stream.Collectors.toList;
  * <p>
  * Useful for enforcing that properties aren't missed between environment properties.
  */
-public class EnvironmentPropertiesChecker extends WestieChecker {
+public class EnvironmentPropertiesAnalyser extends WestieAnalyser {
 
-    public EnvironmentPropertiesChecker() {
+    public EnvironmentPropertiesAnalyser() {
         super();
     }
 
-    public EnvironmentPropertiesChecker(WestieFileReader fileReader, List<String> javaFilesToIgnore) {
+    public EnvironmentPropertiesAnalyser(WestieFileReader fileReader, List<String> javaFilesToIgnore) {
         super(fileReader, javaFilesToIgnore);
     }
 

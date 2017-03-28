@@ -1,9 +1,9 @@
 package io.github.tjheslin1.westie;
 
-import io.github.tjheslin1.westie.environmentproperties.EnvironmentPropertiesChecker;
+import io.github.tjheslin1.westie.environmentproperties.EnvironmentPropertiesAnalyser;
 import io.github.tjheslin1.westie.infrastructure.ApacheHttpClient;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
-import io.github.tjheslin1.westie.jiraissue.JiraReferenceChecker;
+import io.github.tjheslin1.westie.jiraissue.JiraReferenceAnalyser;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -30,9 +30,9 @@ public class WestieTest implements WithAssertions {
     @Ignore
     @Test
     public void allEnvironmentPropertiesFilesHaveTheSameKeys() throws Exception {
-        EnvironmentPropertiesChecker checker = new EnvironmentPropertiesChecker();
+        EnvironmentPropertiesAnalyser analyser = new EnvironmentPropertiesAnalyser();
 
-        List<FileViolation> violations = checker.propertiesProvidedForAllEnvironments(PROPERTIES_DIR);
+        List<FileViolation> violations = analyser.propertiesProvidedForAllEnvironments(PROPERTIES_DIR);
 
         assertThat(violations).isEmpty();
     }
@@ -42,9 +42,9 @@ public class WestieTest implements WithAssertions {
     @Test
     public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
         JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_HOSTNAME, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
-        JiraReferenceChecker jiraReferenceChecker = new JiraReferenceChecker(jiraIssues, "JIRA-[0-9]{3}");
+        JiraReferenceAnalyser jiraReferenceAnalyser = new JiraReferenceAnalyser(jiraIssues, "JIRA-[0-9]{3}");
 
-        List<FileLineViolation> violations = jiraReferenceChecker.todosAreInAllowedStatuses(BASE_PACKAGE);
+        List<FileLineViolation> violations = jiraReferenceAnalyser.todosAreInAllowedStatuses(BASE_PACKAGE);
 
         assertThat(violations).isEmpty();
     }
