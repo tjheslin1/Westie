@@ -60,41 +60,42 @@ public class EnvironmentPropertiesAnalyser extends WestieAnalyser {
      * @throws IOException if a problem reading the properties files occurs.
      */
     public List<FileViolation> propertiesProvidedForAllEnvironments(Path pathToCheck) throws IOException {
-        List<FileKeySet> fileKeySets = Files.walk(pathToCheck)
-                .filter(this::isAPropertiesFile)
-                .filter(this::notAnExemptFile)
-                .map(this::loadPropertiesKeys)
-                .collect(toList());
-
-        return compareAllKeySetsToFirst(fileKeySets);
+//        List<FileKeySet> fileKeySets = Files.walk(pathToCheck)
+//                .filter(this::isAPropertiesFile)
+//                .filter(this::notAnExemptFile)
+//                .map(this::loadPropertiesKeys)
+//                .collect(toList());
+//
+//        return compareAllKeySetsToFirst(fileKeySets);
+        return Collections.emptyList();
     }
 
-    private FileKeySet loadPropertiesKeys(Path file) {
-        Properties properties = new Properties();
-        try (FileInputStream fileInputStream = new FileInputStream(file.toFile())) {
-            properties.load(fileInputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-            FileLineViolation violation = new FileLineViolation(file, format("Unable to read properties file '%s'.",
-                    file.getFileName()), e.getMessage());
-            return fileKeySet(file, Collections.singleton(violation));
-        }
-
-        return fileKeySet(file, properties.keySet());
-    }
-
-    private List<FileViolation> compareAllKeySetsToFirst(List<FileKeySet> fileKeySets) {
-        List<FileViolation> violations = new ArrayList<>();
-        FileKeySet firstKeySet = fileKeySets.get(0);
-        for (FileKeySet fileKeySet : fileKeySets) {
-            if (!fileKeySet.keySet.equals(firstKeySet.keySet)) {
-                FileViolation violation = new FileViolation(fileKeySet.file,
-                        format("'%s' does not have matching property keys as '%s'",
-                                fileKeySet.file.getFileName(), firstKeySet.file.getFileName()));
-                violation.reportViolation();
-                violations.add(violation);
-            }
-        }
-        return violations;
-    }
+//    private FileKeySet loadPropertiesKeys(Path file) {
+//        Properties properties = new Properties();
+//        try (FileInputStream fileInputStream = new FileInputStream(file.toFile())) {
+//            properties.load(fileInputStream);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            FileLineViolation violation = new FileLineViolation(file, format("Unable to read properties file '%s'.",
+//                    file.getFileName()), e.getMessage());
+//            return fileKeySet(file, Collections.singleton(violation));
+//        }
+//
+//        return fileKeySet(file, properties.keySet());
+//    }
+//
+//    private List<FileViolation> compareAllKeySetsToFirst(List<FileKeySet> fileKeySets) {
+//        List<FileViolation> violations = new ArrayList<>();
+//        FileKeySet firstKeySet = fileKeySets.get(0);
+//        for (FileKeySet fileKeySet : fileKeySets) {
+//            if (!fileKeySet.keySet.equals(firstKeySet.keySet)) {
+//                FileViolation violation = new FileViolation(fileKeySet.file,
+//                        format("'%s' does not have matching property keys as '%s'",
+//                                fileKeySet.file.getFileName(), firstKeySet.file.getFileName()));
+//                violation.reportViolation();
+//                violations.add(violation);
+//            }
+//        }
+//        return violations;
+//    }
 }

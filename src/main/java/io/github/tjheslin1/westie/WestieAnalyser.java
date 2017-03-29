@@ -49,12 +49,12 @@ public class WestieAnalyser {
         this.filesToIgnore = filesToIgnore;
     }
 
-    public WestieFileLineAnalyser analyseDirectory(Path pathToCheck) {
+    public WestieAnalyserForDirectory analyseDirectory(Path pathToCheck) {
         if(!Files.isDirectory(pathToCheck)) {
             throw new IllegalArgumentException(format("Expected a directory. '%s' was provided.", pathToCheck));
         }
         this.pathToCheck = pathToCheck;
-        return new WestieFileLineAnalyser(fileReader, filesToIgnore, pathToCheck);
+        return new WestieAnalyserForDirectory(fileReader, filesToIgnore, pathToCheck);
     }
 
     /**

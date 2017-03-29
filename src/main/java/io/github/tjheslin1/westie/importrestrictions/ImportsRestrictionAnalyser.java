@@ -26,6 +26,7 @@ import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -58,42 +59,43 @@ public class ImportsRestrictionAnalyser extends WestieAnalyser {
      * @throws IOException if an I/O error occurs when opening the directory.
      */
     public List<Violation> checkImportsAreOnlyUsedInAcceptedPackages(Path pathToCheck) throws IOException {
-        return Files.walk(pathToCheck)
-                .filter(this::isAJavaFile)
-                .filter(this::notAnExemptFile)
-                .flatMap(this::verifyImports)
-                .peek(Violation::reportViolation)
-                .collect(toList());
+//        return Files.walk(pathToCheck)
+//                .filter(this::isAJavaFile)
+//                .filter(this::notAnExemptFile)
+//                .flatMap(this::verifyImports)
+//                .peek(Violation::reportViolation)
+//                .collect(toList());
+        return Collections.emptyList();
     }
 
-    private Stream<Violation> verifyImports(Path file) {
-        try {
-            List<String> lines = allFileLines(file);
-            if (lines.isEmpty()) {
-                return Stream.of(new FileViolation(file,
-                        "Empty file! - Should this file be in the list of ignored files? Or in a different directory?"));
-            }
-            String packageLine = lines.get(0);
-            return lines.stream()
-                    .filter(this::importLines)
-                    .filter(importLine -> importUsedOutsideOfAcceptedPackage(packageLine, importLine))
-                    .map(importLine -> new FileLineViolation(file, importLine, "Violation was caused by an import which " +
-                            "does not matching any of the import restrictions."));
-        } catch (IOException e) {
-            return Stream.of(new FileViolation(file, "Unable to read file.\n" + e.getMessage()));
-        }
-    }
-
-    private boolean importLines(String line) {
-        return line.startsWith("import ");
-    }
-
-    private boolean importUsedOutsideOfAcceptedPackage(String packageLine, String importLine) {
-        for (ImportRestriction importRestriction : importRestrictions) {
-            if (importLine.matches(importRestriction.importRegex)) {
-                return !packageLine.startsWith(format("package %s", importRestriction.packagePath));
-            }
-        }
-        return false;
-    }
+//    private Stream<Violation> verifyImports(Path file) {
+//        try {
+//            List<String> lines = allFileLines(file);
+//            if (lines.isEmpty()) {
+//                return Stream.of(new FileViolation(file,
+//                        "Empty file! - Should this file be in the list of ignored files? Or in a different directory?"));
+//            }
+//            String packageLine = lines.get(0);
+//            return lines.stream()
+//                    .filter(this::importLines)
+//                    .filter(importLine -> importUsedOutsideOfAcceptedPackage(packageLine, importLine))
+//                    .map(importLine -> new FileLineViolation(file, importLine, "Violation was caused by an import which " +
+//                            "does not matching any of the import restrictions."));
+//        } catch (IOException e) {
+//            return Stream.of(new FileViolation(file, "Unable to read file.\n" + e.getMessage()));
+//        }
+//    }
+//
+//    private boolean importLines(String line) {
+//        return line.startsWith("import ");
+//    }
+//
+//    private boolean importUsedOutsideOfAcceptedPackage(String packageLine, String importLine) {
+//        for (ImportRestriction importRestriction : importRestrictions) {
+//            if (importLine.matches(importRestriction.importRegex)) {
+//                return !packageLine.startsWith(format("package %s", importRestriction.packagePath));
+//            }
+//        }
+//        return false;
+//    }
 }

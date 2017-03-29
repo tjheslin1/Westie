@@ -25,6 +25,7 @@ import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,40 +65,40 @@ public class GitIssueAnalyser extends WestieAnalyser {
      * @throws IOException if an I/O error occurs when opening the directory.
      */
     public List<FileLineViolation> todosAreInOpenState(Path pathToCheck) throws IOException {
-        return Files.walk(pathToCheck)
-                .filter(this::isAJavaFile)
-                .filter(this::notAnExemptFile)
-                .flatMap(this::checkGitIssues)
-                .peek(FileLineViolation::reportViolation)
-                .collect(toList());
+//        return Files.walk(pathToCheck)
+//                .filter(this::isAJavaFile)
+//                .filter(this::notAnExemptFile)
+//                .flatMap(this::checkGitIssues)
+//                .peek(FileLineViolation::reportViolation)
+//                .collect(toList());
+        return Collections.emptyList();
     }
 
-    private Stream<FileLineViolation> checkGitIssues(Path file) {
-        try {
-            return allFileLines(file).stream()
-                    .filter(this::gitTodoLine)
-                    .filter(this::gitIssueIsInNotInTheOpenState)
-                    .map(gitTodoLine -> new FileLineViolation(file, gitTodoLine, "Violation was caused by a reference to a " +
-                            "Git issue which is not in the open state."));
-        } catch (IOException e) {
-            return Stream.of(new FileLineViolation(file, "Unable to read file.", e.getMessage()));
-        }
-    }
-
-    private boolean gitTodoLine(String line) {
-        return line.matches(format(GIT_TODO_REGEX_FORMAT, gitRegex));
-    }
-
-    private boolean gitIssueIsInNotInTheOpenState(String line) {
-        Pattern pattern = Pattern.compile(gitRegex);
-        Matcher matcher = pattern.matcher(line);
-
-        if (matcher.find()) {
-            String issue = matcher.group();
-            return !gitIssues.isGitIssueOpen(issue);
-        } else {
-            throw new IllegalStateException(format("Unable to find Git Issue in line '%s' using regex '%s'", line, gitRegex));
-        }
-    }
-
+//    private Stream<FileLineViolation> checkGitIssues(Path file) {
+//        try {
+//            return allFileLines(file).stream()
+//                    .filter(this::gitTodoLine)
+//                    .filter(this::gitIssueIsInNotInTheOpenState)
+//                    .map(gitTodoLine -> new FileLineViolation(file, gitTodoLine, "Violation was caused by a reference to a " +
+//                            "Git issue which is not in the open state."));
+//        } catch (IOException e) {
+//            return Stream.of(new FileLineViolation(file, "Unable to read file.", e.getMessage()));
+//        }
+//    }
+//
+//    private boolean gitTodoLine(String line) {
+//        return line.matches(format(GIT_TODO_REGEX_FORMAT, gitRegex));
+//    }
+//
+//    private boolean gitIssueIsInNotInTheOpenState(String line) {
+//        Pattern pattern = Pattern.compile(gitRegex);
+//        Matcher matcher = pattern.matcher(line);
+//
+//        if (matcher.find()) {
+//            String issue = matcher.group();
+//            return !gitIssues.isGitIssueOpen(issue);
+//        } else {
+//            throw new IllegalStateException(format("Unable to find Git Issue in line '%s' using regex '%s'", line, gitRegex));
+//        }
+//    }
 }

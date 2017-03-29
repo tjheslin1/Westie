@@ -1,7 +1,7 @@
 package io.github.tjheslin1.westie.todostructure;
 
-import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.LineAssertions;
+import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.testinfrastructure.TestWestieFileReader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
@@ -21,7 +21,9 @@ public class TodosStructureAnalyserTest implements WithAssertions {
         TodosStructureAnalyser todosStructureAnalyser = new TodosStructureAnalyser(TODOS_MUST_HAVE_DATE_REGEX, new TestWestieFileReader(), emptyList());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/todos");
-        List<FileLineViolation> todoViolations = todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck);
+        List<Violation> todoViolations = todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck);
+
+        todoViolations.forEach(System.out::println);
 
         assertThat(todoViolations.size()).isEqualTo(3);
         LineAssertions lineAssertions = new LineAssertions(todoViolations);
@@ -47,7 +49,7 @@ public class TodosStructureAnalyserTest implements WithAssertions {
         TodosStructureAnalyser todosStructureAnalyser = new TodosStructureAnalyser(TODOS_MUST_HAVE_DATE_REGEX, new TestWestieFileReader(), singletonList("io/github/tjheslin1/examples/todos/another/AnotherClassWithTodos.java"));
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/todos");
-        List<FileLineViolation> todoViolations = todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck);
+        List<Violation> todoViolations = todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck);
 
         assertThat(todoViolations.size()).isEqualTo(2);
         LineAssertions lineAssertions = new LineAssertions(todoViolations);
