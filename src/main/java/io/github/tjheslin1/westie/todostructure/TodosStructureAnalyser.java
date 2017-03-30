@@ -67,7 +67,7 @@ public class TodosStructureAnalyser {
                 .analyseDirectory(pathToCheck)
                 .forJavaFiles().ignoring(filesToIgnore)
                 //.lineByLine() // TODO
-                .analyse(this::todosFollowStructure,
+                .analyseLinesOfFile(this::todosFollowStructure,
                         "Violation was caused by the TODO not matching structure with regex: " + todosStructureRegex);
     }
 

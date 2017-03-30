@@ -1,6 +1,5 @@
 package io.github.tjheslin1.westie.jiraissue;
 
-import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.LineAssertions;
 import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.WithMockito;

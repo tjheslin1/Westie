@@ -77,7 +77,7 @@ public class JiraReferenceAnalyser {
     public List<Violation> todosAreInAllowedStatuses(Path pathToCheck, List<String> filesToIgnore) throws IOException {
         return westieAnalyser.analyseDirectory(pathToCheck)
                 .forJavaFiles().ignoring(filesToIgnore)
-                .analyse(this::checkJiraTodos, format("Violation was caused by a reference to a " +
+                .analyseLinesOfFile(this::checkJiraTodos, format("Violation was caused by a reference to a " +
                         "Jira issue which is not in any of the accepted statuses: '%s'.", jiraIssues.allowedStatuses()));
     }
 
