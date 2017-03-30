@@ -44,7 +44,7 @@ public class WestieTest implements WithAssertions {
         JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_HOSTNAME, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
         JiraReferenceAnalyser jiraReferenceAnalyser = new JiraReferenceAnalyser(jiraIssues, "JIRA-[0-9]{3}");
 
-        List<FileLineViolation> violations = jiraReferenceAnalyser.todosAreInAllowedStatuses(BASE_PACKAGE);
+        List<Violation> violations = jiraReferenceAnalyser.todosAreInAllowedStatuses(BASE_PACKAGE);
 
         assertThat(violations).isEmpty();
     }

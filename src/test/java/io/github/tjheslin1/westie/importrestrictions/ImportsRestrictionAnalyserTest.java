@@ -13,7 +13,6 @@ import java.util.List;
 
 import static io.github.tjheslin1.westie.importrestrictions.ImportRestriction.importRestriction;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 public class ImportsRestrictionAnalyserTest implements WithAssertions {
@@ -27,7 +26,7 @@ public class ImportsRestrictionAnalyserTest implements WithAssertions {
     @Test
     public void enforcesOnlySpecifiedPackagesCanUseCertainThirdPartyImports() throws Exception {
         List<ImportRestriction> importRestrictions = singletonList(MOCKITO_RESTRICTION);
-        ImportsRestrictionAnalyser importsRestrictionAnalyser = new ImportsRestrictionAnalyser(importRestrictions, new TestWestieFileReader(), emptyList());
+        ImportsRestrictionAnalyser importsRestrictionAnalyser = new ImportsRestrictionAnalyser(importRestrictions, new TestWestieFileReader());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties");
         List<Violation> violations = importsRestrictionAnalyser.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
@@ -49,10 +48,10 @@ public class ImportsRestrictionAnalyserTest implements WithAssertions {
     @Test
     public void enforcesMultiplePackageImportRestrictionsWithAnExemption() throws Exception {
         List<ImportRestriction> importRestrictions = asList(MOCKITO_RESTRICTION, APACHE_RESTRICITON);
-        ImportsRestrictionAnalyser importsRestrictionAnalyser = new ImportsRestrictionAnalyser(importRestrictions, new TestWestieFileReader(), singletonList("ClassWithUnacceptedThirdPartyImportToIgnore"));
+        ImportsRestrictionAnalyser importsRestrictionAnalyser = new ImportsRestrictionAnalyser(importRestrictions, new TestWestieFileReader());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties");
-        List<Violation> violations = importsRestrictionAnalyser.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
+        List<Violation> violations = importsRestrictionAnalyser.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck, singletonList("ClassWithUnacceptedThirdPartyImportToIgnore"));
 
         assertThat(violations.size()).isEqualTo(2);
         LineAssertions lineAssertions = new LineAssertions(violations);
@@ -71,10 +70,10 @@ public class ImportsRestrictionAnalyserTest implements WithAssertions {
     @Test
     public void reportsViolationForEmptyFile() throws Exception {
         List<ImportRestriction> importRestrictions = asList(MOCKITO_RESTRICTION, APACHE_RESTRICITON);
-        ImportsRestrictionAnalyser importsRestrictionAnalyser = new ImportsRestrictionAnalyser(importRestrictions, new TestWestieFileReader(), singletonList("ClassWithUnacceptedThirdPartyImportToIgnore"));
+        ImportsRestrictionAnalyser importsRestrictionAnalyser = new ImportsRestrictionAnalyser(importRestrictions, new TestWestieFileReader());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/empty");
-        List<Violation> violations = importsRestrictionAnalyser.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
+        List<Violation> violations = importsRestrictionAnalyser.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck, singletonList("ClassWithUnacceptedThirdPartyImportToIgnore"));
 
         assertThat(violations).hasSize(1);
         assertThat(violations.get(0)).isEqualTo(new FileViolation(pathToCheck.resolve("Empty.java"),

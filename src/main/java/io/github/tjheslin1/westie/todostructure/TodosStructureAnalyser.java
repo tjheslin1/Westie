@@ -42,14 +42,9 @@ public class TodosStructureAnalyser {
         this.westieAnalyser = new WestieAnalyser();
     }
 
-    public TodosStructureAnalyser(String todosStructureRegex, List<String> javaFilesToIgnore) {
+    public TodosStructureAnalyser(String todosStructureRegex, WestieFileReader fileReader) {
         this.todosStructureRegex = todosStructureRegex;
-        this.westieAnalyser = new WestieAnalyser(javaFilesToIgnore);
-    }
-
-    public TodosStructureAnalyser(String todosStructureRegex, List<String> javaFilesToIgnore, WestieFileReader fileReader) {
-        this.todosStructureRegex = todosStructureRegex;
-        this.westieAnalyser = new WestieAnalyser(javaFilesToIgnore, fileReader);
+        this.westieAnalyser = new WestieAnalyser(fileReader);
     }
 
     /**
@@ -58,23 +53,33 @@ public class TodosStructureAnalyser {
      * @throws IOException if an I/O error occurs when opening the directory.
      */
     public List<Violation> checkAllTodosFollowExpectedStructure(Path pathToCheck) throws IOException {
+        return checkAllTodosFollowExpectedStructure(pathToCheck);
+    }
+
+    /**
+     * @param pathToCheck   The package to check source files for to-do comments' structure.
+     * @param filesToIgnore
+     * @return A list of violations in which to-do comments do not follow the specified pattern.
+     * @throws IOException if an I/O error occurs when opening the directory.
+     */
+    public List<Violation> checkAllTodosFollowExpectedStructure(Path pathToCheck, List<String> filesToIgnore) throws IOException {
         return westieAnalyser
                 .analyseDirectory(pathToCheck)
-                .forJavaFiles()
+                .forJavaFiles().ignoring(filesToIgnore)
                 //.lineByLine() // TODO
                 .analyse(this::todosFollowStructure,
                         "Violation was caused by the TODO not matching structure with regex: " + todosStructureRegex);
     }
 
     private boolean todosFollowStructure(String fileLine) {
-        return lineContainsTodo(fileLine) && !lineConformsToStructure(fileLine);
+        return lineContainsTodo(fileLine) && lineDoesNotConformToStructure(fileLine);
     }
 
     private boolean lineContainsTodo(String line) {
         return line.matches(TODO_REGEX);
     }
 
-    private boolean lineConformsToStructure(String todoLine) {
-        return todoLine.matches(todosStructureRegex);
+    private boolean lineDoesNotConformToStructure(String todoLine) {
+        return !todoLine.matches(todosStructureRegex);
     }
 }

@@ -24,8 +24,9 @@ import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 /**
  * Enforces that the provided {@link ImportRestriction}'s are adhered to.
@@ -39,8 +40,8 @@ public class ImportsRestrictionAnalyser extends WestieAnalyser {
         this.importRestrictions = importRestrictions;
     }
 
-    public ImportsRestrictionAnalyser(List<ImportRestriction> importRestrictions, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
-        super(javaFilesToIgnore, fileReader);
+    public ImportsRestrictionAnalyser(List<ImportRestriction> importRestrictions, WestieFileReader fileReader) {
+        super(fileReader);
         this.importRestrictions = importRestrictions;
     }
 
@@ -53,13 +54,26 @@ public class ImportsRestrictionAnalyser extends WestieAnalyser {
      * @throws IOException if an I/O error occurs when opening the directory.
      */
     public List<Violation> checkImportsAreOnlyUsedInAcceptedPackages(Path pathToCheck) throws IOException {
+        return checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck, emptyList());
+    }
+
+    /**
+     * Checks the imports of all source files under the provided path to check.
+     *
+     * @param pathToCheck   The path of the package to be checked, all files within
+     *                      this package will be checked with the exception of the 'javaFilesToIgnore'.
+     * @param filesToIgnore TODO
+     * @return A list of {@link FileViolation}'s where imports have been used outside of their intended package.
+     * @throws IOException if an I/O error occurs when opening the directory.
+     */
+    public List<Violation> checkImportsAreOnlyUsedInAcceptedPackages(Path pathToCheck, List<String> filesToIgnore) throws IOException {
 //        return Files.walk(pathToCheck)
 //                .filter(this::isAJavaFile)
 //                .filter(this::notAnExemptFile)
 //                .flatMap(this::verifyImports)
 //                .peek(Violation::reportViolation)
 //                .collect(toList());
-        return Collections.emptyList();
+        return emptyList();
     }
 
 //    private Stream<Violation> verifyImports(Path file) {

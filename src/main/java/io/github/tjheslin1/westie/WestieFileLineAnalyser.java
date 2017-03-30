@@ -5,10 +5,12 @@ import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 public class WestieFileLineAnalyser {
@@ -16,13 +18,18 @@ public class WestieFileLineAnalyser {
     private final Path pathToCheck;
     private final String filetype;
     private final WestieFileReader fileReader;
-    private final List<String> filesToIgnore;
 
-    public WestieFileLineAnalyser(Path pathToCheck, String filetype, WestieFileReader fileReader, List<String> filesToIgnore) {
+    private List<String> filesToIgnore = emptyList();
+
+    public WestieFileLineAnalyser(Path pathToCheck, String filetype, WestieFileReader fileReader) {
         this.pathToCheck = pathToCheck;
         this.fileReader = fileReader;
         this.filetype = filetype;
-        this.filesToIgnore = filesToIgnore;
+    }
+
+    public WestieFileLineAnalyser ignoring(List<String> fileToIgnore) {
+        this.filesToIgnore = fileToIgnore;
+        return this;
     }
 
     public List<Violation> analyse(Predicate<String> analyseLineInFile, String violationMessage) throws IOException {

@@ -38,8 +38,8 @@ public class EnvironmentPropertiesAnalyser extends WestieAnalyser {
         super();
     }
 
-    public EnvironmentPropertiesAnalyser(WestieFileReader fileReader, List<String> javaFilesToIgnore) {
-        super(javaFilesToIgnore, fileReader);
+    public EnvironmentPropertiesAnalyser(WestieFileReader fileReader) {
+        super(fileReader);
     }
 
     /**

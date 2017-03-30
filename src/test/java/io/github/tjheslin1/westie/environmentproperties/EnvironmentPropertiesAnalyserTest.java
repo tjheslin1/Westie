@@ -10,11 +10,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static java.util.Collections.emptyList;
-
 public class EnvironmentPropertiesAnalyserTest implements WithAssertions {
 
-    private final EnvironmentPropertiesAnalyser environmentPropertiesAnalyser = new EnvironmentPropertiesAnalyser(new TestWestieFileReader(), emptyList());
+    private final EnvironmentPropertiesAnalyser environmentPropertiesAnalyser = new EnvironmentPropertiesAnalyser(new TestWestieFileReader());
 
     @Test
     public void checkAllEnvironmentSpecificPropertiesFilesHaveSameKeys() throws Exception {

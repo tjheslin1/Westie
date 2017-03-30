@@ -2,9 +2,10 @@ package io.github.tjheslin1.westie.jiraissue;
 
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.LineAssertions;
-import io.github.tjheslin1.westie.testinfrastructure.TestWestieFileReader;
+import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.WithMockito;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
+import io.github.tjheslin1.westie.testinfrastructure.TestWestieFileReader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -13,7 +14,6 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 public class JiraReferenceAnalyserTest implements WithAssertions, WithMockito {
@@ -28,10 +28,10 @@ public class JiraReferenceAnalyserTest implements WithAssertions, WithMockito {
         when(jiraIssues.isJiraIssueInAllowedStatus(ISSUE_NUMBER)).thenReturn(false);
         when(jiraIssues.allowedStatuses()).thenReturn(asList("Ready To Play", "Development"));
 
-        JiraReferenceAnalyser jiraReferenceAnalyser = new JiraReferenceAnalyser(jiraIssues, JIRA_ISSUE_REGEX, new TestWestieFileReader(), emptyList());
+        JiraReferenceAnalyser jiraReferenceAnalyser = new JiraReferenceAnalyser(jiraIssues, JIRA_ISSUE_REGEX, new TestWestieFileReader());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/jira");
-        List<FileLineViolation> violations = jiraReferenceAnalyser.todosAreInAllowedStatuses(pathToCheck);
+        List<Violation> violations = jiraReferenceAnalyser.todosAreInAllowedStatuses(pathToCheck);
 
         assertThat(violations.size()).isEqualTo(3);
         LineAssertions lineAssertions = new LineAssertions(violations);
@@ -57,10 +57,10 @@ public class JiraReferenceAnalyserTest implements WithAssertions, WithMockito {
         when(jiraIssues.isJiraIssueInAllowedStatus(ISSUE_NUMBER)).thenReturn(false);
         when(jiraIssues.allowedStatuses()).thenReturn(asList("Ready To Play", "Development"));
 
-        JiraReferenceAnalyser jiraReferenceAnalyser = new JiraReferenceAnalyser(jiraIssues, JIRA_ISSUE_REGEX, new TestWestieFileReader(), singletonList("ClassWithJiraTodos.java"));
+        JiraReferenceAnalyser jiraReferenceAnalyser = new JiraReferenceAnalyser(jiraIssues, JIRA_ISSUE_REGEX, new TestWestieFileReader());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/jira");
-        List<FileLineViolation> violations = jiraReferenceAnalyser.todosAreInAllowedStatuses(pathToCheck);
+        List<Violation> violations = jiraReferenceAnalyser.todosAreInAllowedStatuses(pathToCheck, singletonList("ClassWithJiraTodos.java"));
 
         assertThat(violations).isEmpty();
     }

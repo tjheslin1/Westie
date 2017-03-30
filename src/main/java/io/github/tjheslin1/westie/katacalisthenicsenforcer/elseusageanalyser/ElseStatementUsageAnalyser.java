@@ -6,8 +6,9 @@ import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 /**
  * Not yet in use.
@@ -18,21 +19,28 @@ public class ElseStatementUsageAnalyser extends WestieAnalyser {
         super();
     }
 
-    public ElseStatementUsageAnalyser(WestieFileReader fileReader, List<String> javaFilesToIgnore) {
-        super(javaFilesToIgnore, fileReader);
+    public ElseStatementUsageAnalyser(WestieFileReader fileReader) {
+        super( fileReader);
     }
 
     /**
      * Not yet in use.
      */
     public List<FileLineViolation> noUsageOfElseStatement(Path pathToCheck) throws IOException {
+        return noUsageOfElseStatement(pathToCheck, emptyList());
+    }
+
+    /**
+     * Not yet in use.
+     */
+    public List<FileLineViolation> noUsageOfElseStatement(Path pathToCheck, List<String> filesToIgnore) throws IOException {
 //        return Files.walk(pathToCheck)
 //                .filter(this::isAJavaFile)
 //                .filter(this::notAnExemptFile)
 //                .flatMap(this::checkElseStatementUsage)
 //                .peek(FileLineViolation::reportViolation)
 //                .collect(toList());
-        return Collections.emptyList();
+        return emptyList();
     }
 
 //    private Stream<FileLineViolation> checkElseStatementUsage(Path file) {

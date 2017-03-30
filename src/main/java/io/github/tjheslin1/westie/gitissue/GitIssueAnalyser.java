@@ -24,8 +24,9 @@ import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 /**
  * Checks that all Git issues referenced in to-do comments are in the
@@ -44,8 +45,8 @@ public class GitIssueAnalyser extends WestieAnalyser {
         this.gitRegex = gitRegex;
     }
 
-    public GitIssueAnalyser(GitIssues gitIssues, String gitRegex, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
-        super(javaFilesToIgnore, fileReader);
+    public GitIssueAnalyser(GitIssues gitIssues, String gitRegex, WestieFileReader fileReader) {
+        super(fileReader);
         this.gitIssues = gitIssues;
         this.gitRegex = gitRegex;
     }
@@ -57,14 +58,27 @@ public class GitIssueAnalyser extends WestieAnalyser {
      * which are not in the open state.
      * @throws IOException if an I/O error occurs when opening the directory.
      */
+
     public List<FileLineViolation> todosAreInOpenState(Path pathToCheck) throws IOException {
+        return todosAreInOpenState(pathToCheck, emptyList());
+    }
+
+    /**
+     * @param pathToCheck   The package to check source files for to-do comments
+     *                      which reference Git issues.
+     * @param filesToIgnore TODO
+     * @return A list of violations in which to-do comments are referencing Git issues
+     * which are not in the open state.
+     * @throws IOException if an I/O error occurs when opening the directory.
+     */
+    public List<FileLineViolation> todosAreInOpenState(Path pathToCheck, List<String> filesToIgnore) throws IOException {
 //        return Files.walk(pathToCheck)
 //                .filter(this::isAJavaFile)
 //                .filter(this::notAnExemptFile)
 //                .flatMap(this::checkGitIssues)
 //                .peek(FileLineViolation::reportViolation)
 //                .collect(toList());
-        return Collections.emptyList();
+        return emptyList();
     }
 
 //    private Stream<FileLineViolation> checkGitIssues(Path file) {

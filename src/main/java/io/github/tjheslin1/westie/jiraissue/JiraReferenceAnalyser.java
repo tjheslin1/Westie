@@ -17,37 +17,42 @@
  */
 package io.github.tjheslin1.westie.jiraissue;
 
-import io.github.tjheslin1.westie.FileLineViolation;
+import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.WestieAnalyser;
 import io.github.tjheslin1.westie.infrastructure.JiraIssues;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static java.lang.String.format;
+import static java.util.Collections.emptyList;
 
 /**
  * Checks that the status of all Jira issues, referenced in to-do comments,
  * are in an accepted state.
  */
-public class JiraReferenceAnalyser extends WestieAnalyser {
+public class JiraReferenceAnalyser {
 
     private static final String JIRA_TODO_REGEX_FORMAT = ".*//.*(T|t)(O|o)(D|d)(O|o).*%s.*";
 
     private final JiraIssues jiraIssues;
     private final String jiraRegex;
+    private final WestieAnalyser westieAnalyser;
 
     public JiraReferenceAnalyser(JiraIssues jiraIssues, String jiraRegex) {
-        super();
         this.jiraIssues = jiraIssues;
         this.jiraRegex = jiraRegex;
+        this.westieAnalyser = new WestieAnalyser();
     }
 
-    public JiraReferenceAnalyser(JiraIssues jiraIssues, String jiraRegex, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
-        super(javaFilesToIgnore, fileReader);
+    public JiraReferenceAnalyser(JiraIssues jiraIssues, String jiraRegex, WestieFileReader fileReader) {
         this.jiraIssues = jiraIssues;
         this.jiraRegex = jiraRegex;
+        this.westieAnalyser = new WestieAnalyser(fileReader);
     }
 
     /**
@@ -57,41 +62,42 @@ public class JiraReferenceAnalyser extends WestieAnalyser {
      * which are not in the list of accepted states, defined in {@link JiraIssues}.
      * @throws IOException if an I/O error occurs when opening the directory.
      */
-    public List<FileLineViolation> todosAreInAllowedStatuses(Path pathToCheck) throws IOException {
-//        return Files.walk(pathToCheck)
-//                .filter(this::isAJavaFile)
-//                .filter(this::notAnExemptFile)
-//                .flatMap(this::checkJiraTodos)
-//                .peek(FileLineViolation::reportViolation)
-//                .collect(toList());
-        return Collections.emptyList();
+    public List<Violation> todosAreInAllowedStatuses(Path pathToCheck) throws IOException {
+        return todosAreInAllowedStatuses(pathToCheck, emptyList());
     }
 
-//    private Stream<FileLineViolation> checkJiraTodos(Path file) {
-//        try {
-//            return allFileLines(file).stream()
-//                    .filter(this::jiraTodoLine)
-//                    .filter(this::jiraIssueInUnacceptedState)
-//                    .map(jiraTodoLine -> new FileLineViolation(file, jiraTodoLine, format("Violation was caused by a reference to a " +
-//                            "Jira issue which is not in any of the accepted statuses: '%s'.", jiraIssues.allowedStatuses())));
-//        } catch (IOException e) {
-//            return Stream.of(new FileLineViolation(file, "Unable to read file.", e.getMessage()));
-//        }
-//    }
-//
-//    private boolean jiraTodoLine(String line) {
-//        return line.matches(format(JIRA_TODO_REGEX_FORMAT, jiraRegex));
-//    }
-//
-//    private boolean jiraIssueInUnacceptedState(String line) {
-//        Pattern pattern = Pattern.compile(jiraRegex);
-//        Matcher matcher = pattern.matcher(line);
-//
-//        if (matcher.find()) {
-//            String jiraIssue = matcher.group();
-//            return !jiraIssues.isJiraIssueInAllowedStatus(jiraIssue);
-//        } else {
-//            throw new IllegalStateException(format("Unable to find Jira Issue in line '%s' using regex '%s'", line, jiraRegex));
-//        }
-//    }
+    /**
+     * @param pathToCheck   The package to check source files for to-do comments
+     *                      which reference Jira issues.
+     * @param filesToIgnore TODO
+     * @return A list of violations in which to-do comments are referencing Jira issues
+     * which are not in the list of accepted states, defined in {@link JiraIssues}.
+     * @throws IOException if an I/O error occurs when opening the directory.
+     */
+    public List<Violation> todosAreInAllowedStatuses(Path pathToCheck, List<String> filesToIgnore) throws IOException {
+        return westieAnalyser.analyseDirectory(pathToCheck)
+                .forJavaFiles().ignoring(filesToIgnore)
+                .analyse(this::checkJiraTodos, format("Violation was caused by a reference to a " +
+                        "Jira issue which is not in any of the accepted statuses: '%s'.", jiraIssues.allowedStatuses()));
+    }
+
+    private boolean checkJiraTodos(String fileLine) {
+        return isJiraTodoLine(fileLine) && jiraIssueInUnacceptedState(fileLine);
+    }
+
+    private boolean isJiraTodoLine(String line) {
+        return line.matches(format(JIRA_TODO_REGEX_FORMAT, jiraRegex));
+    }
+
+    private boolean jiraIssueInUnacceptedState(String line) {
+        Pattern pattern = Pattern.compile(jiraRegex);
+        Matcher matcher = pattern.matcher(line);
+
+        if (matcher.find()) {
+            String jiraIssue = matcher.group();
+            return !jiraIssues.isJiraIssueInAllowedStatus(jiraIssue);
+        } else {
+            throw new IllegalStateException(format("Unable to find Jira Issue in line '%s' using regex '%s'", line, jiraRegex));
+        }
+    }
 }

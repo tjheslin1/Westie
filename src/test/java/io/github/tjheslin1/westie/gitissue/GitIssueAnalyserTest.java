@@ -2,9 +2,9 @@ package io.github.tjheslin1.westie.gitissue;
 
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.LineAssertions;
-import io.github.tjheslin1.westie.testinfrastructure.TestWestieFileReader;
 import io.github.tjheslin1.westie.WithMockito;
 import io.github.tjheslin1.westie.infrastructure.GitIssues;
+import io.github.tjheslin1.westie.testinfrastructure.TestWestieFileReader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -12,7 +12,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 public class GitIssueAnalyserTest implements WithAssertions, WithMockito {
@@ -21,10 +20,10 @@ public class GitIssueAnalyserTest implements WithAssertions, WithMockito {
 
     @Test
     public void checksGitIssueIsInOpenState() throws Exception {
-        GitIssueAnalyser gitIssueAnalyser = new GitIssueAnalyser(gitIssues, "Git-[0-9]{1,4}", new TestWestieFileReader(), emptyList());
+        GitIssueAnalyser gitIssueAnalyser = new GitIssueAnalyser(gitIssues, "Git-[0-9]{1,4}", new TestWestieFileReader());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/git");
-        List<FileLineViolation> violations = gitIssueAnalyser.todosAreInOpenState(pathToCheck);
+        List<FileLineViolation> violations = gitIssueAnalyser.todosAreInOpenState(pathToCheck, singletonList("AnotherClassWithGitIssueTodo.java"));
 
         assertThat(violations).hasSize(4);
         LineAssertions lineMatchAssertions = new LineAssertions(violations);
@@ -52,7 +51,7 @@ public class GitIssueAnalyserTest implements WithAssertions, WithMockito {
 
     @Test
     public void ignoresExcludedFiles() throws Exception {
-        GitIssueAnalyser gitIssueAnalyser = new GitIssueAnalyser(gitIssues, "Git-[0-9]{1,4}", new TestWestieFileReader(), singletonList("AnotherClassWithGitIssueTodo.java"));
+        GitIssueAnalyser gitIssueAnalyser = new GitIssueAnalyser(gitIssues, "Git-[0-9]{1,4}", new TestWestieFileReader());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/git");
         List<FileLineViolation> violations = gitIssueAnalyser.todosAreInOpenState(pathToCheck);

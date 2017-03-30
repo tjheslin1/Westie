@@ -11,14 +11,13 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import static io.github.tjheslin1.westie.WestieRegexes.TODOS_MUST_HAVE_DATE_REGEX;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 public class TodosStructureAnalyserTest implements WithAssertions {
 
     @Test
     public void findsTodosComments() throws Exception {
-        TodosStructureAnalyser todosStructureAnalyser = new TodosStructureAnalyser(TODOS_MUST_HAVE_DATE_REGEX, emptyList(), new TestWestieFileReader());
+        TodosStructureAnalyser todosStructureAnalyser = new TodosStructureAnalyser(TODOS_MUST_HAVE_DATE_REGEX, new TestWestieFileReader());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/todos");
         List<Violation> todoViolations = todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck);
@@ -46,10 +45,10 @@ public class TodosStructureAnalyserTest implements WithAssertions {
 
     @Test
     public void ignoresExemptFile() throws Exception {
-        TodosStructureAnalyser todosStructureAnalyser = new TodosStructureAnalyser(TODOS_MUST_HAVE_DATE_REGEX, singletonList("io/github/tjheslin1/examples/todos/another/AnotherClassWithTodos.java"), new TestWestieFileReader());
+        TodosStructureAnalyser todosStructureAnalyser = new TodosStructureAnalyser(TODOS_MUST_HAVE_DATE_REGEX, new TestWestieFileReader());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/todos");
-        List<Violation> todoViolations = todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck);
+        List<Violation> todoViolations = todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck, singletonList("io/github/tjheslin1/examples/todos/another/AnotherClassWithTodos.java"));
 
         todoViolations.forEach(System.out::println);
 
