@@ -18,7 +18,7 @@ public class TodosStructureAnalyserTest implements WithAssertions {
 
     @Test
     public void findsTodosComments() throws Exception {
-        TodosStructureAnalyser todosStructureAnalyser = new TodosStructureAnalyser(TODOS_MUST_HAVE_DATE_REGEX, new TestWestieFileReader(), emptyList());
+        TodosStructureAnalyser todosStructureAnalyser = new TodosStructureAnalyser(TODOS_MUST_HAVE_DATE_REGEX, emptyList(), new TestWestieFileReader());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/todos");
         List<Violation> todoViolations = todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck);
@@ -46,10 +46,12 @@ public class TodosStructureAnalyserTest implements WithAssertions {
 
     @Test
     public void ignoresExemptFile() throws Exception {
-        TodosStructureAnalyser todosStructureAnalyser = new TodosStructureAnalyser(TODOS_MUST_HAVE_DATE_REGEX, new TestWestieFileReader(), singletonList("io/github/tjheslin1/examples/todos/another/AnotherClassWithTodos.java"));
+        TodosStructureAnalyser todosStructureAnalyser = new TodosStructureAnalyser(TODOS_MUST_HAVE_DATE_REGEX, singletonList("io/github/tjheslin1/examples/todos/another/AnotherClassWithTodos.java"), new TestWestieFileReader());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/todos");
         List<Violation> todoViolations = todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck);
+
+        todoViolations.forEach(System.out::println);
 
         assertThat(todoViolations.size()).isEqualTo(2);
         LineAssertions lineAssertions = new LineAssertions(todoViolations);

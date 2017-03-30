@@ -17,23 +17,14 @@
  */
 package io.github.tjheslin1.westie.environmentproperties;
 
-import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.WestieAnalyser;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Properties;
-
-import static io.github.tjheslin1.westie.environmentproperties.FileKeySet.fileKeySet;
-import static java.lang.String.format;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Checks that all `.properties` files under a provided directory share
@@ -48,7 +39,7 @@ public class EnvironmentPropertiesAnalyser extends WestieAnalyser {
     }
 
     public EnvironmentPropertiesAnalyser(WestieFileReader fileReader, List<String> javaFilesToIgnore) {
-        super(fileReader, javaFilesToIgnore);
+        super(javaFilesToIgnore, fileReader);
     }
 
     /**

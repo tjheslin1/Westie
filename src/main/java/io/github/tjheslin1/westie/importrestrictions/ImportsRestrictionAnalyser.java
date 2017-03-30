@@ -17,21 +17,15 @@
  */
 package io.github.tjheslin1.westie.importrestrictions;
 
-import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.WestieAnalyser;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
-
-import static java.lang.String.format;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Enforces that the provided {@link ImportRestriction}'s are adhered to.
@@ -46,7 +40,7 @@ public class ImportsRestrictionAnalyser extends WestieAnalyser {
     }
 
     public ImportsRestrictionAnalyser(List<ImportRestriction> importRestrictions, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
-        super(fileReader, javaFilesToIgnore);
+        super(javaFilesToIgnore, fileReader);
         this.importRestrictions = importRestrictions;
     }
 

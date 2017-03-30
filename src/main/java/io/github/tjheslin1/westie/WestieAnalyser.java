@@ -32,7 +32,7 @@ import static java.util.Collections.emptyList;
  */
 public class WestieAnalyser {
 
-    private static final WestieCachedFileReader CACHED_FILE_READER = new WestieCachedFileReader();
+    public static final WestieCachedFileReader CACHED_FILE_READER = new WestieCachedFileReader();
 
     private final WestieFileReader fileReader;
     private final List<String> filesToIgnore;
@@ -44,7 +44,12 @@ public class WestieAnalyser {
         this.filesToIgnore = emptyList();
     }
 
-    public WestieAnalyser(WestieFileReader fileReader, List<String> filesToIgnore) {
+    public WestieAnalyser(List<String> filesToIgnore) {
+        this.fileReader = CACHED_FILE_READER;
+        this.filesToIgnore = filesToIgnore;
+    }
+
+    public WestieAnalyser(List<String> filesToIgnore, WestieFileReader fileReader) {
         this.fileReader = fileReader;
         this.filesToIgnore = filesToIgnore;
     }

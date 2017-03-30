@@ -18,6 +18,6 @@ public class KataCalisthenicsAnalyser extends WestieAnalyser {
      * Not yet in use.
      */
     public KataCalisthenicsAnalyser(WestieFileReader fileReader, List<String> javaFilesToIgnore) {
-        super(fileReader, javaFilesToIgnore);
+        super(javaFilesToIgnore, fileReader);
     }
 }

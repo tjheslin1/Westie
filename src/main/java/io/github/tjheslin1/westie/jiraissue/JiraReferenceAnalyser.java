@@ -23,16 +23,9 @@ import io.github.tjheslin1.westie.infrastructure.JiraIssues;
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
-
-import static java.lang.String.format;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Checks that the status of all Jira issues, referenced in to-do comments,
@@ -52,7 +45,7 @@ public class JiraReferenceAnalyser extends WestieAnalyser {
     }
 
     public JiraReferenceAnalyser(JiraIssues jiraIssues, String jiraRegex, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
-        super(fileReader, javaFilesToIgnore);
+        super(javaFilesToIgnore, fileReader);
         this.jiraIssues = jiraIssues;
         this.jiraRegex = jiraRegex;
     }

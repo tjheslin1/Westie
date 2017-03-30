@@ -32,18 +32,24 @@ import static io.github.tjheslin1.westie.WestieRegexes.TODO_REGEX;
  * <p>
  * For example: to-dos must contain a date in the format specified by a regex.
  */
-public class TodosStructureAnalyser extends WestieAnalyser {
+public class TodosStructureAnalyser {
 
     private final String todosStructureRegex;
+    private final WestieAnalyser westieAnalyser;
 
     public TodosStructureAnalyser(String todosStructureRegex) {
-        super();
         this.todosStructureRegex = todosStructureRegex;
+        this.westieAnalyser = new WestieAnalyser();
     }
 
-    public TodosStructureAnalyser(String todosStructureRegex, WestieFileReader fileReader, List<String> javaFilesToIgnore) {
-        super(fileReader, javaFilesToIgnore);
+    public TodosStructureAnalyser(String todosStructureRegex, List<String> javaFilesToIgnore) {
         this.todosStructureRegex = todosStructureRegex;
+        this.westieAnalyser = new WestieAnalyser(javaFilesToIgnore);
+    }
+
+    public TodosStructureAnalyser(String todosStructureRegex, List<String> javaFilesToIgnore, WestieFileReader fileReader) {
+        this.todosStructureRegex = todosStructureRegex;
+        this.westieAnalyser = new WestieAnalyser(javaFilesToIgnore, fileReader);
     }
 
     /**
@@ -52,7 +58,7 @@ public class TodosStructureAnalyser extends WestieAnalyser {
      * @throws IOException if an I/O error occurs when opening the directory.
      */
     public List<Violation> checkAllTodosFollowExpectedStructure(Path pathToCheck) throws IOException {
-        return new WestieAnalyser()
+        return westieAnalyser
                 .analyseDirectory(pathToCheck)
                 .forJavaFiles()
                 //.lineByLine() // TODO
