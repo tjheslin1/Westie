@@ -22,8 +22,6 @@ public class TodosStructureAnalyserTest implements WithAssertions {
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/todos");
         List<Violation> todoViolations = todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck);
 
-        todoViolations.forEach(System.out::println);
-
         assertThat(todoViolations.size()).isEqualTo(3);
         LineAssertions lineAssertions = new LineAssertions(todoViolations);
         lineAssertions.containsViolationMessage("Violation in file 'AnotherClassWithTodos.java'\n" +
@@ -49,8 +47,6 @@ public class TodosStructureAnalyserTest implements WithAssertions {
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/todos");
         List<Violation> todoViolations = todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck, singletonList("io/github/tjheslin1/examples/todos/another/AnotherClassWithTodos.java"));
-
-        todoViolations.forEach(System.out::println);
 
         assertThat(todoViolations.size()).isEqualTo(2);
         LineAssertions lineAssertions = new LineAssertions(todoViolations);

@@ -69,7 +69,7 @@ public class JiraReferenceAnalyser {
     /**
      * @param pathToCheck   The package to check source files for to-do comments
      *                      which reference Jira issues.
-     * @param filesToIgnore TODO
+     * @param filesToIgnore files exempt from analysis.
      * @return A list of violations in which to-do comments are referencing Jira issues
      * which are not in the list of accepted states, defined in {@link JiraIssues}.
      * @throws IOException if an I/O error occurs when opening the directory.

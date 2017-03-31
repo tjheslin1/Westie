@@ -26,7 +26,7 @@ import java.nio.file.Path;
 import static java.lang.String.format;
 
 /**
- * Base class of a static analysis test with useful methods to reuse.
+ * Starting point of the analysis API.
  */
 public class WestieAnalyser {
 
@@ -42,6 +42,12 @@ public class WestieAnalyser {
         this.fileReader = fileReader;
     }
 
+    /**
+     * Analyse all regular files, recursively, under the given directory.
+     *
+     * @param pathToCheck The directory under which to recursively search and apply analysis on files.
+     * @return A {@link WestieAnalyserForDirectory} using the provided or default {@link WestieFileReader}.
+     */
     public WestieAnalyserForDirectory analyseDirectory(Path pathToCheck) {
         if(!Files.isDirectory(pathToCheck)) {
             throw new IllegalArgumentException(format("Expected a directory. '%s' was provided.", pathToCheck));

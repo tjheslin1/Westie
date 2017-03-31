@@ -26,23 +26,27 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
+import static java.lang.String.format;
 import static java.util.Collections.emptyList;
 
 /**
  * Enforces that the provided {@link ImportRestriction}'s are adhered to.
  */
-public class ImportsRestrictionAnalyser extends WestieAnalyser {
+public class ImportsRestrictionAnalyser {
 
     private final List<ImportRestriction> importRestrictions;
+    private final WestieAnalyser westieAnalyser;
+
+    private String packageLine;
 
     public ImportsRestrictionAnalyser(List<ImportRestriction> importRestrictions) {
-        super();
         this.importRestrictions = importRestrictions;
+        this.westieAnalyser = new WestieAnalyser();
     }
 
     public ImportsRestrictionAnalyser(List<ImportRestriction> importRestrictions, WestieFileReader fileReader) {
-        super(fileReader);
         this.importRestrictions = importRestrictions;
+        this.westieAnalyser = new WestieAnalyser(fileReader);
     }
 
     /**
@@ -62,48 +66,35 @@ public class ImportsRestrictionAnalyser extends WestieAnalyser {
      *
      * @param pathToCheck   The path of the package to be checked, all files within
      *                      this package will be checked with the exception of the 'javaFilesToIgnore'.
-     * @param filesToIgnore TODO
+     * @param filesToIgnore files exempt from analysis.
      * @return A list of {@link FileViolation}'s where imports have been used outside of their intended package.
      * @throws IOException if an I/O error occurs when opening the directory.
      */
     public List<Violation> checkImportsAreOnlyUsedInAcceptedPackages(Path pathToCheck, List<String> filesToIgnore) throws IOException {
-//        return Files.walk(pathToCheck)
-//                .filter(this::isAJavaFile)
-//                .filter(this::notAnExemptFile)
-//                .flatMap(this::verifyImports)
-//                .peek(Violation::reportViolation)
-//                .collect(toList());
-        return emptyList();
+        return westieAnalyser.analyseDirectory(pathToCheck)
+                .forJavaFiles().ignoring(filesToIgnore)
+                .analyseLinesOfFile(this::verifyImports, "Violation was caused by the above import which " +
+                        "was used outside of its accepted package.");
     }
 
-//    private Stream<Violation> verifyImports(Path file) {
-//        try {
-//            List<String> lines = allFileLines(file);
-//            if (lines.isEmpty()) {
-//                return Stream.of(new FileViolation(file,
-//                        "Empty file! - Should this file be in the list of ignored files? Or in a different directory?"));
-//            }
-//            String packageLine = lines.get(0);
-//            return lines.stream()
-//                    .filter(this::importLines)
-//                    .filter(importLine -> importUsedOutsideOfAcceptedPackage(packageLine, importLine))
-//                    .map(importLine -> new FileLineViolation(file, importLine, "Violation was caused by an import which " +
-//                            "does not matching any of the import restrictions."));
-//        } catch (IOException e) {
-//            return Stream.of(new FileViolation(file, "Unable to read file.\n" + e.getMessage()));
-//        }
-//    }
-//
-//    private boolean importLines(String line) {
-//        return line.startsWith("import ");
-//    }
-//
-//    private boolean importUsedOutsideOfAcceptedPackage(String packageLine, String importLine) {
-//        for (ImportRestriction importRestriction : importRestrictions) {
-//            if (importLine.matches(importRestriction.importRegex)) {
-//                return !packageLine.startsWith(format("package %s", importRestriction.packagePath));
-//            }
-//        }
-//        return false;
-//    }
+    private boolean verifyImports(String line) {
+        if (packageLine == null && line.startsWith("package")) {
+            packageLine = line;
+        }
+
+        return isImportLine(line) && importUsedOutsideOfAcceptedPackage(packageLine, line);
+    }
+
+    private boolean isImportLine(String line) {
+        return line.startsWith("import ");
+    }
+
+    private boolean importUsedOutsideOfAcceptedPackage(String packageLine, String importLine) {
+        for (ImportRestriction importRestriction : importRestrictions) {
+            if (importLine.matches(importRestriction.importRegex)) {
+                return !packageLine.startsWith(format("package %s", importRestriction.packagePath));
+            }
+        }
+        return false;
+    }
 }

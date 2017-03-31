@@ -6,8 +6,8 @@ Westie is a tool for creating your own custom static analysis checks.
 
 The project contains already provided checks which can be used straight away.
 
-All provided Analysers extend [WestieAnalyser.java](src/main/java/io/github/tjheslin1/westie/WestieAnalyser.java), which
-contains useful functions for creating your own static analysis checks for your project and team.
+All provided Analysers utlise [WestieAnalyser.java](src/main/java/io/github/tjheslin1/westie/WestieAnalyser.java), which
+is the entrypoint to a fluent API with useful functions for creating your own static analysis checks for your team, on your projects.
 
 ## Examples of provided static analysis analysers:
 
@@ -16,26 +16,38 @@ contains useful functions for creating your own static analysis checks for your 
 @Ignore
 @Test
 public void allEnvironmentPropertiesFilesHaveTheSameKeys() throws Exception {
-    EnvironmentPropertiesAnalyser analyser = new EnvironmentPropertiesAnalyser();
-
-    List<FileViolation> violations = analyser.propertiesProvidedForAllEnvironments(PROPERTIES_DIR);
+    List<FileViolation> violations = new EnvironmentPropertiesAnalyser()
+            .propertiesProvidedForAllEnvironments(PROPERTIES_DIR);
 
     assertThat(violations).isEmpty();
 }
 ```
+_No more forgetting to add a url to all your environment's configurations. Your build will instead fail._
 
 ### _JiraReferenceAnalyser_ ensures that Jira issues referenced are in an accepted status (e.g only in Development stage).
 ```java
 @Test
 public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
-    JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_HOSTNAME, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
-    JiraReferenceAnalyser jiraReferenceAnalyser = new JiraReferenceAnalyser(jiraIssues, "JIRA-[0-9]{3}");
-
-    List<FileLineViolation> violations = jiraReferenceAnalyser.todosAreInAllowedStatuses(BASE_PACKAGE);
-
+    List<Violation> violations = new JiraReferenceAnalyser(jiraIssues, JIRA_STORY_REGEX)
+            .todosAreInAllowedStatuses(BASE_PACKAGE);
+    
     assertThat(violations).isEmpty();
 }
+
+// below is part of 'JiraReferenceAnalyser.java'
+private List<Violation> todosAreInAllowedStatuses(Path pathToCheck, List<String> filesToIgnore) throws IOException {
+    return new WestieAnalyser().analyseDirectory(pathToCheck)
+            .forJavaFiles().ignoring(filesToIgnore)
+            .analyseLinesOfFile(this::checkJiraTodos, format("Violation was caused by a reference to a " +
+                    "Jira issue which is not in any of the accepted statuses: '%s'.", jiraIssues.allowedStatuses()));
+}
+
+private boolean checkJiraTodos(String fileLine) {
+    return isJiraTodoLine(fileLine) && jiraIssueInUnacceptedState(fileLine);
+}
+...
 ```
+_No more forgetting to complete TODOs as part of your Jira story. Your build will instead fail._
 
 ## How do I get it?
 
@@ -44,15 +56,15 @@ public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
 <dependency>
     <groupId>io.github.tjheslin1</groupId>
     <artifactId>Westie</artifactId>
-    <version>1.2</version>
+    <version>1.3</version>
 </dependency>
 ```
 ### Gradle
 ```groovy
-compile 'io.github.tjheslin1:Westie:1.2'
+compile 'io.github.tjheslin1:Westie:1.3'
 ```
 ### SBT
 ```scala
-libraryDependencies += "io.github.tjheslin1" % "Westie" % "1.2"
+libraryDependencies += "io.github.tjheslin1" % "Westie" % "1.3"
 ```
 

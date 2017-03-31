@@ -45,7 +45,7 @@ public class WestieCachedFileReaderTest implements WithAssertions, WithMockito {
     public void reusesCacheBetweenAnalysers() throws Exception {
         when(fileLinesReader.readAllLines(any())).thenReturn(emptyList());
 
-        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/lineReading/ReadMyLines.java");
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/lineReading");
 
         WestieCachedFileReader fileReader = new WestieCachedFileReader(fileLinesReader);
 
@@ -55,7 +55,7 @@ public class WestieCachedFileReaderTest implements WithAssertions, WithMockito {
         todosStructureAnalyser.checkAllTodosFollowExpectedStructure(pathToCheck, emptyList());
         importsRestrictionChecker.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
 
-        Mockito.verify(fileLinesReader).readAllLines(pathToCheck);
+        Mockito.verify(fileLinesReader).readAllLines(pathToCheck.resolve("ReadMyLines.java"));
         verifyNoMoreInteractions(fileLinesReader);
     }
 }

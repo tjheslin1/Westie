@@ -26,6 +26,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static io.github.tjheslin1.westie.WestieRegexes.TODO_REGEX;
+import static java.util.Collections.emptyList;
 
 /**
  * Enforces that to-do comments follow a structure.
@@ -53,12 +54,12 @@ public class TodosStructureAnalyser {
      * @throws IOException if an I/O error occurs when opening the directory.
      */
     public List<Violation> checkAllTodosFollowExpectedStructure(Path pathToCheck) throws IOException {
-        return checkAllTodosFollowExpectedStructure(pathToCheck);
+        return checkAllTodosFollowExpectedStructure(pathToCheck, emptyList());
     }
 
     /**
      * @param pathToCheck   The package to check source files for to-do comments' structure.
-     * @param filesToIgnore
+     * @param filesToIgnore files exempt from analysis.
      * @return A list of violations in which to-do comments do not follow the specified pattern.
      * @throws IOException if an I/O error occurs when opening the directory.
      */
@@ -66,7 +67,6 @@ public class TodosStructureAnalyser {
         return westieAnalyser
                 .analyseDirectory(pathToCheck)
                 .forJavaFiles().ignoring(filesToIgnore)
-                //.lineByLine() // TODO
                 .analyseLinesOfFile(this::todosFollowStructure,
                         "Violation was caused by the TODO not matching structure with regex: " + todosStructureRegex);
     }

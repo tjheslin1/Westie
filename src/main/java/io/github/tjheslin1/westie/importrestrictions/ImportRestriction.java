@@ -42,12 +42,12 @@ public class ImportRestriction extends ValueType {
     /**
      * Static constructor.
      *
-     * @param packagePath The package in which the import can only be used in.
-     * @param importRegex The regex matching against imports which can only be used in this packagePath and under it.
+     * @param acceptedPackagePath The package in which the import can only be used in.
+     * @param importRegex The regex matching against imports which can only be used in this acceptedPackagePath and under it.
      * @return A {@link ImportRestriction} instance matching the provided import regex to all java files in the
      * provided package.
      */
-    public static ImportRestriction importRestriction(String packagePath, String importRegex) {
-        return new ImportRestriction(packagePath, importRegex);
+    public static ImportRestriction importRestriction(String acceptedPackagePath, String importRegex) {
+        return new ImportRestriction(acceptedPackagePath, importRegex);
     }
 }

@@ -1,3 +1,20 @@
+/*
+ * Copyright 2017 Thomas Heslin <tjheslin1@gmail.com>.
+ *
+ * This file is part of Westie.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.github.tjheslin1.westie;
 
 import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
@@ -13,6 +30,10 @@ import java.util.stream.Stream;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Runs your provided analysis, in the form of a {@link Predicate} which should return 'true' if analysis fails,
+ * on files under a directory {@link WestieAnalyser} provided to {@link WestieAnalyser}.
+ */
 public class WestieFileLineAnalyser {
 
     private final Path pathToCheck;
@@ -27,11 +48,28 @@ public class WestieFileLineAnalyser {
         this.filetype = filetype;
     }
 
+    /**
+     * Sets the files to ignore from analysis.
+     *
+     * @param fileToIgnore The files, by name, exempty from analysis.
+     * @return this {@link WestieFileLineAnalyser} back with 'fileToIgnore' set to the provided list.
+     */
     public WestieFileLineAnalyser ignoring(List<String> fileToIgnore) {
         this.filesToIgnore = fileToIgnore;
         return this;
     }
 
+    /**
+     * Analyses the files under the directory provided in {@link WestieAnalyser},
+     * applying the provided {@link Predicate}.
+     *
+     * @param analyseFile      The function to apply to the file as a whole.
+     *                         The {@link Predicate}, 'analyseFile', takes the {@link Path} to one of the files under the directory to analyse.
+     *                         The {@link Predicate} should return true if the file fails the analysis check.
+     * @param violationMessage The message to print if a file under the provided directory fails analysis.
+     * @return The a list of {@link Violation} for the files which have failed analysis.
+     * @throws IOException if an I/O error is thrown when accessing the file.
+     */
     public List<Violation> analyseFile(Predicate<Path> analyseFile, String violationMessage) throws IOException {
         return Files.walk(pathToCheck)
                 .filter(this::isFileToAnalyse)
@@ -39,6 +77,17 @@ public class WestieFileLineAnalyser {
                 .collect(toList());
     }
 
+    /**
+     * Analyses the files under the directory provided in {@link WestieAnalyser},
+     * applying the provided {@link Predicate}.
+     *
+     * @param analyseFile      The function to apply to the file as a whole.
+     *                         The {@link Predicate}, 'analyseFile', takes the content of one of the file's under the directory, as a String.
+     *                         The {@link Predicate} should return true if the file fails the analysis check.
+     * @param violationMessage The message to print if a file under the provided directory fails analysis.
+     * @return The a list of {@link Violation} for the files which have failed analysis.
+     * @throws IOException if an I/O error is thrown when accessing the file.
+     */
     public List<Violation> analyseFileContent(Predicate<String> analyseFile, String violationMessage) throws IOException {
         return Files.walk(pathToCheck)
                 .filter(this::isFileToAnalyse)
@@ -46,6 +95,17 @@ public class WestieFileLineAnalyser {
                 .collect(toList());
     }
 
+    /**
+     * Analyses the files under the directory provided in {@link WestieAnalyser},
+     * applying the provided {@link Predicate}.
+     *
+     * @param analyseLineInFile The function to apply to each line in each file to be analysed.
+     *                          The {@link Predicate}, 'analyseFile', takes a line of one of the file's under the directory, as a String.
+     *                         The {@link Predicate} should return true if the file's line fails the analysis check.
+     * @param violationMessage The message to print if a file's line fails analysis.
+     * @return The a list of {@link Violation} for the files which have failed analysis.
+     * @throws IOException if an I/O error is thrown when accessing the file.
+     */
     public List<Violation> analyseLinesOfFile(Predicate<String> analyseLineInFile, String violationMessage) throws IOException {
         return Files.walk(pathToCheck)
                 .filter(this::isFileToAnalyse)
@@ -98,7 +158,7 @@ public class WestieFileLineAnalyser {
     }
 
     private boolean isFileToAnalyse(Path file) {
-        return notAnExemptFile(file) && fileIsOfSpecifiedType(file);
+        return Files.isRegularFile(file) && notAnExemptFile(file) && fileIsOfSpecifiedType(file);
     }
 
     private boolean fileIsOfSpecifiedType(Path file) {

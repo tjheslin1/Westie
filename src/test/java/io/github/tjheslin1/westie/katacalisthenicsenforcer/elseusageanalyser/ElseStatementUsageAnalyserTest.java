@@ -1,7 +1,7 @@
 package io.github.tjheslin1.westie.katacalisthenicsenforcer.elseusageanalyser;
 
-import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.LineAssertions;
+import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.testinfrastructure.TestWestieFileReader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
@@ -16,7 +16,7 @@ public class ElseStatementUsageAnalyserTest implements WithAssertions {
     @Test
     public void reportViolationOfUsageOfElseStatement() throws Exception {
         ElseStatementUsageAnalyser analyser = new ElseStatementUsageAnalyser(new TestWestieFileReader());
-        List<FileLineViolation> violations = analyser.noUsageOfElseStatement(Paths.get("src/test/resources/io/github/tjheslin1/examples/katacalisthenics/elsestatementusage"), singletonList("ClassWithCommentedOutElseStatements.java"));
+        List<Violation> violations = analyser.noUsageOfElseStatement(Paths.get("src/test/resources/io/github/tjheslin1/examples/katacalisthenics/elsestatementusage"), singletonList("ClassWithCommentedOutElseStatements.java"));
 
         assertThat(violations.size()).isEqualTo(1);
         LineAssertions lineAssertions = new LineAssertions(violations);
@@ -30,7 +30,7 @@ public class ElseStatementUsageAnalyserTest implements WithAssertions {
     @Test
     public void commentedOutElseStatementsAreNotViolations() throws Exception {
         ElseStatementUsageAnalyser analyser = new ElseStatementUsageAnalyser(new TestWestieFileReader());
-        List<FileLineViolation> violations = analyser.noUsageOfElseStatement(Paths.get("src/test/resources/io/github/tjheslin1/examples/katacalisthenics/elsestatementusage/nested"));
+        List<Violation> violations = analyser.noUsageOfElseStatement(Paths.get("src/test/resources/io/github/tjheslin1/examples/katacalisthenics/elsestatementusage/nested"));
 
         assertThat(violations.size()).isEqualTo(0);
     }

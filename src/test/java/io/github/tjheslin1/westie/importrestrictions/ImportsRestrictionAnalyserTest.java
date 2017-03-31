@@ -31,18 +31,20 @@ public class ImportsRestrictionAnalyserTest implements WithAssertions {
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/thirdparties");
         List<Violation> violations = importsRestrictionAnalyser.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck);
 
+        violations.forEach(System.out::println);
+
         assertThat(violations.size()).isEqualTo(2);
         LineAssertions lineAssertions = new LineAssertions(violations);
         lineAssertions.containsViolationMessage("Violation in file 'ClassWithUnacceptedThirdPartyImport.java'\n" +
                 "\n" +
                 "import org.mockito.Mockito;\n" +
                 "\n" +
-                "Violation was caused by an import which does not matching any of the import restrictions.\n");
+                "Violation was caused by the above import which was used outside of its accepted package.\n");
         lineAssertions.containsViolationMessage("Violation in file 'ClassWithUnacceptedThirdPartyImportToIgnore.java'\n" +
                 "\n" +
                 "import org.mockito.Mockito;\n" +
                 "\n" +
-                "Violation was caused by an import which does not matching any of the import restrictions.\n");
+                "Violation was caused by the above import which was used outside of its accepted package.\n");
     }
 
     @Test
@@ -59,12 +61,12 @@ public class ImportsRestrictionAnalyserTest implements WithAssertions {
                 "\n" +
                 "import org.mockito.Mockito;\n" +
                 "\n" +
-                "Violation was caused by an import which does not matching any of the import restrictions.\n");
+                "Violation was caused by the above import which was used outside of its accepted package.\n");
         lineAssertions.containsViolationMessage("Violation in file 'ClassWithUnacceptedThirdPartyImport.java'\n" +
                 "\n" +
                 "import org.apache.commons.lang3.builder.HashCodeBuilder;\n" +
                 "\n" +
-                "Violation was caused by an import which does not matching any of the import restrictions.\n");
+                "Violation was caused by the above import which was used outside of its accepted package.\n");
     }
 
     @Test

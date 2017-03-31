@@ -44,18 +44,8 @@ import static java.util.stream.Collectors.toList;
  */
 public class EnvironmentPropertiesAnalyser {
 
-    private final WestieAnalyser westieAnalyser;
-
-    public EnvironmentPropertiesAnalyser() {
-        this.westieAnalyser = new WestieAnalyser();
-    }
-
-    public EnvironmentPropertiesAnalyser(WestieFileReader fileReader) {
-        this.westieAnalyser = new WestieAnalyser(fileReader);
-    }
-
     /**
-     * Compares that `.properties` file share the same set of properties (keys) by
+     * Checks that `.properties` file share the same set of properties (keys) by
      * comparing them to the first file found.
      *
      * @param pathToCheck The directory to recursively search under for `.properties` files to check.
@@ -67,11 +57,11 @@ public class EnvironmentPropertiesAnalyser {
     }
 
     /**
-     * Compares that `.properties` file share the same set of properties (keys) by
+     * Checks that `.properties` file share the same set of properties (keys) by
      * comparing them to the first file found.
      *
      * @param pathToCheck             The directory to recursively search under for `.properties` files to check.
-     * @param propertiesFilesToIgnore TODO
+     * @param propertiesFilesToIgnore properties files exempt from analysis.
      * @return A list of {@link FileViolation}'s for files which don't share the same properties.
      * @throws IOException if a problem reading the properties files occurs.
      */
@@ -89,7 +79,7 @@ public class EnvironmentPropertiesAnalyser {
         return file.toString().endsWith(".properties");
     }
 
-    protected boolean notAnExemptFile(Path file, List<String> filesToIgnore) {
+    private boolean notAnExemptFile(Path file, List<String> filesToIgnore) {
         return filesToIgnore.stream()
                 .map(this::postFixedWithPropertiesExtension)
                 .noneMatch(exemptFile -> file.toString().endsWith(exemptFile));

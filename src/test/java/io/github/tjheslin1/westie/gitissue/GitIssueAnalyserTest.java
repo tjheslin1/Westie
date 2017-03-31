@@ -1,7 +1,7 @@
 package io.github.tjheslin1.westie.gitissue;
 
-import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.LineAssertions;
+import io.github.tjheslin1.westie.Violation;
 import io.github.tjheslin1.westie.WithMockito;
 import io.github.tjheslin1.westie.infrastructure.GitIssues;
 import io.github.tjheslin1.westie.testinfrastructure.TestWestieFileReader;
@@ -23,7 +23,7 @@ public class GitIssueAnalyserTest implements WithAssertions, WithMockito {
         GitIssueAnalyser gitIssueAnalyser = new GitIssueAnalyser(gitIssues, "Git-[0-9]{1,4}", new TestWestieFileReader());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/git");
-        List<FileLineViolation> violations = gitIssueAnalyser.todosAreInOpenState(pathToCheck, singletonList("AnotherClassWithGitIssueTodo.java"));
+        List<Violation> violations = gitIssueAnalyser.todosAreInOpenState(pathToCheck);
 
         assertThat(violations).hasSize(4);
         LineAssertions lineMatchAssertions = new LineAssertions(violations);
@@ -54,7 +54,7 @@ public class GitIssueAnalyserTest implements WithAssertions, WithMockito {
         GitIssueAnalyser gitIssueAnalyser = new GitIssueAnalyser(gitIssues, "Git-[0-9]{1,4}", new TestWestieFileReader());
 
         Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/git");
-        List<FileLineViolation> violations = gitIssueAnalyser.todosAreInOpenState(pathToCheck);
+        List<Violation> violations = gitIssueAnalyser.todosAreInOpenState(pathToCheck, singletonList("AnotherClassWithGitIssueTodo.java"));
 
         assertThat(violations).hasSize(2);
         LineAssertions lineMatchAssertions = new LineAssertions(violations);
