@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/tjheslin1/Westie.svg?branch=master)](https://travis-ci.org/tjheslin1/Westie)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.tjheslin1/Westie/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.tjheslin1/Westie)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jonnymatts/jzonbie/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jonnymatts/jzonbie)
 
 ## What is it?
 
