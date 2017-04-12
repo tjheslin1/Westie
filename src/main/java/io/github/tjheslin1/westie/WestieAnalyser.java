@@ -30,7 +30,7 @@ import static java.lang.String.format;
  */
 public class WestieAnalyser {
 
-    public static final WestieCachedFileReader CACHED_FILE_READER = new WestieCachedFileReader();
+    private static final WestieCachedFileReader CACHED_FILE_READER = new WestieCachedFileReader();
 
     private final WestieFileReader fileReader;
 

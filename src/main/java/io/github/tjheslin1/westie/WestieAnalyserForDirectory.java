@@ -36,18 +36,18 @@ public class WestieAnalyserForDirectory {
     /**
      * Sets type of files to be analysed to '.java'.
      *
-     * @return A {@link WestieFileLineAnalyser} with the 'fileType' set to '.java'.
+     * @return A {@link WestieFileAnalyser} with the 'fileType' set to '.java'.
      */
-    public WestieFileLineAnalyser forJavaFiles() {
+    public WestieFileAnalyser forJavaFiles() {
         return forFileType(".java");
     }
 
     /**
      * Sets type of files to be analysed to '.properties'.
      *
-     * @return A {@link WestieFileLineAnalyser} with the 'fileType' set to '.properties'.
+     * @return A {@link WestieFileAnalyser} with the 'fileType' set to '.properties'.
      */
-    public WestieFileLineAnalyser forPropertiesFiles() {
+    public WestieFileAnalyser forPropertiesFiles() {
         return forFileType(".properties");
     }
 
@@ -55,24 +55,24 @@ public class WestieAnalyserForDirectory {
      * Sets type of files to be analysed.
      *
      * @param filetype The suffix of files to be analysed.
-     * @return A {@link WestieFileLineAnalyser} with the 'fileType' set to the provided value.
+     * @return A {@link WestieFileAnalyser} with the 'fileType' set to the provided value.
      */
-    public WestieFileLineAnalyser forFileType(String filetype) {
+    public WestieFileAnalyser forFileType(String filetype) {
         if (!filetype.startsWith(".")) {
             this.filetype = "." + filetype;
         } else {
             this.filetype = filetype;
         }
 
-        return new WestieFileLineAnalyser(pathToCheck, filetype, fileReader);
+        return new WestieFileAnalyser(pathToCheck, filetype, fileReader);
     }
 
     /**
      * Does not set a 'fileType', resulting in all regular files being analysed.
      *
-     * @return A {@link WestieFileLineAnalyser} with the 'fileType' set to '.properties'.
+     * @return A {@link WestieFileAnalyser} with the 'fileType' set to '.properties'.
      */
-    public WestieFileLineAnalyser forAllFiles() {
-        return new WestieFileLineAnalyser(pathToCheck, filetype, fileReader);
+    public WestieFileAnalyser forAllFiles() {
+        return new WestieFileAnalyser(pathToCheck, filetype, fileReader);
     }
 }
