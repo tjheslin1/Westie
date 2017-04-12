@@ -34,7 +34,7 @@ import static java.util.stream.Collectors.toList;
  * Runs your provided analysis, in the form of a {@link Predicate} which should return 'true' if analysis fails,
  * on files under a directory {@link WestieAnalyser} provided to {@link WestieAnalyser}.
  */
-public class WestieFileLineAnalyser {
+public class WestieFileAnalyser {
 
     private final Path pathToCheck;
     private final String filetype;
@@ -42,7 +42,7 @@ public class WestieFileLineAnalyser {
 
     private List<String> filesToIgnore = emptyList();
 
-    public WestieFileLineAnalyser(Path pathToCheck, String filetype, WestieFileReader fileReader) {
+    public WestieFileAnalyser(Path pathToCheck, String filetype, WestieFileReader fileReader) {
         this.pathToCheck = pathToCheck;
         this.fileReader = fileReader;
         this.filetype = filetype;
@@ -52,9 +52,9 @@ public class WestieFileLineAnalyser {
      * Sets the files to ignore from analysis.
      *
      * @param fileToIgnore The files, by name, exempty from analysis.
-     * @return this {@link WestieFileLineAnalyser} back with 'fileToIgnore' set to the provided list.
+     * @return this {@link WestieFileAnalyser} back with 'fileToIgnore' set to the provided list.
      */
-    public WestieFileLineAnalyser ignoring(List<String> fileToIgnore) {
+    public WestieFileAnalyser ignoring(List<String> fileToIgnore) {
         this.filesToIgnore = fileToIgnore;
         return this;
     }
