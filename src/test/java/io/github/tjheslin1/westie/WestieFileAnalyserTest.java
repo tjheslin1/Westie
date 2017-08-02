@@ -12,7 +12,7 @@ public class WestieFileAnalyserTest implements WithAssertions {
 
     @Test
     public void analysesFileSuccessfully() throws Exception {
-        Path pathToCheck = Paths.get("/Users/Tom/GitHub/Westie/src/test/resources/io/github/tjheslin1/examples/lineReading/ReadMyLines.java");
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/lineReading/ReadMyLines.java");
         WestieFileAnalyser westieFileAnalyser = new WestieFileAnalyser(pathToCheck, new TestWestieFileReader());
 
         List<Violation> violations = westieFileAnalyser.analyse(pathToFile -> false, "Expected violation message 1234");
@@ -22,7 +22,7 @@ public class WestieFileAnalyserTest implements WithAssertions {
 
     @Test
     public void analysesFileWithFailure() throws Exception {
-        Path pathToCheck = Paths.get("/Users/Tom/GitHub/Westie/src/test/resources/io/github/tjheslin1/examples/lineReading/ReadMyLines.java");
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/lineReading/ReadMyLines.java");
         WestieFileAnalyser westieFileAnalyser = new WestieFileAnalyser(pathToCheck, new TestWestieFileReader());
 
         List<Violation> violations = westieFileAnalyser.analyse(pathToFile -> true, "Expected violation message 1234");
@@ -36,7 +36,7 @@ public class WestieFileAnalyserTest implements WithAssertions {
 
     @Test
     public void analysesFileContentSuccessfully() throws Exception {
-        Path pathToCheck = Paths.get("/Users/Tom/GitHub/Westie/src/test/resources/io/github/tjheslin1/examples/lineReading/ReadMyLines.java");
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/lineReading/ReadMyLines.java");
         WestieFileAnalyser westieFileAnalyser = new WestieFileAnalyser(pathToCheck, new TestWestieFileReader());
 
         List<Violation> violations = westieFileAnalyser.analyseFileContent(pathToFile -> false, "Expected violation message 1234");
@@ -46,7 +46,7 @@ public class WestieFileAnalyserTest implements WithAssertions {
 
     @Test
     public void analysesFileContentFailureWhenDirectoryProvided() throws Exception {
-        Path pathToCheck = Paths.get("/Users/Tom/GitHub/Westie/src/test/resources/io/github/tjheslin1/examples/lineReading");
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/lineReading");
         WestieFileAnalyser westieFileAnalyser = new WestieFileAnalyser(pathToCheck, new TestWestieFileReader());
 
         List<Violation> violations = westieFileAnalyser.analyseFileContent(pathToFile -> false, "Expected violation message 1234");
@@ -61,7 +61,7 @@ public class WestieFileAnalyserTest implements WithAssertions {
 
     @Test
     public void analysesFileContentUnsuccessfully() throws Exception {
-        Path pathToCheck = Paths.get("/Users/Tom/GitHub/Westie/src/test/resources/io/github/tjheslin1/examples/lineReading/ReadMyLines.java");
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/lineReading/ReadMyLines.java");
         WestieFileAnalyser westieFileAnalyser = new WestieFileAnalyser(pathToCheck, new TestWestieFileReader());
 
         List<Violation> violations = westieFileAnalyser.analyseFileContent(pathToFile -> true, "Expected violation message 1234");
@@ -75,7 +75,7 @@ public class WestieFileAnalyserTest implements WithAssertions {
 
     @Test
     public void analysesLinesOfFileContentSuccessfully() throws Exception {
-        Path pathToCheck = Paths.get("/Users/Tom/GitHub/Westie/src/test/resources/io/github/tjheslin1/examples/lineReading/ReadMyLines.java");
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/lineReading/ReadMyLines.java");
         WestieFileAnalyser westieFileAnalyser = new WestieFileAnalyser(pathToCheck, new TestWestieFileReader());
 
         List<Violation> violations = westieFileAnalyser.analyseLinesOfFile(pathToFile -> false, "Expected violation message 1234");
@@ -85,7 +85,7 @@ public class WestieFileAnalyserTest implements WithAssertions {
 
     @Test
     public void analysesLinesOfFileWithFailure() throws Exception {
-        Path pathToCheck = Paths.get("/Users/Tom/GitHub/Westie/src/test/resources/io/github/tjheslin1/examples/lineReading/ReadMyLines.java");
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/lineReading/ReadMyLines.java");
         WestieFileAnalyser westieFileAnalyser = new WestieFileAnalyser(pathToCheck, new TestWestieFileReader());
 
         List<Violation> violations = westieFileAnalyser.analyseLinesOfFile(pathToFile -> true, "Expected violation message 1234");
