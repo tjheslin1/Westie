@@ -63,8 +63,3 @@ _No more forgetting to complete TODOs as part of your Jira story. Your build wil
 ```groovy
 compile 'io.github.tjheslin1:Westie:1.4'
 ```
-### SBT
-```scala
-libraryDependencies += "io.github.tjheslin1" % "Westie" % "1.4"
-```
-
