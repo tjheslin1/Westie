@@ -47,7 +47,7 @@ private boolean checkJiraTodos(String fileLine) {
 }
 ...
 ```
-_No more forgetting to complete TODOs as part of your Jira story. Your build will instead fail. The same can be done for Git Issues,_
+_No more forgetting to complete TODOs as part of your Jira story. Your build will instead fail. The same can be done for Git Issues._
 
 ## How do I get it?
 
