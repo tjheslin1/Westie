@@ -21,14 +21,14 @@ import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.nio.file.Path;
 
-public class WestieAnalyserForDirectory {
+public class WestieDirectoryAnalyserBuilder {
 
     private final WestieFileReader fileReader;
     private final Path pathToCheck;
 
     private String filetype;
 
-    public WestieAnalyserForDirectory(WestieFileReader fileReader, Path pathToCheck) {
+    public WestieDirectoryAnalyserBuilder(WestieFileReader fileReader, Path pathToCheck) {
         this.fileReader = fileReader;
         this.pathToCheck = pathToCheck;
     }

@@ -14,7 +14,6 @@ is the entrypoint to a fluent API with useful functions for creating your own st
 
 ### _EnvironmentPropertiesAnalysers_ ensures that all of your environment '.properties' files share the same keys.
 ```java
-@Ignore
 @Test
 public void allEnvironmentPropertiesFilesHaveTheSameKeys() throws Exception {
     List<FileViolation> violations = new EnvironmentPropertiesAnalyser()
@@ -31,7 +30,7 @@ _No more forgetting to add a url to all your environment's configurations. Your 
 public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
     List<Violation> violations = new JiraReferenceAnalyser(jiraIssues, JIRA_STORY_REGEX)
             .todosAreInAllowedStatuses(BASE_PACKAGE);
-    
+
     assertThat(violations).isEmpty();
 }
 
@@ -57,15 +56,15 @@ _No more forgetting to complete TODOs as part of your Jira story. Your build wil
 <dependency>
     <groupId>io.github.tjheslin1</groupId>
     <artifactId>Westie</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
 </dependency>
 ```
 ### Gradle
 ```groovy
-compile 'io.github.tjheslin1:Westie:1.3'
+compile 'io.github.tjheslin1:Westie:1.4'
 ```
 ### SBT
 ```scala
-libraryDependencies += "io.github.tjheslin1" % "Westie" % "1.3"
+libraryDependencies += "io.github.tjheslin1" % "Westie" % "1.4"
 ```
 

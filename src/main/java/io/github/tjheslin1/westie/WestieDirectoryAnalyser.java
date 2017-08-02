@@ -32,7 +32,7 @@ import static java.util.stream.Collectors.toList;
 
 /**
  * Runs your provided analysis, in the form of a {@link Predicate} which should return 'true' if analysis fails,
- * on files under a directory {@link WestieAnalyser} provided to {@link WestieAnalyser}.
+ * on files under a directory specified in {@link WestieAnalyser}.
  */
 public class WestieDirectoryAnalyser {
 
@@ -61,7 +61,7 @@ public class WestieDirectoryAnalyser {
 
     /**
      * Analyses the files under the directory provided in {@link WestieAnalyser},
-     * applying the provided {@link Predicate}.
+     * applying the provided {@link Predicate}. The Predicate takes in the Path to the file.
      *
      * @param analyseFile      The function to apply to the file as a whole.
      *                         The {@link Predicate}, 'analyseFile', takes the {@link Path} to one of the files under the directory to analyse.
@@ -79,7 +79,7 @@ public class WestieDirectoryAnalyser {
 
     /**
      * Analyses the files under the directory provided in {@link WestieAnalyser},
-     * applying the provided {@link Predicate}.
+     * applying the provided {@link Predicate}. The Predicate takes in the file content as a String.
      *
      * @param analyseFile      The function to apply to the file as a whole.
      *                         The {@link Predicate}, 'analyseFile', takes the content of one of the file's under the directory, as a String.
@@ -97,7 +97,7 @@ public class WestieDirectoryAnalyser {
 
     /**
      * Analyses the files under the directory provided in {@link WestieAnalyser},
-     * applying the provided {@link Predicate}.
+     * applying the provided {@link Predicate}. The Predicate takes in a each line of the file as a String.
      *
      * @param analyseLineInFile The function to apply to each line in each file to be analysed.
      *                          The {@link Predicate}, 'analyseFile', takes a line of one of the file's under the directory, as a String.

@@ -20,7 +20,6 @@ package io.github.tjheslin1.westie.environmentproperties;
 import io.github.tjheslin1.westie.FileLineViolation;
 import io.github.tjheslin1.westie.FileViolation;
 import io.github.tjheslin1.westie.WestieAnalyser;
-import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -41,6 +40,10 @@ import static java.util.stream.Collectors.toList;
  * the same property names (keys).
  * <p>
  * Useful for enforcing that properties aren't missed between environment properties.
+ * <p>
+ * The implementation doesn't inject a {@link WestieAnalyser} field.
+ * Instead it walks the directory using Java 8's `Files.walk`, using a List of {@link FileKeySet} to
+ * compare the keys of the files found.
  */
 public class EnvironmentPropertiesAnalyser {
 

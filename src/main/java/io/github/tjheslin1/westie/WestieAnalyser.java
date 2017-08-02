@@ -46,12 +46,20 @@ public class WestieAnalyser {
      * Analyse all regular files, recursively, under the given directory.
      *
      * @param pathToCheck The directory under which to recursively search and apply analysis on files.
-     * @return A {@link WestieAnalyserForDirectory} using the provided or default {@link WestieFileReader}.
+     * @return A {@link WestieDirectoryAnalyserBuilder} using the provided or default {@link WestieFileReader}.
      */
-    public WestieAnalyserForDirectory analyseDirectory(Path pathToCheck) {
-        if(!Files.isDirectory(pathToCheck)) {
+    public WestieDirectoryAnalyserBuilder analyseDirectory(Path pathToCheck) {
+        if (!Files.isDirectory(pathToCheck)) {
             throw new IllegalArgumentException(format("Expected a directory. '%s' was provided.", pathToCheck));
         }
-        return new WestieAnalyserForDirectory(fileReader, pathToCheck);
+        return new WestieDirectoryAnalyserBuilder(fileReader, pathToCheck);
+    }
+
+    public WestieFileAnalyser analyseFile(Path fileToCheck) {
+        if (!Files.isRegularFile(fileToCheck)) {
+            throw new IllegalArgumentException(format("Expected a regular file. '%s' was provided.", fileToCheck));
+        }
+
+        return new WestieFileAnalyser(fileToCheck, fileReader);
     }
 }
