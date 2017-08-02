@@ -35,8 +35,8 @@ public void canOnlyReferenceJiraIssuesInDevelopment() throws Exception {
 }
 
 // below is part of 'JiraReferenceAnalyser.java'
-private List<Violation> todosAreInAllowedStatuses(Path pathToCheck, List<String> filesToIgnore) throws IOException {
-    return new WestieAnalyser().analyseDirectory(pathToCheck)
+public List<Violation> todosAreInAllowedStatuses(Path pathToCheck, List<String> filesToIgnore) throws IOException {
+    return westieAnalyser.analyseDirectory(pathToCheck)
             .forJavaFiles().ignoring(filesToIgnore)
             .analyseLinesOfFile(this::checkJiraTodos, format("Violation was caused by a reference to a " +
                     "Jira issue which is not in any of the accepted statuses: '%s'.", jiraIssues.allowedStatuses()));

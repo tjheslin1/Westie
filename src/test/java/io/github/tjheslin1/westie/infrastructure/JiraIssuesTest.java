@@ -14,11 +14,12 @@ import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
 public class JiraIssuesTest implements WithAssertions {
-    public static final List<String> ALLOWED_STATUSES = asList("Ready To Play", "Development");
-    public static final String WIREMOCK_URL_FORMAT = "/rest/api/2/issue/%s?&os_username=%s&os_password=%s";
-    public static final String JIRA_URL_FORMAT = "http://localhost:8089";
-    public static final String TEST_USER = "testUser";
-    public static final String TEST_PASS = "testPass";
+
+    private static final List<String> ALLOWED_STATUSES = asList("Ready To Play", "Development");
+    private static final String WIREMOCK_URL_FORMAT = "/rest/api/2/issue/%s?&os_username=%s&os_password=%s";
+    private static final String JIRA_URL_FORMAT = "http://localhost:8089";
+    private static final String TEST_USER = "testUser";
+    private static final String TEST_PASS = "testPass";
 
     private final ApacheHttpClient httpClient = new ApacheHttpClient(Duration.ofSeconds(5));
     private final JiraIssues jiraIssues = new JiraIssues(httpClient, JIRA_URL_FORMAT, TEST_USER, TEST_PASS, ALLOWED_STATUSES);
