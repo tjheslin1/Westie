@@ -27,6 +27,7 @@ import io.github.tjheslin1.westie.http.Response;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,20 +43,28 @@ public class GitIssues {
     private static final String GITHUB_API_HOSTNAME = "https://api.github.com";
     private static final String GIT_ISSUE_URL_FORMAT = "/repos/%s/%s/issues/%s";
     private static final String OPEN = "open";
+    private static final HttpClient HTTP_CLIENT = new ApacheHttpClient(Duration.ofSeconds(10));
 
     private final HttpClient httpClient;
     private final String user;
     private final String repository;
     private final String githubApiHostname;
 
-    public GitIssues(HttpClient httpClient, String user, String repository) {
+    public GitIssues(String user, String repository) {
+        this.httpClient = HTTP_CLIENT;
+        this.user = user;
+        this.repository = repository;
+        this.githubApiHostname = GITHUB_API_HOSTNAME;
+    }
+
+    public GitIssues(String user, String repository, HttpClient httpClient) {
         this.httpClient = httpClient;
         this.user = user;
         this.repository = repository;
         this.githubApiHostname = GITHUB_API_HOSTNAME;
     }
 
-    public GitIssues(HttpClient httpClient, String user, String repository, String githubApiHostname) {
+    public GitIssues(String user, String repository, String githubApiHostname, HttpClient httpClient) {
         this.httpClient = httpClient;
         this.user = user;
         this.repository = repository;

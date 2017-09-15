@@ -18,7 +18,7 @@ public class GitIssuesTest implements WithAssertions {
     private static final String TEST_REPO = "testRepo";
 
     private final ApacheHttpClient httpClient = new ApacheHttpClient(Duration.ofSeconds(5));
-    private final GitIssues gitIssues = new GitIssues(httpClient, TEST_USER, TEST_REPO, "http://localhost:8089");
+    private final GitIssues gitIssues = new GitIssues(TEST_USER, TEST_REPO, "http://localhost:8089", httpClient);
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(8089);

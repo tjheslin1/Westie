@@ -8,7 +8,6 @@ import org.assertj.core.api.WithAssertions;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -31,7 +30,7 @@ public class WestieTest implements WithAssertions {
     private static final Path PROPERTIES_DIR = null;
     private static final List<String> FILES_TO_IGNORE = emptyList();
 
-    private final JiraIssues jiraIssues = new JiraIssues(HTTP_CLIENT, JIRA_HOSTNAME, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
+    private final JiraIssues jiraIssues = new JiraIssues(JIRA_HOSTNAME, JIRA_USERNAME, JIRA_PASSWORD, singletonList("Development"));
 
     // Example displayed in README.md
     @Ignore

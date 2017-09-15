@@ -22,7 +22,7 @@ public class JiraIssuesTest implements WithAssertions {
     private static final String TEST_PASS = "testPass";
 
     private final ApacheHttpClient httpClient = new ApacheHttpClient(Duration.ofSeconds(5));
-    private final JiraIssues jiraIssues = new JiraIssues(httpClient, JIRA_URL_FORMAT, TEST_USER, TEST_PASS, ALLOWED_STATUSES);
+    private final JiraIssues jiraIssues = new JiraIssues(JIRA_URL_FORMAT, TEST_USER, TEST_PASS, ALLOWED_STATUSES, httpClient);
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(8089);

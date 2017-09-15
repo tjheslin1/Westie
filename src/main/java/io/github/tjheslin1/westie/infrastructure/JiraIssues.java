@@ -27,6 +27,7 @@ import io.github.tjheslin1.westie.http.Response;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -42,26 +43,41 @@ import static java.lang.String.format;
 public class JiraIssues {
 
     private static final String JIRA_TICKET_QUERY_FORMAT = "/rest/api/2/issue/%s?&os_username=%s&os_password=%s";
+    private static final HttpClient HTTP_CLIENT = new ApacheHttpClient(Duration.ofSeconds(10));
 
     private final HttpClient httpClient;
     private final String teamCityUsername;
     private final String teamCityPassword;
     private final String jiraHostname;
-    private List<String> allowedStatuses;
+    private final List<String> allowedStatuses;
 
     /**
-     * @param httpClient       Your chosen http client. Provided is {@link ApacheHttpClient}.
      * @param jiraHostname     Your jira's hostname (e.g. "tasktracker.mycompany.com").
      * @param teamCityUsername Your username to access your Jira.
      * @param teamCityPassword Your password to access your Jira.
      * @param allowedStatuses  A list of allowed status (e.g [Ready To Play, Development]).
      */
-    public JiraIssues(HttpClient httpClient, String jiraHostname, String teamCityUsername, String teamCityPassword, List<String> allowedStatuses) {
-        this.httpClient = httpClient;
+    public JiraIssues(String jiraHostname, String teamCityUsername, String teamCityPassword, List<String> allowedStatuses) {
         this.teamCityUsername = teamCityUsername;
         this.teamCityPassword = teamCityPassword;
         this.jiraHostname = jiraHostname;
         this.allowedStatuses = allowedStatuses;
+        this.httpClient = HTTP_CLIENT;
+    }
+
+    /**
+     * @param jiraHostname     Your jira's hostname (e.g. "tasktracker.mycompany.com").
+     * @param teamCityUsername Your username to access your Jira.
+     * @param teamCityPassword Your password to access your Jira.
+     * @param allowedStatuses  A list of allowed status (e.g [Ready To Play, Development]).
+     * @param httpClient       Your chosen http client. Provided is {@link ApacheHttpClient}.
+     */
+    public JiraIssues(String jiraHostname, String teamCityUsername, String teamCityPassword, List<String> allowedStatuses, HttpClient httpClient) {
+        this.teamCityUsername = teamCityUsername;
+        this.teamCityPassword = teamCityPassword;
+        this.jiraHostname = jiraHostname;
+        this.allowedStatuses = allowedStatuses;
+        this.httpClient = httpClient;
     }
 
     /**
