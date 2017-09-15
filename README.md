@@ -57,9 +57,10 @@ _No more forgetting to complete TODOs as part of your Jira story. Your build wil
     <groupId>io.github.tjheslin1</groupId>
     <artifactId>Westie</artifactId>
     <version>1.4</version>
+    <scope>test</scope>
 </dependency>
 ```
 ### Gradle
 ```groovy
-compile 'io.github.tjheslin1:Westie:1.4'
+testCompile 'io.github.tjheslin1:Westie:1.4'
 ```
