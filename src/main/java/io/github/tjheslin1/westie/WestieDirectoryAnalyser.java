@@ -101,8 +101,8 @@ public class WestieDirectoryAnalyser {
      *
      * @param analyseLineInFile The function to apply to each line in each file to be analysed.
      *                          The {@link Predicate}, 'analyseFile', takes a line of one of the file's under the directory, as a String.
-     *                         The {@link Predicate} should return true if the file's line fails the analysis check.
-     * @param violationMessage The message to print if a file's line fails analysis.
+     *                          The {@link Predicate} should return true if the file's line fails the analysis check.
+     * @param violationMessage  The message to print if a file's line fails analysis.
      * @return The a list of {@link Violation} for the files which have failed analysis.
      * @throws IOException if an I/O error is thrown when accessing the file.
      */
@@ -158,7 +158,18 @@ public class WestieDirectoryAnalyser {
     }
 
     private boolean isFileToAnalyse(Path file) {
-        return Files.isRegularFile(file) && notAnExemptFile(file) && fileIsOfSpecifiedType(file);
+        return Files.isRegularFile(file) && !filesParentIsHidden(file) && notAnExemptFile(file) && fileIsOfSpecifiedType(file);
+    }
+
+    private boolean filesParentIsHidden(Path file) {
+        try {
+            if (!Files.isHidden(pathToCheck) && Files.isHidden(file.getParent())) {
+                return true;
+            }
+            return false;
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     private boolean fileIsOfSpecifiedType(Path file) {

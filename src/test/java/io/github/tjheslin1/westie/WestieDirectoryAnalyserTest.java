@@ -78,4 +78,26 @@ public class WestieDirectoryAnalyserTest implements WithAssertions {
         // expecting every line to fail based on simple Predicate which returns true every time.
         assertThat(violations.size()).isEqualTo(12);
     }
+
+    @Test
+    public void analyseHiddenDirectoryIfTopLevelIsHidden() throws Exception {
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/.hidden");
+        WestieDirectoryAnalyser westieDirectoryAnalyser = new WestieDirectoryAnalyser(pathToCheck, ".txt", new TestWestieFileReader());
+
+        List<Violation> violations = westieDirectoryAnalyser.analyseLinesOfFile(pathToFile -> true, "Expected violation message 1234");
+
+        assertThat(violations).hasSize(1);
+        assertThat(violations.get(0).toString()).contains("Violation in file 'hidden.txt'");
+    }
+
+    @Test
+    public void ignoreHiddenDirectoriesAsPartOfAnalysis() throws Exception {
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/nothidden");
+        WestieDirectoryAnalyser westieDirectoryAnalyser = new WestieDirectoryAnalyser(pathToCheck, ".txt", new TestWestieFileReader());
+
+        List<Violation> violations = westieDirectoryAnalyser.analyseLinesOfFile(pathToFile -> true, "Expected violation message 1234");
+
+        assertThat(violations).hasSize(1);
+        assertThat(violations.get(0).toString()).contains("Violation in file 'nothidden.txt'");
+    }
 }

@@ -1,0 +1,1 @@
+should be ignored unless provided top level directory is a hidden dir.
