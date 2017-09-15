@@ -1,5 +1,6 @@
 package io.github.tjheslin1.westie;
 
+import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
 import io.github.tjheslin1.westie.testinfrastructure.TestWestieFileReader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
@@ -99,5 +100,17 @@ public class WestieDirectoryAnalyserTest implements WithAssertions {
 
         assertThat(violations).hasSize(1);
         assertThat(violations.get(0).toString()).contains("Violation in file 'nothidden.txt'");
+    }
+
+    @Test
+    public void reportsErrorForFileWithErrorReading() throws Exception {
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/special");
+        WestieDirectoryAnalyser westieDirectoryAnalyser = new WestieDirectoryAnalyser(pathToCheck, ".txt", new WestieCachedFileReader());
+
+        List<Violation> violations = westieDirectoryAnalyser.analyseLinesOfFile(pathToFile -> true, "Expected violation message 1234");
+
+        assertThat(violations).hasSize(1);
+        assertThat(violations.get(0).toString()).contains("Unable to read file.\n" +
+                "java.nio.charset.MalformedInputException: Input length = 1");
     }
 }

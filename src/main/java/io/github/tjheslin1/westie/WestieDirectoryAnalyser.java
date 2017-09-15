@@ -137,7 +137,7 @@ public class WestieDirectoryAnalyser {
             } else {
                 return Stream.empty();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             return Stream.of(new FileViolation(file, "Unable to read file.\n" + e.getMessage()));
         }
     }
@@ -152,24 +152,34 @@ public class WestieDirectoryAnalyser {
             return lines.stream()
                     .filter(analyseLine)
                     .map(line -> new FileLineViolation(file, line, violationMessage));
-        } catch (IOException e) {
+        } catch (Exception e) {
             return Stream.of(new FileViolation(file, "Unable to read file.\n" + e.getMessage()));
         }
     }
 
     private boolean isFileToAnalyse(Path file) {
-        return Files.isRegularFile(file) && !filesParentIsHidden(file) && notAnExemptFile(file) && fileIsOfSpecifiedType(file);
+        return Files.isRegularFile(file) && !isHidden(file) && !filesParentIsHidden(file) && notAnExemptFile(file) && fileIsOfSpecifiedType(file);
     }
 
-    private boolean filesParentIsHidden(Path file) {
+    private boolean isHidden(Path file) {
         try {
-            if (!Files.isHidden(pathToCheck) && Files.isHidden(file.getParent())) {
-                return true;
-            }
-            return false;
+            return Files.isHidden(file);
         } catch (IOException e) {
             return false;
         }
+    }
+
+    private boolean filesParentIsHidden(Path file) {
+        if (!isHidden(pathToCheck)) {
+            Path dirToCheck = file.getParent();
+            while (!dirToCheck.equals(pathToCheck)) {
+                if (isHidden(dirToCheck)) {
+                    return true;
+                }
+                dirToCheck = dirToCheck.getParent();
+            }
+        }
+        return false;
     }
 
     private boolean fileIsOfSpecifiedType(Path file) {

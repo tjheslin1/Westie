@@ -1,5 +1,6 @@
 package io.github.tjheslin1.westie;
 
+import io.github.tjheslin1.westie.infrastructure.WestieCachedFileReader;
 import io.github.tjheslin1.westie.testinfrastructure.TestWestieFileReader;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
@@ -92,5 +93,17 @@ public class WestieFileAnalyserTest implements WithAssertions {
 
         // expecting every line to fail based on simple Predicate which returns true every time.
         assertThat(violations.size()).isEqualTo(12);
+    }
+
+    @Test
+    public void reportsErrorForFileWithErrorReading() throws Exception {
+        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/special/DS_Store_example.txt");
+        WestieFileAnalyser westieDirectoryAnalyser = new WestieFileAnalyser(pathToCheck, new WestieCachedFileReader());
+
+        List<Violation> violations = westieDirectoryAnalyser.analyseLinesOfFile(pathToFile -> true, "Expected violation message 1234");
+
+        assertThat(violations).hasSize(1);
+        assertThat(violations.get(0).toString()).contains("Unable to read file.\n" +
+                "java.nio.charset.MalformedInputException: Input length = 1");
     }
 }

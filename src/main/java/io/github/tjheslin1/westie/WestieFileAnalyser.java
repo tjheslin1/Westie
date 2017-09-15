@@ -115,7 +115,7 @@ public class WestieFileAnalyser {
             } else {
                 return Stream.empty();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             return Stream.of(new FileViolation(file, "Unable to read file.\n" + e.getMessage()));
         }
     }
@@ -130,7 +130,7 @@ public class WestieFileAnalyser {
             return lines.stream()
                     .filter(analyseLine)
                     .map(line -> new FileLineViolation(file, line, violationMessage));
-        } catch (IOException e) {
+        } catch (Exception e) {
             return Stream.of(new FileViolation(file, "Unable to read file.\n" + e.getMessage()));
         }
     }
