@@ -7,7 +7,7 @@ Westie is a tool for creating your own custom static analysis checks.
 
 The project contains already provided checks which can be used straight away.
 
-All provided Analysers utlise [WestieAnalyser.java](src/main/java/io/github/tjheslin1/westie/WestieAnalyser.java), which
+All provided Analysers utilise [WestieAnalyser.java](src/main/java/io/github/tjheslin1/westie/WestieAnalyser.java), which
 is the entrypoint to a fluent API with useful functions for creating your own static analysis checks for your team, on your projects.
 
 ## Examples of provided static analysis analysers:
