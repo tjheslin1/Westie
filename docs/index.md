@@ -38,8 +38,9 @@ _The other option would be to analyse a specific file using: `analyseFiles()`._
 
 Now, we want to check the contents of each file, as a whole, treating it as a string:
 
-_LICENSE is a `static String` with your license header comment_.
 `analyseFileContent()` expects a `Predicate` which takes in a String representing the file content.
+
+LICENSE _is a_ `static String` _with your license header comment_.
 It also takes a violation message which is reported when the Predicate is applied to a file which returns false.
 ```java
     @Test
