@@ -10,6 +10,8 @@ The project contains already provided checks which can be used straight away.
 All provided Analysers utilise [WestieAnalyser.java](src/main/java/io/github/tjheslin1/westie/WestieAnalyser.java), which
 is the entrypoint to a fluent API with useful functions for creating your own static analysis checks for your team, on your projects.
 
+For documentation on writing your own static analysis checks, see [the documentation](https://tjheslin1.github.io/Westie/#writing-a-static-analysis-test).
+
 ## Examples of provided static analysis analysers:
 
 ### _EnvironmentPropertiesAnalysers_ ensures that all of your environment '.properties' files share the same keys.
