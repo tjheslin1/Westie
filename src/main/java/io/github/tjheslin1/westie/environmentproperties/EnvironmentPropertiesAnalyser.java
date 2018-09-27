@@ -25,10 +25,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 import static io.github.tjheslin1.westie.environmentproperties.FileKeySet.fileKeySet;
 import static java.lang.String.format;
@@ -108,7 +105,7 @@ public class EnvironmentPropertiesAnalyser {
 
     private List<FileViolation> compareAllKeySetsToFirst(List<FileKeySet> fileKeySets) {
         List<FileViolation> violations = new ArrayList<>();
-        FileKeySet firstKeySet = fileKeySets.get(0);
+        FileKeySet firstKeySet = sortedFileKeySet(fileKeySets).get(0);
         for (FileKeySet fileKeySet : fileKeySets) {
             if (!fileKeySet.keySet.equals(firstKeySet.keySet)) {
                 FileViolation violation = new FileViolation(fileKeySet.file,
@@ -119,5 +116,11 @@ public class EnvironmentPropertiesAnalyser {
             }
         }
         return violations;
+    }
+
+    private List<FileKeySet> sortedFileKeySet(List<FileKeySet> list) {
+        List<FileKeySet> sortedList = new ArrayList(list);
+        sortedList.sort(Comparator.comparing(o -> o.file));
+        return sortedList;
     }
 }
