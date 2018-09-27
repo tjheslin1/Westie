@@ -22,6 +22,7 @@ import io.github.tjheslin1.westie.infrastructure.WestieFileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -46,6 +47,17 @@ public class WestieDirectoryAnalyser {
         this.pathToCheck = pathToCheck;
         this.fileReader = fileReader;
         this.filetype = filetype;
+    }
+
+    /**
+     * Sets the files to ignore from analysis.
+     *
+     * @param fileToIgnore The files, by name, exempty from analysis.
+     * @return this {@link WestieDirectoryAnalyser} back with 'fileToIgnore' set to the provided list.
+     */
+    public WestieDirectoryAnalyser ignoring(String... fileToIgnore) {
+        this.filesToIgnore = Arrays.asList(fileToIgnore);
+        return this;
     }
 
     /**
@@ -127,11 +139,7 @@ public class WestieDirectoryAnalyser {
 
     private Stream<Violation> analyseFileContent(Path file, Predicate<String> analyseFile, String violationMessage) {
         try {
-            List<String> lines = fileReader.readAllLines(file);
-            if (lines.isEmpty()) {
-                return Stream.of(new FileViolation(file, "Empty file! - Should this file be in the list of ignored files? Or in a different directory?"));
-            }
-            String fileContent = lines.stream().collect(Collectors.joining(System.lineSeparator()));
+            String fileContent = fileReader.readAllLines(file).stream().collect(Collectors.joining(System.lineSeparator()));
             if (analyseFile.test(fileContent)) {
                 return Stream.of(new FileViolation(file, violationMessage));
             } else {
@@ -144,12 +152,7 @@ public class WestieDirectoryAnalyser {
 
     private Stream<Violation> analyseFileLines(Path file, Predicate<String> analyseLine, String violationMessage) {
         try {
-            List<String> lines = fileReader.readAllLines(file);
-            if (lines.isEmpty()) {
-                return Stream.of(new FileViolation(file,
-                        "Empty file! - Should this file be in the list of ignored files? Or in a different directory?"));
-            }
-            return lines.stream()
+            return fileReader.readAllLines(file).stream()
                     .filter(analyseLine)
                     .map(line -> new FileLineViolation(file, line, violationMessage));
         } catch (Exception e) {

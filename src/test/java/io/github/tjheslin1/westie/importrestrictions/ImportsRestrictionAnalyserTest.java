@@ -68,17 +68,4 @@ public class ImportsRestrictionAnalyserTest implements WithAssertions {
                 "\n" +
                 "Violation was caused by the above import which was used outside of its accepted package.\n");
     }
-
-    @Test
-    public void reportsViolationForEmptyFile() throws Exception {
-        List<ImportRestriction> importRestrictions = asList(MOCKITO_RESTRICTION, APACHE_RESTRICITON);
-        ImportsRestrictionAnalyser importsRestrictionAnalyser = new ImportsRestrictionAnalyser(importRestrictions, new TestWestieFileReader());
-
-        Path pathToCheck = Paths.get("src/test/resources/io/github/tjheslin1/examples/empty");
-        List<Violation> violations = importsRestrictionAnalyser.checkImportsAreOnlyUsedInAcceptedPackages(pathToCheck, singletonList("ClassWithUnacceptedThirdPartyImportToIgnore"));
-
-        assertThat(violations).hasSize(1);
-        assertThat(violations.get(0)).isEqualTo(new FileViolation(pathToCheck.resolve("Empty.java"),
-                "Empty file! - Should this file be in the list of ignored files? Or in a different directory?"));
-    }
 }
